@@ -207,7 +207,7 @@ export default function BridalShowerDemo({ onBackToHome }: BridalShowerDemoProps
               <MapPin className="w-4 h-4" /> Punta Cana Resort & Club
             </div>
             <h3 className="font-serif text-2xl text-[#1A1A1A] mb-2">Playa & Pool Lounge</h3>
-            <p className="text-xs text-gray-500 mb-6">Punta Cana, República Dominicana.</p>
+            <p className="text-xs text-gray-500 mb-6">Punta Cana.</p>
 
             <a
               href="https://maps.google.com"

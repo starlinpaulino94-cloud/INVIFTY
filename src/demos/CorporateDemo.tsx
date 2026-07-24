@@ -7,6 +7,7 @@ import {
   Car, Navigation, X, ShieldCheck
 } from "lucide-react";
 import corporateImg from "../assets/images/gala_corporate_demo_1784839877907.jpg";
+import VipPassModal from "../components/VipPassModal";
 
 interface CorporateDemoProps {
   onBackToHome: () => void;
@@ -18,6 +19,7 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [showQrModal, setShowQrModal] = useState(false);
+  const [showVipPassModal, setShowVipPassModal] = useState(false);
 
   // Corporate RSVP Form State
   const [rsvpData, setRsvpData] = useState<RsvpFormData>({
@@ -174,7 +176,7 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
           </h1>
 
           <p className="text-sm sm:text-base text-gray-300 max-w-xl mx-auto font-light leading-relaxed">
-            Una noche dedicada a reconocer la excelencia empresarial, el liderazgo transformador y la innovación tecnológica en la República Dominicana.
+            Una noche dedicada a reconocer la excelencia empresarial, el liderazgo transformador y la innovación tecnológica.
           </p>
 
           <div className="pt-4 text-xs uppercase tracking-widest text-[#FFF1CB] font-bold flex items-center justify-center gap-6">
@@ -220,10 +222,16 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
               <Calendar className="w-4 h-4" /> Agregar a mi Google Calendar
             </a>
             <button
+              onClick={() => setShowVipPassModal(true)}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#D4AF37] to-[#F2D06B] text-black text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-xl hover:scale-102 transition-all shadow-lg"
+            >
+              <ShieldCheck className="w-4 h-4 text-black" /> Ver Pase VIP con QR
+            </button>
+            <button
               onClick={() => setShowQrModal(true)}
               className="inline-flex items-center gap-2 bg-black/60 border border-[#D4AF37]/50 text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-black transition-colors"
             >
-              <QrCode className="w-4 h-4 text-[#D4AF37]" /> Simular Pase QR
+              <QrCode className="w-4 h-4 text-[#D4AF37]" /> Código de Ubicación
             </button>
           </div>
         </div>
@@ -492,6 +500,19 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
           ◆ Diseñado por Invifty — Solicitud de invitaciones digitales para eventos
         </a>
       </footer>
+
+      {/* VIP PASS MODAL */}
+      {showVipPassModal && (
+        <VipPassModal
+          eventName="Gala Anual de Innovación & Elegancia 2026"
+          eventType="corporativo"
+          defaultGuestName="Ing. Roberto Mendoza"
+          tableNumber="Mesa Ejecutiva #04"
+          eventDate="28 de Octubre, 2026 — 7:30 PM"
+          eventLocation="Hotel El Embajador, Santo Domingo"
+          onClose={() => setShowVipPassModal(false)}
+        />
+      )}
 
     </div>
   );

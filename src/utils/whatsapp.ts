@@ -24,12 +24,19 @@ Hola Invifty, acabo de enviar mi solicitud desde la página web. Deseo recibir a
 /**
  * Construye el enlace de WhatsApp para seleccionar un Plan específico
  */
-export function createPlanWhatsAppUrl(planName: string, price: number): string {
-  const message = `
+export function createPlanWhatsAppUrl(planName: string, priceDisplay: string, isEs: boolean = true): string {
+  const message = isEs
+    ? `
 *CONSULTA DE PLAN - INVIFTY*
 --------------------------------
-Hola Invifty, estoy interesado/a en solicitar el *Plan ${planName}* ($${price} USD).
+Hola Invifty, estoy interesado/a en solicitar el *Plan ${planName}* (${priceDisplay}).
 ¿Me podrían indicar los pasos para enviar los datos de mi celebración?
+`.trim()
+    : `
+*PLAN INQUIRY - INVIFTY*
+--------------------------------
+Hello Invifty, I am interested in requesting the *${planName} Plan* (${priceDisplay}).
+Could you please guide me through the steps to submit my event details?
 `.trim();
 
   return buildWhatsAppUrl(message);

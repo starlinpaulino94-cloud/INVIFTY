@@ -4,7 +4,8 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "esencial",
     name: "Esencial",
-    priceRD: 25,
+    priceUSD: 25,
+    priceDOP: 1200,
     description: "La opción perfecta para quienes buscan elegancia, rapidez y sencillez.",
     features: [
       "Invitación digital elegante e interactiva",
@@ -18,7 +19,8 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "popular",
     name: "Popular",
-    priceRD: 49,
+    priceUSD: 49,
+    priceDOP: 2500,
     badge: "El más elegido",
     isPopular: true,
     description: "Nuestra experiencia completa recomendada para bodas y 15 años.",
@@ -35,7 +37,8 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "premium",
     name: "Premium",
-    priceRD: 79,
+    priceUSD: 79,
+    priceDOP: 4000,
     badge: "VIP Eventos",
     description: "Diseñado para eventos exigentes que buscan control de acceso y cero límites.",
     features: [
@@ -52,7 +55,8 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "luxury",
     name: "Luxury",
-    priceRD: 129,
+    priceUSD: 129,
+    priceDOP: 6500,
     badge: "Exclusivo 100%",
     description: "Diseño 100% a la medida por un diseñador dedicado y dominio web propio.",
     features: [
@@ -71,19 +75,22 @@ export const PRICING_EXTRAS: PricingExtra[] = [
   {
     id: "bilingue",
     title: "Versión Bilingüe / Inglés",
-    priceRD: 15,
+    priceUSD: 15,
+    priceDOP: 900,
     description: "Añade un selector de idioma para invitados internacionales (Español / English)."
   },
   {
-    id: "express-48h",
-    title: "Servicio Express 48h",
-    priceRD: 20,
-    description: "'Nos envías la información y nosotros hacemos todo el trabajo'. Entrega en 48 horas."
+    id: "dominio-propio",
+    title: "Dominio Web Propio",
+    priceUSD: 25,
+    priceDOP: 1500,
+    description: "Dirección web única y personalizada para tu evento (ejemplo: miboda.com)."
   },
   {
-    id: "urgente-24h",
-    title: "Entrega Urgente 24h",
-    priceRD: 30,
-    description: "Prioridad máxima en nuestro taller de diseño. Tu invitación lista en menos de 24 horas."
+    id: "galeria-extra",
+    title: "Galería Post-Evento",
+    priceUSD: 15,
+    priceDOP: 900,
+    description: "Espacio para subir fotos y videos del evento para que los invitados las descarguen."
   }
 ];

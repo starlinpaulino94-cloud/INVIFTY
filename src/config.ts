@@ -5,7 +5,7 @@
  * precios y textos principales directamente en este archivo.
  */
 
-export const WHATSAPP_NUMBER = "NUMERO_PENDIENTE";
+export const WHATSAPP_NUMBER = "18092693214";
 
 export const CONFIG = {
   brandName: "Invifty",
@@ -22,19 +22,18 @@ export const CONFIG = {
   currency: "$",
   currencyCode: "USD",
   
-  // Número de WhatsApp configurado (o fallback demo)
+  // Número de WhatsApp configurado (809) 269-3214
   rawWhatsappNumber: WHATSAPP_NUMBER,
   
   // Teléfono formateado para mostrar en pantalla
-  displayPhone: WHATSAPP_NUMBER === "NUMERO_PENDIENTE" ? "+1 (800) 000-0000 (Configurar)" : `+${WHATSAPP_NUMBER}`,
+  displayPhone: "+1 (809) 269-3214",
 };
 
 /**
  * Función helper para construir enlaces a WhatsApp con mensajes prellenados.
- * Si el número aún es "NUMERO_PENDIENTE", utiliza una experiencia de demostración interactiva.
  */
 export function buildWhatsAppUrl(message: string): string {
-  const number = CONFIG.rawWhatsappNumber === "NUMERO_PENDIENTE" ? "18290000000" : CONFIG.rawWhatsappNumber;
+  const number = CONFIG.rawWhatsappNumber;
   const encodedText = encodeURIComponent(message.trim());
   return `https://wa.me/${number}?text=${encodedText}`;
 }

@@ -15,7 +15,8 @@ export type EventType =
 export interface PricingPlan {
   id: string;
   name: string;
-  priceRD: number;
+  priceUSD: number;
+  priceDOP: number;
   badge?: string;
   isPopular?: boolean;
   description: string;
@@ -26,7 +27,8 @@ export interface PricingPlan {
 export interface PricingExtra {
   id: string;
   title: string;
-  priceRD: number;
+  priceUSD: number;
+  priceDOP: number;
   description: string;
 }
 

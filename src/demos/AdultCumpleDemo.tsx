@@ -241,7 +241,7 @@ export default function AdultCumpleDemo({ onBackToHome }: AdultCumpleDemoProps) 
               <MapPin className="w-4 h-4" /> Marina Casa de Campo
             </div>
             <h3 className="font-serif text-2xl text-white mb-2">Plaza Portofino — Lounge Privado</h3>
-            <p className="text-xs text-gray-300 mb-6">La Romana, República Dominicana.</p>
+            <p className="text-xs text-gray-300 mb-6">La Romana.</p>
 
             <a
               href="https://maps.google.com"

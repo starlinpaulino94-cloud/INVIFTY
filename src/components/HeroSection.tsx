@@ -1,5 +1,5 @@
 import { CONFIG, buildWhatsAppUrl } from "../config";
-import { MessageCircle, Eye, ShieldCheck, Clock, MapPin, Music } from "lucide-react";
+import { MessageCircle, Eye, ShieldCheck, Clock, Music, MapPin } from "lucide-react";
 import heroBg from "../assets/images/invifty_hero_bg_1784839847898.jpg";
 import coupleImg from "../assets/images/wedding_couple_demo_1784839858272.jpg";
 import { useLanguage } from "../context/LanguageContext";
@@ -9,10 +9,16 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const isEs = language === "es";
 
   const scrollToPortfolio = () => {
     const el = document.getElementById("portafolio");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToPricing = () => {
+    const el = document.getElementById("planes");
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -52,24 +58,31 @@ export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-12">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 mb-12">
+              <button
+                onClick={scrollToPortfolio}
+                className="w-full sm:w-auto px-8 py-4 bg-[#D4AF37] text-black font-semibold text-xs uppercase tracking-widest hover:bg-[#F2D06B] active:scale-95 transition-all shadow-lg flex items-center justify-center gap-2 group min-h-[48px] touch-manipulation"
+              >
+                <Eye className="w-4 h-4 text-black group-hover:scale-110 transition-transform" />
+                {t("hero.btnPrimary")}
+              </button>
+
+              <button
+                onClick={scrollToPricing}
+                className="w-full sm:w-auto px-8 py-4 border border-white/20 text-white font-semibold text-xs uppercase tracking-widest hover:bg-white/10 active:scale-95 transition-all flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
+              >
+                {isEs ? "Ver Planes y Precios" : "View Plans & Pricing"}
+              </button>
+
               <a
                 href={buildWhatsAppUrl("Hola Invifty, quiero solicitar información para mi invitación digital.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-8 py-4 bg-[#D4AF37] text-black font-semibold text-xs uppercase tracking-widest hover:bg-[#F2D06B] transition-colors shadow-lg flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-4 bg-[#151515] border border-[#D4AF37]/50 text-[#D4AF37] font-semibold text-xs uppercase tracking-widest hover:bg-[#D4AF37] hover:text-black active:scale-95 transition-all flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
               >
                 <MessageCircle className="w-4 h-4" />
                 {t("nav.requestInvite")}
               </a>
-
-              <button
-                onClick={scrollToPortfolio}
-                className="w-full sm:w-auto px-8 py-4 border border-white/20 text-white font-semibold text-xs uppercase tracking-widest hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
-              >
-                <Eye className="w-4 h-4 text-[#D4AF37]" />
-                {t("hero.btnPrimary")}
-              </button>
             </div>
 
             {/* Trust Badges */}

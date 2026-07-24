@@ -271,7 +271,7 @@ export default function BabyShowerDemo({ onBackToHome }: BabyShowerDemoProps) {
             </div>
             <h3 className="font-serif text-2xl text-[#3D302F] mb-2">Terraza Las Verandas</h3>
             <p className="text-sm text-[#6E5A56] mb-6">
-              Casa de Campo Resort & Villas, La Romana, República Dominicana.
+              Casa de Campo Resort & Villas, La Romana.
             </p>
 
             <div className="flex flex-wrap gap-3">

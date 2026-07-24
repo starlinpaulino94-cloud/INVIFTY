@@ -184,7 +184,7 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
   const createGoogleCalendarUrl = () => {
     const title = encodeURIComponent("15 Años Valeria Sofía");
     const details = encodeURIComponent("Celebración de los 15 Años de Valeria Sofía en el Grand Ballroom Hotel Jaragua.");
-    const location = encodeURIComponent("Hotel Jaragua, Av. George Washington, Santo Domingo, República Dominicana");
+    const location = encodeURIComponent("Hotel Jaragua, Av. George Washington");
     const start = "20260920T230000Z";
     const end = "20260921T070000Z";
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import coupleImg from "../assets/images/wedding_couple_demo_1784839858272.jpg";
 import { useLanguage } from "../context/LanguageContext";
+import VipPassModal from "../components/VipPassModal";
 
 interface BodaDemoProps {
   onBackToHome: () => void;
@@ -35,6 +36,7 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
   const [activePhoto, setActivePhoto] = useState<string | null>(null);
   const [showQrModal, setShowQrModal] = useState(false);
+  const [showVipPassModal, setShowVipPassModal] = useState(false);
 
   // Guestbook State (Muro de buenos deseos)
   const [guestMessages, setGuestMessages] = useState<GuestbookMessage[]>([
@@ -165,7 +167,7 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
   const createGoogleCalendarUrl = () => {
     const title = encodeURIComponent("Boda Camila & Lucas — Enlace Matrimonial");
     const details = encodeURIComponent("Celebración del enlace matrimonial de Camila & Lucas en Altos de Chavón, La Romana.");
-    const location = encodeURIComponent("Altos de Chavón, La Romana, República Dominicana");
+    const location = encodeURIComponent("Altos de Chavón, La Romana");
     const start = "20261114T203000Z";
     const end = "20261115T040000Z";
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
@@ -365,7 +367,7 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
             </a>
 
             <button
-              onClick={() => setShowQrModal(true)}
+              onClick={() => setShowVipPassModal(true)}
               className="inline-flex items-center gap-2 bg-[#D4AF37] text-[#0F1412] font-sans-clean text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-[#FFF1CB] transition-colors shadow-sm"
             >
               <QrCode className="w-4 h-4" /> Ver Pase VIP Digital QR
@@ -598,7 +600,7 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
               <MapPin className="w-8 h-8 text-[#D4AF37] mb-4" />
               <h3 className="text-2xl font-bold text-[#0F1412] mb-1">Lugar de Celebración</h3>
               <p className="text-sm font-sans-clean text-gray-700 font-medium mb-1">Altos de Chavón</p>
-              <p className="text-xs font-sans-clean text-gray-500 mb-6">La Romana, República Dominicana</p>
+              <p className="text-xs font-sans-clean text-gray-500 mb-6">La Romana</p>
               
               <div className="rounded-2xl overflow-hidden border border-[#E8D3C5] h-52 mb-6 shadow-inner">
                 <iframe
@@ -1033,6 +1035,19 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
           ◆ Diseñado por Invifty — Solicitud de invitaciones digitales para eventos
         </a>
       </footer>
+
+      {/* VIP PASS MODAL FOR WEDDING */}
+      {showVipPassModal && (
+        <VipPassModal
+          eventName="Boda Camila & Lucas"
+          eventType="boda"
+          defaultGuestName="Tía Sofía & Tío Roberto"
+          tableNumber="Mesa Imperial #02"
+          eventDate="14 de Noviembre, 2026 — 4:30 PM"
+          eventLocation="Grand Palladium Resort, Cap Cana"
+          onClose={() => setShowVipPassModal(false)}
+        />
+      )}
 
     </div>
   );

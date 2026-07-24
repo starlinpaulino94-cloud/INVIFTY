@@ -2,13 +2,17 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { EventType, InquiryFormData } from "../types";
 import { createInquiryWhatsAppUrl } from "../utils/whatsapp";
 import { Send, MessageCircle, Sparkles, CheckCircle2 } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function InquiryForm() {
+  const { language } = useLanguage();
+  const isEs = language === "es";
+
   const [formData, setFormData] = useState<InquiryFormData>({
     name: "",
     eventType: "Boda",
     eventDate: "",
-    planInterest: "Popular — RD$2,500 (Recomendado)",
+    planInterest: isEs ? "Popular — RD$2,500 DOP (Recomendado)" : "Popular — $49 USD (Recommended)",
     phone: "",
     message: ""
   });
@@ -117,7 +121,7 @@ export default function InquiryForm() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Ej. Sofía Rodríguez"
-                    className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3 px-4 text-xs text-white placeholder-white/20 focus:outline-none transition-colors"
+                    className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white placeholder-white/30 focus:outline-none transition-colors rounded-lg min-h-[44px]"
                   />
                 </div>
 
@@ -133,7 +137,7 @@ export default function InquiryForm() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Ej. +1 800-555-0199"
-                    className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3 px-4 text-xs text-white placeholder-white/20 focus:outline-none transition-colors"
+                    className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white placeholder-white/30 focus:outline-none transition-colors rounded-lg min-h-[44px]"
                   />
                 </div>
               </div>
@@ -148,7 +152,7 @@ export default function InquiryForm() {
                     name="eventType"
                     value={formData.eventType}
                     onChange={handleChange}
-                    className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3 px-4 text-xs text-white focus:outline-none transition-colors"
+                    className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white focus:outline-none transition-colors rounded-lg min-h-[44px]"
                   >
                     <option value="Boda / Matrimonio">Boda / Matrimonio Luxury</option>
                     <option value="15 Años / Quinceañera">15 Años & Quinceañera</option>
@@ -172,7 +176,7 @@ export default function InquiryForm() {
                     name="eventDate"
                     value={formData.eventDate}
                     onChange={handleChange}
-                    className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3 px-4 text-xs text-white focus:outline-none transition-colors"
+                    className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white focus:outline-none transition-colors rounded-lg min-h-[44px]"
                   />
                 </div>
               </div>
@@ -186,13 +190,25 @@ export default function InquiryForm() {
                   name="planInterest"
                   value={formData.planInterest}
                   onChange={handleChange}
-                  className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3 px-4 text-xs text-white focus:outline-none transition-colors"
+                  className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white focus:outline-none transition-colors rounded-lg min-h-[44px]"
                 >
-                  <option value="Plan Esencial — $25 USD">Plan Esencial — $25 USD</option>
-                  <option value="Plan Popular — $49 USD (Recomendado)">Plan Popular — $49 USD (Recomendado)</option>
-                  <option value="Plan Premium — $79 USD">Plan Premium — $79 USD</option>
-                  <option value="Plan Luxury — $129 USD">Plan Luxury — $129 USD</option>
-                  <option value="Duda / Asesoría Personalizada">Necesito asesoría personalizada</option>
+                  {isEs ? (
+                    <>
+                      <option value="Plan Esencial — RD$1,200 DOP">Plan Esencial — RD$1,200 DOP</option>
+                      <option value="Plan Popular — RD$2,500 DOP (Recomendado)">Plan Popular — RD$2,500 DOP (Recomendado)</option>
+                      <option value="Plan Premium — RD$4,000 DOP">Plan Premium — RD$4,000 DOP</option>
+                      <option value="Plan Luxury — RD$6,500 DOP">Plan Luxury — RD$6,500 DOP</option>
+                      <option value="Duda / Asesoría Personalizada">Necesito asesoría personalizada</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="Essential Plan — $25 USD">Essential Plan — $25 USD</option>
+                      <option value="Popular Plan — $49 USD (Recommended)">Popular Plan — $49 USD (Recommended)</option>
+                      <option value="Premium Plan — $79 USD">Premium Plan — $79 USD</option>
+                      <option value="Luxury Plan — $129 USD">Luxury Plan — $129 USD</option>
+                      <option value="Question / Custom Advice">I need custom advice</option>
+                    </>
+                  )}
                 </select>
               </div>
 
@@ -207,16 +223,16 @@ export default function InquiryForm() {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Escribe aquí cualquier detalle especial, ciudad del evento o preguntas..."
-                  className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3 px-4 text-xs text-white placeholder-white/20 focus:outline-none transition-colors resize-none"
+                  className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white placeholder-white/30 focus:outline-none transition-colors resize-none rounded-lg"
                 ></textarea>
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-[#D4AF37] text-black font-semibold text-xs uppercase tracking-[0.2em] py-4 px-8 hover:bg-[#F2D06B] transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-[0.2em] py-4 px-8 hover:bg-[#F2D06B] active:scale-98 transition-all flex items-center justify-center gap-2 rounded-xl min-h-[50px] shadow-lg touch-manipulation"
               >
-                <MessageCircle className="w-5 h-5" />
+                <MessageCircle className="w-5 h-5 text-black" />
                 Enviar Solicitud a WhatsApp
               </button>
             </form>

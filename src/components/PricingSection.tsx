@@ -2,8 +2,12 @@ import { PRICING_PLANS, PRICING_EXTRAS } from "../data/pricingData";
 import { CONFIG } from "../config";
 import { createPlanWhatsAppUrl } from "../utils/whatsapp";
 import { Check, MessageCircle } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function PricingSection() {
+  const { language } = useLanguage();
+  const isEs = language === "es";
+
   return (
     <section id="planes" className="py-24 bg-[#151515] border-t border-white/5 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,13 +15,18 @@ export default function PricingSection() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-[11px] uppercase tracking-[0.4em] text-[#D4AF37] block mb-3 font-semibold">
-            Inversión Transparente
+            {isEs ? "Inversión Transparente" : "Transparent Investment"}
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-normal text-white mb-4">
-            Planes diseñados para cada <span className="italic font-light text-[#D4AF37]">Celebración</span>
+            {isEs ? "Planes Diseñados para tu " : "Choose Your "} 
+            <span className="italic font-light text-[#D4AF37]">
+              {isEs ? "Celebración" : "Celebration Plan"}
+            </span>
           </h2>
           <p className="text-white/50 text-sm sm:text-base font-light italic">
-            Sin costos ocultos ni suscripciones mensuales. Un único pago por tu evento.
+            {isEs 
+              ? "Sin costos ocultos ni suscripciones mensuales. Un único pago por tu evento con garantía de servicio."
+              : "No hidden costs or monthly fees. One-time payment for your event with guaranteed service."}
           </p>
         </div>
 
@@ -51,11 +60,15 @@ export default function PricingSection() {
                       {plan.description}
                     </p>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-xs text-[#D4AF37] font-semibold">{CONFIG.currency}</span>
-                      <span className="font-serif text-4xl font-normal text-white">
-                        {plan.priceRD.toLocaleString()}
+                      <span className="text-xs text-[#D4AF37] font-semibold">
+                        {isEs ? "RD$" : "$"}
                       </span>
-                      <span className="text-[10px] text-white/40 uppercase tracking-wider ml-1">USD / pago único</span>
+                      <span className="font-serif text-4xl font-normal text-white">
+                        {isEs ? plan.priceDOP.toLocaleString() : plan.priceUSD.toLocaleString()}
+                      </span>
+                      <span className="text-[10px] text-white/40 uppercase tracking-wider ml-1">
+                        {isEs ? "DOP / pago único" : "USD / one-time payment"}
+                      </span>
                     </div>
                   </div>
 
@@ -75,10 +88,14 @@ export default function PricingSection() {
                 {/* Plan Action CTA */}
                 <div>
                   <a
-                    href={createPlanWhatsAppUrl(plan.name, plan.priceRD)}
+                    href={createPlanWhatsAppUrl(
+                      plan.name, 
+                      isEs ? `RD$ ${plan.priceDOP.toLocaleString()} DOP` : `$${plan.priceUSD} USD`, 
+                      isEs
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`w-full inline-flex items-center justify-center gap-2 font-semibold text-[10px] uppercase tracking-[0.2em] py-3.5 transition-all duration-300 ${
+                    className={`w-full inline-flex items-center justify-center gap-2 font-bold text-[10px] uppercase tracking-[0.2em] py-3.5 rounded-xl min-h-[48px] active:scale-95 transition-all duration-300 touch-manipulation shadow-md ${
                       isPopular
                         ? "bg-[#D4AF37] text-black hover:bg-[#F2D06B]"
                         : "bg-[#151515] text-white border border-white/10 hover:border-[#D4AF37] hover:text-[#D4AF37]"
@@ -98,7 +115,7 @@ export default function PricingSection() {
           <div className="flex items-center gap-2 mb-6">
             <span className="text-[#D4AF37] font-serif text-lg">◆</span>
             <h3 className="font-serif text-xl font-normal text-white">
-              Servicios Opcionales
+              {isEs ? "Servicios Opcionales Adicionales" : "Optional Additional Services"}
             </h3>
           </div>
 
@@ -108,7 +125,7 @@ export default function PricingSection() {
                 <div className="flex justify-between items-start mb-2">
                   <h4 className="font-normal text-sm text-white font-serif">{extra.title}</h4>
                   <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-wider">
-                    +{CONFIG.currency}{extra.priceRD} USD
+                    {isEs ? `+RD$ ${extra.priceDOP.toLocaleString()}` : `+$${extra.priceUSD} USD`}
                   </span>
                 </div>
                 <p className="text-xs text-white/40 font-light leading-relaxed italic">
@@ -123,3 +140,4 @@ export default function PricingSection() {
     </section>
   );
 }
+
