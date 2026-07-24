@@ -4,6 +4,7 @@ import { createInquiryWhatsAppUrl } from "../utils/whatsapp";
 import { MessageCircle, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import { PRICING_PLANS } from "../data/pricingData";
+import { trackEvent } from "../utils/analytics";
 
 const ADVICE_PLAN_ID = "asesoria";
 
@@ -15,13 +16,14 @@ function planLabel(planId: string, isEs: boolean): string {
   }
   const plan = PRICING_PLANS.find((p) => p.id === planId);
   if (!plan) return planId;
+  const name = isEs ? plan.name.es : plan.name.en;
   const price = isEs
     ? `RD$${plan.priceDOP.toLocaleString()} DOP`
     : `$${plan.priceUSD} USD`;
   const recommended = plan.isPopular ? (isEs ? " (Recomendado)" : " (Recommended)") : "";
   return isEs
-    ? `Plan ${plan.name} — ${price}${recommended}`
-    : `${plan.name} Plan — ${price}${recommended}`;
+    ? `Plan ${name} — ${price}${recommended}`
+    : `${name} Plan — ${price}${recommended}`;
 }
 
 export default function InquiryForm() {
@@ -71,7 +73,12 @@ export default function InquiryForm() {
     }
 
     // Build WhatsApp URL
-    const url = createInquiryWhatsAppUrl(buildSubmissionData());
+    const url = createInquiryWhatsAppUrl(buildSubmissionData(), isEs);
+
+    trackEvent("inquiry_submit", {
+      event_type: formData.eventType,
+      plan_interest: formData.planInterest,
+    });
 
     // Open WhatsApp in new window
     window.open(url, "_blank", "noopener,noreferrer");
@@ -91,13 +98,16 @@ export default function InquiryForm() {
           {/* Section Header */}
           <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-[11px] uppercase tracking-[0.4em] text-[#D4AF37] block mb-3 font-semibold">
-              Solicitud Instantánea
+              {isEs ? "Solicitud Instantánea" : "Instant Request"}
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-normal text-white mb-3">
-              Cotiza tu invitación en <span className="italic font-light text-[#D4AF37]">minutos</span>
+              {isEs ? "Cotiza tu invitación en " : "Get your quote in "}
+              <span className="italic font-light text-[#D4AF37]">{isEs ? "minutos" : "minutes"}</span>
             </h2>
             <p className="text-white/50 text-sm font-light italic">
-              Completa los datos de tu evento y nuestro equipo te responderá de inmediato por WhatsApp.
+              {isEs
+                ? "Completa los datos de tu evento y nuestro equipo te responderá de inmediato por WhatsApp."
+                : "Fill in your event details and our team will reply right away on WhatsApp."}
             </p>
           </div>
 
@@ -107,26 +117,28 @@ export default function InquiryForm() {
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h3 className="font-serif text-2xl font-normal text-white mb-2">
-                ¡Solicitud Enviada a WhatsApp!
+                {isEs ? "¡Solicitud Enviada a WhatsApp!" : "Request Sent to WhatsApp!"}
               </h3>
               <p className="text-xs text-white/60 font-light max-w-md mx-auto mb-6">
-                Se ha abierto WhatsApp con los datos de tu evento formateados. Si no se abrió automáticamente, haz clic abajo:
+                {isEs
+                  ? "Se ha abierto WhatsApp con los datos de tu evento formateados. Si no se abrió automáticamente, haz clic abajo:"
+                  : "WhatsApp opened with your event details pre-filled. If it didn't open automatically, click below:"}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <a
-                  href={createInquiryWhatsAppUrl(buildSubmissionData())}
+                  href={createInquiryWhatsAppUrl(buildSubmissionData(), isEs)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-[#D4AF37] text-black font-semibold text-[10px] uppercase tracking-[0.2em] py-3.5 px-6 inline-flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  Abrir WhatsApp Nuevamente
+                  {isEs ? "Abrir WhatsApp Nuevamente" : "Open WhatsApp Again"}
                 </a>
                 <button
                   onClick={() => setSubmitted(false)}
                   className="border border-white/20 text-white font-medium text-[10px] uppercase tracking-[0.2em] py-3.5 px-6 hover:bg-white/10 transition-colors"
                 >
-                  Llenar otra solicitud
+                  {isEs ? "Llenar otra solicitud" : "Fill another request"}
                 </button>
               </div>
             </div>
@@ -142,7 +154,7 @@ export default function InquiryForm() {
                 {/* Nombre */}
                 <div>
                   <label htmlFor="inquiry-name" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
-                    Tu Nombre Completo *
+                    {isEs ? "Tu Nombre Completo *" : "Your Full Name *"}
                   </label>
                   <input
                     type="text"
@@ -152,7 +164,7 @@ export default function InquiryForm() {
                     autoComplete="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Ej. Sofía Rodríguez"
+                    placeholder={isEs ? "Ej. Sofía Rodríguez" : "E.g. Sofia Rodriguez"}
                     className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white placeholder-white/30 focus:outline-none transition-colors rounded-lg min-h-[44px]"
                   />
                 </div>
@@ -160,7 +172,7 @@ export default function InquiryForm() {
                 {/* Teléfono */}
                 <div>
                   <label htmlFor="inquiry-phone" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
-                    Teléfono / WhatsApp *
+                    {isEs ? "Teléfono / WhatsApp *" : "Phone / WhatsApp *"}
                   </label>
                   <input
                     type="tel"
@@ -170,7 +182,7 @@ export default function InquiryForm() {
                     autoComplete="tel"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="Ej. +1 800-555-0199"
+                    placeholder={isEs ? "Ej. +1 800-555-0199" : "E.g. +1 800-555-0199"}
                     className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white placeholder-white/30 focus:outline-none transition-colors rounded-lg min-h-[44px]"
                   />
                 </div>
@@ -180,7 +192,7 @@ export default function InquiryForm() {
                 {/* Tipo de Evento */}
                 <div>
                   <label htmlFor="inquiry-event-type" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
-                    Tipo de Evento
+                    {isEs ? "Tipo de Evento" : "Event Type"}
                   </label>
                   <select
                     id="inquiry-event-type"
@@ -189,22 +201,22 @@ export default function InquiryForm() {
                     onChange={handleChange}
                     className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white focus:outline-none transition-colors rounded-lg min-h-[44px]"
                   >
-                    <option value="Boda / Matrimonio">Boda / Matrimonio Luxury</option>
-                    <option value="15 Años / Quinceañera">15 Años & Quinceañera</option>
-                    <option value="Gala / Evento Corporativo">Gala & Evento Corporativo</option>
+                    <option value="Boda / Matrimonio">{isEs ? "Boda / Matrimonio Luxury" : "Luxury Wedding / Marriage"}</option>
+                    <option value="15 Años / Quinceañera">{isEs ? "15 Años & Quinceañera" : "Sweet 15 & Quinceañera"}</option>
+                    <option value="Gala / Evento Corporativo">{isEs ? "Gala & Evento Corporativo" : "Gala & Corporate Event"}</option>
                     <option value="Baby Shower / Gender Reveal">Baby Shower / Gender Reveal</option>
-                    <option value="Bautizo / Primera Comunión">Bautizo / Primera Comunión</option>
-                    <option value="Cumpleaños de Adulto">Cumpleaños de Adulto / Aniversario (30, 40, 50, 60+)</option>
-                    <option value="Despedida de Soltera / Bridal Shower">Despedida de Soltera / Bridal Shower</option>
-                    <option value="Lanzamiento de Marca / Inauguración">Lanzamiento de Marca / Inauguración</option>
-                    <option value="Otro Evento Especial">Otro Evento Especial</option>
+                    <option value="Bautizo / Primera Comunión">{isEs ? "Bautizo / Primera Comunión" : "Baptism / First Communion"}</option>
+                    <option value="Cumpleaños de Adulto">{isEs ? "Cumpleaños de Adulto / Aniversario (30, 40, 50, 60+)" : "Adult Birthday / Anniversary (30, 40, 50, 60+)"}</option>
+                    <option value="Despedida de Soltera / Bridal Shower">{isEs ? "Despedida de Soltera / Bridal Shower" : "Bridal Shower / Bachelorette"}</option>
+                    <option value="Lanzamiento de Marca / Inauguración">{isEs ? "Lanzamiento de Marca / Inauguración" : "Brand Launch / Grand Opening"}</option>
+                    <option value="Otro Evento Especial">{isEs ? "Otro Evento Especial" : "Other Special Event"}</option>
                   </select>
                 </div>
 
                 {/* Fecha del Evento */}
                 <div>
                   <label htmlFor="inquiry-event-date" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
-                    Fecha del Evento (Aproximada)
+                    {isEs ? "Fecha del Evento (Aproximada)" : "Event Date (Approximate)"}
                   </label>
                   <input
                     type="date"
@@ -220,7 +232,7 @@ export default function InquiryForm() {
               {/* Plan de Interés */}
               <div>
                 <label htmlFor="inquiry-plan" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
-                  Plan de Interés
+                  {isEs ? "Plan de Interés" : "Plan of Interest"}
                 </label>
                 <select
                   id="inquiry-plan"
@@ -241,7 +253,7 @@ export default function InquiryForm() {
               {/* Mensaje Opcional */}
               <div>
                 <label htmlFor="inquiry-message" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
-                  Detalles Adicionales (Opcional)
+                  {isEs ? "Detalles Adicionales (Opcional)" : "Additional Details (Optional)"}
                 </label>
                 <textarea
                   id="inquiry-message"
@@ -249,7 +261,7 @@ export default function InquiryForm() {
                   rows={3}
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Escribe aquí cualquier detalle especial, ciudad del evento o preguntas..."
+                  placeholder={isEs ? "Escribe aquí cualquier detalle especial, ciudad del evento o preguntas..." : "Write any special details, event city or questions here..."}
                   className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white placeholder-white/30 focus:outline-none transition-colors resize-none rounded-lg"
                 ></textarea>
               </div>
@@ -260,7 +272,7 @@ export default function InquiryForm() {
                 className="w-full bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-[0.2em] py-4 px-8 hover:bg-[#F2D06B] active:scale-98 transition-all flex items-center justify-center gap-2 rounded-xl min-h-[50px] shadow-lg touch-manipulation"
               >
                 <MessageCircle className="w-5 h-5 text-black" />
-                Enviar Solicitud a WhatsApp
+                {isEs ? "Enviar Solicitud a WhatsApp" : "Send Request via WhatsApp"}
               </button>
             </form>
           )}

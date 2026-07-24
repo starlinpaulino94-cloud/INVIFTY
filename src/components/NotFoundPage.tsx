@@ -1,11 +1,15 @@
 import { Home, MessageCircle, Compass } from "lucide-react";
 import { buildWhatsAppUrl } from "../config";
+import { useLanguage } from "../context/LanguageContext";
 
 interface NotFoundPageProps {
   onBackToHome: () => void;
 }
 
 export default function NotFoundPage({ onBackToHome }: NotFoundPageProps) {
+  const { language } = useLanguage();
+  const isEs = language === "es";
+
   return (
     <div className="min-h-screen bg-[#0F0F0F] text-[#EAEAEA] flex items-center justify-center px-4">
       <div className="max-w-lg w-full text-center py-20">
@@ -16,12 +20,14 @@ export default function NotFoundPage({ onBackToHome }: NotFoundPageProps) {
         </span>
 
         <h1 className="font-serif text-4xl sm:text-5xl font-normal text-white mb-4">
-          Página no <span className="italic font-light text-[#D4AF37]">encontrada</span>
+          {isEs ? "Página no " : "Page not "}
+          <span className="italic font-light text-[#D4AF37]">{isEs ? "encontrada" : "found"}</span>
         </h1>
 
         <p className="text-white/50 text-sm font-light italic mb-10 max-w-sm mx-auto">
-          El enlace que buscas no existe o la invitación ya no está disponible.
-          Si recibiste este enlace en una invitación, verifica que esté escrito completo.
+          {isEs
+            ? "El enlace que buscas no existe o la invitación ya no está disponible. Si recibiste este enlace en una invitación, verifica que esté escrito completo."
+            : "The link you're looking for doesn't exist or the invitation is no longer available. If you received this link in an invitation, check that it was typed in full."}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
@@ -30,17 +36,17 @@ export default function NotFoundPage({ onBackToHome }: NotFoundPageProps) {
             className="w-full sm:w-auto px-8 py-4 bg-[#D4AF37] text-black font-semibold text-xs uppercase tracking-widest hover:bg-[#F2D06B] active:scale-95 transition-all shadow-lg flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
           >
             <Home className="w-4 h-4" />
-            Ir al Inicio
+            {isEs ? "Ir al Inicio" : "Go Home"}
           </button>
 
           <a
-            href={buildWhatsAppUrl("Hola Invifty, un enlace de invitación no me funciona. ¿Me pueden ayudar?")}
+            href={buildWhatsAppUrl(isEs ? "Hola Invifty, un enlace de invitación no me funciona. ¿Me pueden ayudar?" : "Hello Invifty, an invitation link is not working for me. Can you help?")}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto px-8 py-4 border border-white/20 text-white font-semibold text-xs uppercase tracking-widest hover:bg-white/10 active:scale-95 transition-all flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
           >
             <MessageCircle className="w-4 h-4" />
-            Pedir Ayuda por WhatsApp
+            {isEs ? "Pedir Ayuda por WhatsApp" : "Get Help on WhatsApp"}
           </a>
         </div>
       </div>

@@ -11,6 +11,8 @@ import InquiryForm from "./components/InquiryForm";
 import Footer from "./components/Footer";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
 import NotFoundPage from "./components/NotFoundPage";
+import { trackEvent } from "./utils/analytics";
+import { useLanguage } from "./context/LanguageContext";
 
 // Demo pages are code-split so the landing page loads without them.
 const BodaDemo = lazy(() => import("./demos/BodaDemo"));
@@ -22,12 +24,16 @@ const AdultCumpleDemo = lazy(() => import("./demos/AdultCumpleDemo"));
 const BridalShowerDemo = lazy(() => import("./demos/BridalShowerDemo"));
 const GrandOpeningDemo = lazy(() => import("./demos/GrandOpeningDemo"));
 
-interface DemoProps {
+// Legal pages, also code-split
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
+
+interface RoutedPageProps {
   onBackToHome: () => void;
 }
 
-// Exact route table — must stay in sync with demoPath in src/data/portfolioData.ts
-const DEMO_ROUTES: Record<string, ComponentType<DemoProps>> = {
+// Exact route table — demo paths must stay in sync with demoPath in src/data/portfolioData.ts
+const ROUTES: Record<string, ComponentType<RoutedPageProps>> = {
   "/muestra/boda-camila-y-lucas": BodaDemo,
   "/muestra/cumple-valeria-15": CumpleDemo,
   "/muestra/gala-anual-vitrexi": CorporateDemo,
@@ -36,6 +42,8 @@ const DEMO_ROUTES: Record<string, ComponentType<DemoProps>> = {
   "/muestra/cumpleanos-50-roberto": AdultCumpleDemo,
   "/muestra/bridal-shower-isabella": BridalShowerDemo,
   "/muestra/grand-opening-boutique": GrandOpeningDemo,
+  "/privacidad": PrivacyPage,
+  "/terminos": TermsPage,
 };
 
 function normalizePath(path: string): string {
@@ -44,11 +52,12 @@ function normalizePath(path: string): string {
 }
 
 function DemoLoadingFallback() {
+  const { language } = useLanguage();
   return (
     <div className="min-h-screen bg-[#0F0F0F] flex flex-col items-center justify-center gap-4">
       <div className="w-10 h-10 border-2 border-[#D4AF37]/30 border-t-[#D4AF37] rounded-full animate-spin"></div>
       <span className="text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] font-semibold">
-        Cargando invitación…
+        {language === "es" ? "Cargando…" : "Loading…"}
       </span>
     </div>
   );
@@ -74,13 +83,16 @@ export default function App() {
     window.history.pushState({}, "", normalized);
     setCurrentPath(normalized);
     window.scrollTo({ top: 0, behavior: "smooth" });
+    if (normalized.startsWith("/muestra/")) {
+      trackEvent("view_demo", { demo_path: normalized });
+    }
   };
 
-  const DemoComponent = DEMO_ROUTES[currentPath];
-  if (DemoComponent) {
+  const RoutedPage = ROUTES[currentPath];
+  if (RoutedPage) {
     return (
       <Suspense fallback={<DemoLoadingFallback />}>
-        <DemoComponent onBackToHome={() => handleNavigate("/")} />
+        <RoutedPage onBackToHome={() => handleNavigate("/")} />
       </Suspense>
     );
   }

@@ -13,9 +13,12 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "1",
     name: "Isabella & Carlos M.",
-    eventType: "Boda Luxury",
+    eventType: { es: "Boda Luxury", en: "Luxury Wedding" },
     location: "Miami, FL",
-    comment: "A nuestros invitados les fascinó la invitación. La confirmación por WhatsApp nos ahorró días enteros organizando las mesas. El equipo de Invifty entregó todo impecable en menos de 48 horas.",
+    comment: {
+      es: "A nuestros invitados les fascinó la invitación. La confirmación por WhatsApp nos ahorró días enteros organizando las mesas. El equipo de Invifty entregó todo impecable en menos de 48 horas.",
+      en: "Our guests were fascinated by the invitation. The WhatsApp RSVP saved us entire days of seating planning. The Invifty team delivered everything flawlessly in under 48 hours."
+    },
     rating: 5,
     date: "Junio 2026",
     isProvisionalNotice: true
@@ -23,9 +26,12 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "2",
     name: "Dra. Patricia Reyes",
-    eventType: "15 Años de su hija Paola",
+    eventType: { es: "15 Años de su hija Paola", en: "Her daughter Paola's Quinceañera" },
     location: "Madrid, España",
-    comment: "La calidad visual supera por mucho cualquier PDF o tarjeta tradicional. La música de fondo y el mapa interactivo le dieron el toque sofisticado que queríamos para los 15 de mi hija.",
+    comment: {
+      es: "La calidad visual supera por mucho cualquier PDF o tarjeta tradicional. La música de fondo y el mapa interactivo le dieron el toque sofisticado que queríamos para los 15 de mi hija.",
+      en: "The visual quality far exceeds any PDF or traditional card. The background music and interactive map gave my daughter's quinceañera the sophisticated touch we wanted."
+    },
     rating: 5,
     date: "Mayo 2026",
     isProvisionalNotice: true
@@ -33,9 +39,12 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "3",
     name: "Lic. Roberto Almanzar",
-    eventType: "Cena de Gala Empresarial",
+    eventType: { es: "Cena de Gala Empresarial", en: "Corporate Gala Dinner" },
     location: "Ciudad de México",
-    comment: "Usamos el plan Premium para nuestra gala corporativa anual de 350 personas. El registro de invitados funcionó perfecto y dio una imagen de altísimo profesionalismo a nuestra empresa.",
+    comment: {
+      es: "Usamos el plan Premium para nuestra gala corporativa anual de 350 personas. El registro de invitados funcionó perfecto y dio una imagen de altísimo profesionalismo a nuestra empresa.",
+      en: "We used the Premium plan for our 350-guest annual corporate gala. Guest registration worked perfectly and projected an image of the highest professionalism for our company."
+    },
     rating: 5,
     date: "Abril 2026",
     isProvisionalNotice: true

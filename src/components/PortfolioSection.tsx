@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { PORTFOLIO_ITEMS } from "../data/portfolioData";
+import { PORTFOLIO_ITEMS, EVENT_TYPE_LABELS } from "../data/portfolioData";
 import { PortfolioItem } from "../types";
 import { 
   ExternalLink, Check, Eye, Sparkles, Search, X, 
@@ -78,7 +78,7 @@ const CATEGORIES: CategoryFilterOption[] = [
 ];
 
 export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionProps) {
-  const { language } = useLanguage();
+  const { language, lx } = useLanguage();
   const isEs = language === "es";
 
   const [activeCategory, setActiveCategory] = useState<string>("todas");
@@ -109,7 +109,7 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
       const matchesTitle = item.title.toLowerCase().includes(query);
       const matchesType = item.eventType.toLowerCase().includes(query);
       const matchesSubtitle = item.subtitle.toLowerCase().includes(query);
-      const matchesFeature = item.features.some(f => f.toLowerCase().includes(query));
+      const matchesFeature = item.features.some(f => f.es.toLowerCase().includes(query) || f.en.toLowerCase().includes(query));
 
       return matchesTitle || matchesType || matchesSubtitle || matchesFeature;
     });
@@ -252,7 +252,7 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
                   {/* Event Type Badge */}
                   <div className="absolute top-4 left-4 z-10">
                     <span className="bg-black/85 backdrop-blur-md text-[#D4AF37] text-[10px] uppercase tracking-[0.18em] font-semibold px-3 py-1.5 border border-[#D4AF37]/40 rounded-full shadow-lg">
-                      {item.eventType}
+                      {EVENT_TYPE_LABELS[item.eventType] ? lx(EVENT_TYPE_LABELS[item.eventType]) : item.eventType}
                     </span>
                   </div>
 
@@ -284,7 +284,7 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
                       {item.features.slice(0, 5).map((feature, fIdx) => (
                         <div key={fIdx} className="flex items-start gap-2 text-xs text-white/80 font-light leading-snug">
                           <Check className="w-3.5 h-3.5 text-[#D4AF37] shrink-0 mt-0.5" />
-                          <span className="line-clamp-1">{feature}</span>
+                          <span className="line-clamp-1">{lx(feature)}</span>
                         </div>
                       ))}
                       {item.features.length > 5 && (
@@ -349,7 +349,7 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
             </button>
 
             <span className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold block mb-1">
-              {selectedQuickViewItem.eventType}
+              {EVENT_TYPE_LABELS[selectedQuickViewItem.eventType] ? lx(EVENT_TYPE_LABELS[selectedQuickViewItem.eventType]) : selectedQuickViewItem.eventType}
             </span>
             <h3 className="font-serif text-2xl text-white mb-2">{selectedQuickViewItem.title}</h3>
             <p className="text-xs text-white/50 mb-6 italic">{selectedQuickViewItem.subtitle}</p>
@@ -362,7 +362,7 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
               {selectedQuickViewItem.features.map((feat, idx) => (
                 <div key={idx} className="flex items-start gap-2.5 text-xs text-white/80">
                   <Check className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span>{feat}</span>
+                  <span>{lx(feat)}</span>
                 </div>
               ))}
             </div>
