@@ -1,7 +1,7 @@
 import { CONFIG, buildWhatsAppUrl } from "../config";
 import { MessageCircle, Eye, ShieldCheck, Clock, Music, MapPin } from "lucide-react";
-import heroBg from "../assets/images/invifty_hero_bg_1784839847898.jpg";
-import coupleImg from "../assets/images/wedding_couple_demo_1784839858272.jpg";
+import heroBg from "../assets/images/invifty_hero_bg.webp";
+import coupleImg from "../assets/images/wedding_couple_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
 
 interface HeroSectionProps {
@@ -75,7 +75,7 @@ export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
               </button>
 
               <a
-                href={buildWhatsAppUrl("Hola Invifty, quiero solicitar información para mi invitación digital.")}
+                href={buildWhatsAppUrl(isEs ? "Hola Invifty, quiero solicitar información para mi invitación digital." : "Hello Invifty, I would like information about a digital invitation.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-6 py-4 bg-[#151515] border border-[#D4AF37]/50 text-[#D4AF37] font-semibold text-xs uppercase tracking-widest hover:bg-[#D4AF37] hover:text-black active:scale-95 transition-all flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
@@ -166,7 +166,7 @@ export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F0F] via-transparent to-black/20"></div>
                       
                       <div className="absolute top-2.5 right-2.5 bg-black/85 backdrop-blur-md text-[8px] uppercase tracking-widest text-[#D4AF37] px-2 py-0.5 border border-[#D4AF37]/40 flex items-center gap-1 font-semibold">
-                        ◆ MUESTRA
+                        ◆ {isEs ? "MUESTRA" : "SAMPLE"}
                       </div>
                     </div>
 
@@ -174,7 +174,7 @@ export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
                     <div className="px-4 py-3 flex-1 flex flex-col justify-between bg-[#0F0F0F] relative z-10">
                       <div>
                         <span className="text-[9px] uppercase tracking-[0.25em] text-[#D4AF37] block font-semibold">
-                          Boda Luxury
+                          {isEs ? "Boda Luxury" : "Luxury Wedding"}
                         </span>
                         <h3 className="font-serif text-2xl text-white font-normal my-0.5 leading-tight">
                           Camila & Lucas
@@ -187,11 +187,11 @@ export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
                         <div className="grid grid-cols-4 gap-1 bg-[#151515] p-2 border border-white/10 mb-3">
                           <div>
                             <span className="block text-xs font-semibold text-[#D4AF37]">42</span>
-                            <span className="text-[7px] text-white/40 uppercase tracking-widest">Días</span>
+                            <span className="text-[7px] text-white/40 uppercase tracking-widest">{isEs ? "Días" : "Days"}</span>
                           </div>
                           <div>
                             <span className="block text-xs font-semibold text-[#D4AF37]">14</span>
-                            <span className="text-[7px] text-white/40 uppercase tracking-widest">Horas</span>
+                            <span className="text-[7px] text-white/40 uppercase tracking-widest">{isEs ? "Horas" : "Hours"}</span>
                           </div>
                           <div>
                             <span className="block text-xs font-semibold text-[#D4AF37]">38</span>
@@ -212,7 +212,7 @@ export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
                         className="w-full bg-[#D4AF37] text-black font-semibold text-[10px] uppercase tracking-widest py-3 transition-all flex items-center justify-center gap-1.5 hover:bg-[#F2D06B] shadow-md active:scale-98"
                       >
                         <Eye className="w-3.5 h-3.5" />
-                        Ver Muestra Interactiva
+                        {isEs ? "Ver Muestra Interactiva" : "View Interactive Sample"}
                       </button>
                     </div>
                   </div>

@@ -7,7 +7,7 @@ import {
   Send, ExternalLink, ArrowLeft, Camera, X, MessageSquare, Sparkles, Navigation,
   Church, Wine, Utensils, Users, QrCode, ShieldCheck, Car, Globe
 } from "lucide-react";
-import coupleImg from "../assets/images/wedding_couple_demo_1784839858272.jpg";
+import coupleImg from "../assets/images/wedding_couple_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
 import VipPassModal from "../components/VipPassModal";
 
@@ -89,6 +89,8 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
           minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((difference % (1000 * 60)) / 1000)
         });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     };
 

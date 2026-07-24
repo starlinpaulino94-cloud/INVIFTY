@@ -1,21 +1,47 @@
 import { TESTIMONIALS } from "../data/testimonialsData";
 import { Quote, MapPin } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
+
+// Golden initials medallion instead of stock photos of real people
+function InitialsAvatar({ name }: { name: string }) {
+  const initials = name
+    .replace(/^(Dra?\.|Lic\.|Ing\.|Sr\.|Sra\.)\s+/i, "")
+    .split(/\s+|&/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0].toUpperCase())
+    .join("");
+
+  return (
+    <div className="w-10 h-10 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/40 flex items-center justify-center shrink-0">
+      <span className="font-serif text-sm text-[#D4AF37] tracking-wider">{initials}</span>
+    </div>
+  );
+}
 
 export default function TestimonialsSection() {
+  const { language, lx } = useLanguage();
+  const isEs = language === "es";
+
   return (
     <section className="py-24 bg-[#0F0F0F] relative overflow-hidden border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-[11px] uppercase tracking-[0.4em] text-[#D4AF37] block mb-3 font-semibold">
-            Opiniones de Nuestros Clientes
+            {isEs ? "La Experiencia Invifty" : "The Invifty Experience"}
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-normal text-white mb-4">
-            Historias que <span className="italic font-light text-[#D4AF37]">marcaron la diferencia</span>
+            {isEs ? "Historias que " : "Stories that "}
+            <span className="italic font-light text-[#D4AF37]">
+              {isEs ? "marcaron la diferencia" : "made the difference"}
+            </span>
           </h2>
           <p className="text-white/50 text-sm font-light italic">
-            Descubre la experiencia de las parejas y organizadores que confiaron en Invifty.
+            {isEs
+              ? "Así se vive una celebración con una invitación digital Invifty."
+              : "This is what celebrating with an Invifty digital invitation feels like."}
           </p>
         </div>
 
@@ -29,36 +55,42 @@ export default function TestimonialsSection() {
               <Quote className="w-8 h-8 text-[#D4AF37]/20 absolute top-6 right-6" />
 
               <div>
-                {/* Clean Editorial Tag */}
+                {/* Honest editorial tag: illustrative until real testimonials replace them */}
                 <span className="text-[9px] uppercase tracking-[0.2em] font-semibold text-[#D4AF37] block mb-4">
-                  ◆ Experiencia Verificada
+                  {item.isProvisionalNotice
+                    ? (isEs ? "◆ Historia Ilustrativa" : "◆ Illustrative Story")
+                    : (isEs ? "◆ Cliente Invifty" : "◆ Invifty Client")}
                 </span>
 
                 {/* Comment */}
                 <p className="text-xs text-white/70 italic font-light leading-relaxed mb-6 font-serif">
-                  "{item.comment}"
+                  "{lx(item.comment)}"
                 </p>
               </div>
 
               {/* Author Footer */}
               <div className="flex items-center gap-4 pt-4 border-t border-white/5">
-                <img
-                  src={item.avatar}
-                  alt={item.name}
-                  className="w-10 h-10 rounded-full object-cover border border-[#D4AF37]/40"
-                  referrerPolicy="no-referrer"
-                />
+                <InitialsAvatar name={item.name} />
                 <div>
                   <h4 className="font-serif text-sm font-normal text-white">{item.name}</h4>
                   <p className="text-[10px] text-[#D4AF37] flex items-center gap-1 uppercase tracking-wider font-medium">
                     <MapPin className="w-3 h-3" />
-                    {item.eventType} · {item.location}
+                    {lx(item.eventType)} · {item.location}
                   </p>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Transparency note while testimonials are illustrative */}
+        {TESTIMONIALS.some((item) => item.isProvisionalNotice) && (
+          <p className="text-center text-[10px] text-white/30 italic font-light mt-10 max-w-xl mx-auto">
+            {isEs
+              ? "* Las historias ilustrativas representan la experiencia típica de uso de nuestras invitaciones. Pronto compartiremos aquí las opiniones de nuestros primeros clientes."
+              : "* Illustrative stories represent the typical experience of using our invitations. We'll soon share real reviews from our first clients here."}
+          </p>
+        )}
 
       </div>
     </section>

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { Localized } from "../types";
 
 export type Language = "es" | "en";
 
@@ -6,6 +7,8 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  /** Resuelve un texto bilingüe {es, en} al idioma activo. */
+  lx: (value: Localized) => string;
 }
 
 const translations: Record<Language, Record<string, string>> = {
@@ -132,12 +135,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("invifty_lang", lang);
   };
 
+  // Keep <html lang="..."> in sync for screen readers and SEO
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   const t = (key: string): string => {
     return translations[language][key] || translations["es"][key] || key;
   };
 
+  const lx = (value: Localized): string => value[language] ?? value.es;
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, lx }}>
       {children}
     </LanguageContext.Provider>
   );

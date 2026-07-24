@@ -6,7 +6,7 @@ import {
   ArrowLeft, Send, Building, Users, ExternalLink, QrCode, 
   Car, Navigation, X, ShieldCheck
 } from "lucide-react";
-import corporateImg from "../assets/images/gala_corporate_demo_1784839877907.jpg";
+import corporateImg from "../assets/images/gala_corporate_demo.webp";
 import VipPassModal from "../components/VipPassModal";
 
 interface CorporateDemoProps {
@@ -46,6 +46,8 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
           minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((difference % (1000 * 60)) / 1000)
         });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     };
 

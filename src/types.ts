@@ -1,4 +1,10 @@
-export type EventType = 
+/** Texto bilingüe: cada campo visible al público existe en español e inglés. */
+export interface Localized {
+  es: string;
+  en: string;
+}
+
+export type EventType =
   | "Boda" 
   | "Boda Luxury" 
   | "15 Años & Quinceañera" 
@@ -14,22 +20,22 @@ export type EventType =
 
 export interface PricingPlan {
   id: string;
-  name: string;
+  name: Localized;
   priceUSD: number;
   priceDOP: number;
-  badge?: string;
+  badge?: Localized;
   isPopular?: boolean;
-  description: string;
-  features: string[];
-  ctaText: string;
+  description: Localized;
+  features: Localized[];
+  ctaText: Localized;
 }
 
 export interface PricingExtra {
   id: string;
-  title: string;
+  title: Localized;
   priceUSD: number;
   priceDOP: number;
-  description: string;
+  description: Localized;
 }
 
 export interface PortfolioItem {
@@ -39,26 +45,25 @@ export interface PortfolioItem {
   eventType: EventType;
   subtitle: string;
   image: string;
-  features: string[];
+  features: Localized[];
   demoPath: string;
-  isRealClient?: boolean;
 }
 
 export interface Testimonial {
   id: string;
   name: string;
-  eventType: string;
+  eventType: Localized;
   location: string;
-  comment: string;
-  avatar: string;
+  comment: Localized;
   rating: number;
   date: string;
+  /** true = historia ilustrativa (se etiqueta así en el sitio); false = testimonio real */
   isProvisionalNotice?: boolean;
 }
 
 export interface FAQItem {
-  question: string;
-  answer: string;
+  question: Localized;
+  answer: Localized;
 }
 
 export interface InquiryFormData {

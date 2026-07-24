@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { buildWhatsAppUrl } from "../config";
 import { MessageCircle, X, Sparkles } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function FloatingWhatsApp() {
+  const { language } = useLanguage();
+  const isEs = language === "es";
   const [showTooltip, setShowTooltip] = useState(true);
 
   return (
@@ -20,21 +23,23 @@ export default function FloatingWhatsApp() {
           </button>
           
           <div className="flex items-center gap-2 mb-1 text-[11px] font-bold text-[#D4AF37] uppercase tracking-wider">
-            <Sparkles className="w-3 h-3" /> Asesoría Invifty
+            <Sparkles className="w-3 h-3" /> {isEs ? "Asesoría Invifty" : "Invifty Support"}
           </div>
           <p className="text-xs text-[#E8E6E1] font-light leading-snug">
-            ¡Hola! 👋 ¿Tienes alguna pregunta sobre tu invitación digital? Escríbenos por WhatsApp.
+            {isEs
+              ? "¡Hola! 👋 ¿Tienes alguna pregunta sobre tu invitación digital? Escríbenos por WhatsApp."
+              : "Hi! 👋 Any questions about your digital invitation? Message us on WhatsApp."}
           </p>
         </div>
       )}
 
       {/* Floating Button */}
       <a
-        href={buildWhatsAppUrl("Hola Invifty, me gustaría cotizar una invitación digital para mi evento.")}
+        href={buildWhatsAppUrl(isEs ? "Hola Invifty, me gustaría cotizar una invitación digital para mi evento." : "Hello Invifty, I would like a quote for a digital invitation for my event.")}
         target="_blank"
         rel="noopener noreferrer"
         className="pointer-events-auto w-14 h-14 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white flex items-center justify-center shadow-2xl shadow-[#25D366]/30 hover:scale-110 active:scale-95 transition-all duration-300 group relative"
-        title="Chat por WhatsApp"
+        title={isEs ? "Chat por WhatsApp" : "Chat on WhatsApp"}
       >
         <MessageCircle className="w-7 h-7 fill-current" />
         

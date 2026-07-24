@@ -5,7 +5,7 @@ import { Check, MessageCircle } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 export default function PricingSection() {
-  const { language } = useLanguage();
+  const { language, lx } = useLanguage();
   const isEs = language === "es";
 
   return (
@@ -46,7 +46,7 @@ export default function PricingSection() {
                 {/* Popular Badge */}
                 {plan.badge && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-black text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-1 shadow-md flex items-center gap-1">
-                    ◆ {plan.badge}
+                    ◆ {lx(plan.badge)}
                   </div>
                 )}
 
@@ -54,10 +54,10 @@ export default function PricingSection() {
                   {/* Plan Name & Price */}
                   <div className="mb-6">
                     <h3 className="font-serif text-2xl font-normal text-white mb-2">
-                      {plan.name}
+                      {lx(plan.name)}
                     </h3>
                     <p className="text-xs text-white/40 font-light italic mb-4 min-h-[36px]">
-                      {plan.description}
+                      {lx(plan.description)}
                     </p>
                     <div className="flex items-baseline gap-1">
                       <span className="text-xs text-[#D4AF37] font-semibold">
@@ -79,7 +79,7 @@ export default function PricingSection() {
                     {plan.features.map((feature, fIdx) => (
                       <li key={fIdx} className="flex items-start gap-2.5 text-xs text-white/70 font-light leading-snug">
                         <Check className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
-                        <span>{feature}</span>
+                        <span>{lx(feature)}</span>
                       </li>
                     ))}
                   </ul>
@@ -89,8 +89,8 @@ export default function PricingSection() {
                 <div>
                   <a
                     href={createPlanWhatsAppUrl(
-                      plan.name, 
-                      isEs ? `RD$ ${plan.priceDOP.toLocaleString()} DOP` : `$${plan.priceUSD} USD`, 
+                      lx(plan.name),
+                      isEs ? `RD$ ${plan.priceDOP.toLocaleString()} DOP` : `$${plan.priceUSD} USD`,
                       isEs
                     )}
                     target="_blank"
@@ -102,7 +102,7 @@ export default function PricingSection() {
                     }`}
                   >
                     <MessageCircle className="w-4 h-4" />
-                    {plan.ctaText}
+                    {lx(plan.ctaText)}
                   </a>
                 </div>
               </div>
@@ -123,13 +123,13 @@ export default function PricingSection() {
             {PRICING_EXTRAS.map((extra) => (
               <div key={extra.id} className="bg-[#151515] p-5 border border-white/5 hover:border-[#D4AF37]/30 transition-colors">
                 <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-normal text-sm text-white font-serif">{extra.title}</h4>
+                  <h4 className="font-normal text-sm text-white font-serif">{lx(extra.title)}</h4>
                   <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-wider">
                     {isEs ? `+RD$ ${extra.priceDOP.toLocaleString()}` : `+$${extra.priceUSD} USD`}
                   </span>
                 </div>
                 <p className="text-xs text-white/40 font-light leading-relaxed italic">
-                  {extra.description}
+                  {lx(extra.description)}
                 </p>
               </div>
             ))}

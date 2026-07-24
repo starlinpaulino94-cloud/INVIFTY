@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { CONFIG, buildWhatsAppUrl } from "../config";
 import { Menu, X, MessageCircle, Globe } from "lucide-react";
-import luxuryLogo from "../assets/images/invifty_luxury_logo_1784843718950.jpg";
+import luxuryLogo from "../assets/images/invifty_luxury_logo.webp";
 import { useLanguage } from "../context/LanguageContext";
 
 interface NavbarProps {
@@ -13,6 +13,7 @@ export default function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
+  const isEs = language === "es";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -139,7 +140,7 @@ export default function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
           </div>
 
           <a
-            href={buildWhatsAppUrl("Hola Invifty, quisiera solicitar información para una invitación digital.")}
+            href={buildWhatsAppUrl(isEs ? "Hola Invifty, quisiera solicitar información para una invitación digital." : "Hello Invifty, I would like information about a digital invitation.")}
             target="_blank"
             rel="noopener noreferrer"
             className="px-5 py-2.5 border border-[#D4AF37]/60 text-[#D4AF37] text-[10px] uppercase tracking-[0.2em] font-semibold hover:bg-[#D4AF37] hover:text-black transition-all duration-300 flex items-center gap-2 shadow-sm"
@@ -173,7 +174,7 @@ export default function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-white/80 p-2 rounded hover:bg-white/5 transition-colors"
-            aria-label="Abrir menú"
+            aria-label={mobileMenuOpen ? (isEs ? "Cerrar menú" : "Close menu") : (isEs ? "Abrir menú" : "Open menu")}
           >
             {mobileMenuOpen ? <X className="w-6 h-6 text-[#D4AF37]" /> : <Menu className="w-6 h-6 text-[#D4AF37]" />}
           </button>
@@ -224,7 +225,7 @@ export default function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
               </button>
             ))}
             <a
-              href={buildWhatsAppUrl("Hola Invifty, me gustaría solicitar una invitación digital.")}
+              href={buildWhatsAppUrl(isEs ? "Hola Invifty, me gustaría solicitar una invitación digital." : "Hello Invifty, I would like to request a digital invitation.")}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-[#D4AF37] text-black font-semibold text-xs uppercase tracking-widest py-3 px-4 mt-2"

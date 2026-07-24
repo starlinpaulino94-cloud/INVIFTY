@@ -7,7 +7,7 @@ import {
   MessageSquare, Heart, PartyPopper, ExternalLink, Copy, Check,
   Camera, X, Navigation, Globe, Disc, Play, ThumbsUp, Radio
 } from "lucide-react";
-import quinceImg from "../assets/images/quince_valeria_demo_1784839868480.jpg";
+import quinceImg from "../assets/images/quince_valeria_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
 
 interface CumpleDemoProps {
@@ -86,6 +86,8 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
           minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((difference % (1000 * 60)) / 1000)
         });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     };
 
