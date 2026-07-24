@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { CONFIG, buildWhatsAppUrl } from "../config";
 import { Menu, X, MessageCircle, Globe } from "lucide-react";
-import luxuryLogo from "../assets/images/invifty_luxury_logo_1784843718950.jpg";
+import luxuryLogo from "../assets/images/invifty_luxury_logo.webp";
 import { useLanguage } from "../context/LanguageContext";
 
 interface NavbarProps {

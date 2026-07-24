@@ -244,6 +244,8 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
                     alt={item.title}
                     className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 opacity-90 group-hover:opacity-100"
                     referrerPolicy="no-referrer"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/30 to-transparent"></div>
 

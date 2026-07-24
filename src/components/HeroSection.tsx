@@ -1,7 +1,7 @@
 import { CONFIG, buildWhatsAppUrl } from "../config";
 import { MessageCircle, Eye, ShieldCheck, Clock, Music, MapPin } from "lucide-react";
-import heroBg from "../assets/images/invifty_hero_bg_1784839847898.jpg";
-import coupleImg from "../assets/images/wedding_couple_demo_1784839858272.jpg";
+import heroBg from "../assets/images/invifty_hero_bg.webp";
+import coupleImg from "../assets/images/wedding_couple_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
 
 interface HeroSectionProps {

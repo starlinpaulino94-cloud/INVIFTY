@@ -41,7 +41,6 @@ export interface PortfolioItem {
   image: string;
   features: string[];
   demoPath: string;
-  isRealClient?: boolean;
 }
 
 export interface Testimonial {
@@ -50,9 +49,9 @@ export interface Testimonial {
   eventType: string;
   location: string;
   comment: string;
-  avatar: string;
   rating: number;
   date: string;
+  /** true = historia ilustrativa (se etiqueta así en el sitio); false = testimonio real */
   isProvisionalNotice?: boolean;
 }
 

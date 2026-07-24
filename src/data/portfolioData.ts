@@ -1,7 +1,7 @@
 import { PortfolioItem } from "../types";
-import weddingImage from "../assets/images/wedding_couple_demo_1784839858272.jpg";
-import quinceImage from "../assets/images/quince_valeria_demo_1784839868480.jpg";
-import corporateImage from "../assets/images/gala_corporate_demo_1784839877907.jpg";
+import weddingImage from "../assets/images/wedding_couple_demo.webp";
+import quinceImage from "../assets/images/quince_valeria_demo.webp";
+import corporateImage from "../assets/images/gala_corporate_demo.webp";
 
 /**
  * COLECCIÓN EDITORIAL DE TRABAJOS Y PLANTILLAS MODELO
@@ -32,7 +32,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Galería fotográfica con vista ampliada"
     ],
     demoPath: "/muestra/boda-camila-y-lucas",
-    isRealClient: true
   },
   {
     id: "muestra-cumple",
@@ -50,7 +49,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Geolocalización del salón de fiesta"
     ],
     demoPath: "/muestra/cumple-valeria-15",
-    isRealClient: true
   },
   {
     id: "muestra-empresarial",
@@ -67,7 +65,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Instrucciones de parqueo y mapa"
     ],
     demoPath: "/muestra/gala-anual-vitrexi",
-    isRealClient: true
   },
   {
     id: "muestra-baby-shower",
@@ -84,7 +81,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Mapa e instrucciones de llegada"
     ],
     demoPath: "/muestra/baby-shower-mateo",
-    isRealClient: true
   },
   {
     id: "muestra-bautizo",
@@ -100,7 +96,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Confirmación de familiares e íntimos"
     ],
     demoPath: "/muestra/bautizo-sofia-maria",
-    isRealClient: true
   },
   {
     id: "muestra-cumple-adulto",
@@ -116,7 +111,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Música y ambiente personalizado"
     ],
     demoPath: "/muestra/cumpleanos-50-roberto",
-    isRealClient: true
   },
   {
     id: "muestra-bridal-shower",
@@ -132,7 +126,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Confirmación RSVP rápida vía WhatsApp"
     ],
     demoPath: "/muestra/bridal-shower-isabella",
-    isRealClient: true
   },
   {
     id: "muestra-inauguracion",
@@ -148,6 +141,5 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Ubicación y servicio de Valet Parking"
     ],
     demoPath: "/muestra/grand-opening-boutique",
-    isRealClient: true
   }
 ];

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense, ComponentType } from "react";
 import Navbar from "./components/Navbar";
 import WhatsAppChangeNotice from "./components/WhatsAppChangeNotice";
 import HeroSection from "./components/HeroSection";
@@ -10,26 +10,59 @@ import FaqSection from "./components/FaqSection";
 import InquiryForm from "./components/InquiryForm";
 import Footer from "./components/Footer";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
+import NotFoundPage from "./components/NotFoundPage";
 
-// Demo Components
-import BodaDemo from "./demos/BodaDemo";
-import CumpleDemo from "./demos/CumpleDemo";
-import CorporateDemo from "./demos/CorporateDemo";
-import BabyShowerDemo from "./demos/BabyShowerDemo";
-import BautizoDemo from "./demos/BautizoDemo";
-import AdultCumpleDemo from "./demos/AdultCumpleDemo";
-import BridalShowerDemo from "./demos/BridalShowerDemo";
-import GrandOpeningDemo from "./demos/GrandOpeningDemo";
+// Demo pages are code-split so the landing page loads without them.
+const BodaDemo = lazy(() => import("./demos/BodaDemo"));
+const CumpleDemo = lazy(() => import("./demos/CumpleDemo"));
+const CorporateDemo = lazy(() => import("./demos/CorporateDemo"));
+const BabyShowerDemo = lazy(() => import("./demos/BabyShowerDemo"));
+const BautizoDemo = lazy(() => import("./demos/BautizoDemo"));
+const AdultCumpleDemo = lazy(() => import("./demos/AdultCumpleDemo"));
+const BridalShowerDemo = lazy(() => import("./demos/BridalShowerDemo"));
+const GrandOpeningDemo = lazy(() => import("./demos/GrandOpeningDemo"));
+
+interface DemoProps {
+  onBackToHome: () => void;
+}
+
+// Exact route table — must stay in sync with demoPath in src/data/portfolioData.ts
+const DEMO_ROUTES: Record<string, ComponentType<DemoProps>> = {
+  "/muestra/boda-camila-y-lucas": BodaDemo,
+  "/muestra/cumple-valeria-15": CumpleDemo,
+  "/muestra/gala-anual-vitrexi": CorporateDemo,
+  "/muestra/baby-shower-mateo": BabyShowerDemo,
+  "/muestra/bautizo-sofia-maria": BautizoDemo,
+  "/muestra/cumpleanos-50-roberto": AdultCumpleDemo,
+  "/muestra/bridal-shower-isabella": BridalShowerDemo,
+  "/muestra/grand-opening-boutique": GrandOpeningDemo,
+};
+
+function normalizePath(path: string): string {
+  const trimmed = (path || "/").replace(/\/+$/, "");
+  return trimmed === "" ? "/" : trimmed;
+}
+
+function DemoLoadingFallback() {
+  return (
+    <div className="min-h-screen bg-[#0F0F0F] flex flex-col items-center justify-center gap-4">
+      <div className="w-10 h-10 border-2 border-[#D4AF37]/30 border-t-[#D4AF37] rounded-full animate-spin"></div>
+      <span className="text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] font-semibold">
+        Cargando invitación…
+      </span>
+    </div>
+  );
+}
 
 export default function App() {
-  const [currentPath, setCurrentPath] = useState<string>(() => {
-    return window.location.pathname || "/";
-  });
+  const [currentPath, setCurrentPath] = useState<string>(() =>
+    normalizePath(window.location.pathname)
+  );
 
   // Handle browser back/forward navigation
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPath(window.location.pathname || "/");
+      setCurrentPath(normalizePath(window.location.pathname));
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
@@ -37,54 +70,24 @@ export default function App() {
 
   // Helper to push history state and navigate
   const handleNavigate = (path: string) => {
-    window.history.pushState({}, "", path);
-    setCurrentPath(path);
+    const normalized = normalizePath(path);
+    window.history.pushState({}, "", normalized);
+    setCurrentPath(normalized);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Route matching for Demo 1: Boda
-  if (currentPath.includes("boda")) {
-    return <BodaDemo onBackToHome={() => handleNavigate("/")} />;
+  const DemoComponent = DEMO_ROUTES[currentPath];
+  if (DemoComponent) {
+    return (
+      <Suspense fallback={<DemoLoadingFallback />}>
+        <DemoComponent onBackToHome={() => handleNavigate("/")} />
+      </Suspense>
+    );
   }
 
-  // Route matching for Demo 2: 15 Años Cumpleaños
-  if (currentPath.includes("cumple-valeria") || currentPath.includes("valeria")) {
-    return <CumpleDemo onBackToHome={() => handleNavigate("/")} />;
-  }
-
-  // Route matching for Demo 6: Adult Birthday (Roberto 50)
-  if (currentPath.includes("roberto") || currentPath.includes("cumpleanos-50") || currentPath.includes("50")) {
-    return <AdultCumpleDemo onBackToHome={() => handleNavigate("/")} />;
-  }
-
-  // Fallback for general birthday links
-  if (currentPath.includes("cumple")) {
-    return <CumpleDemo onBackToHome={() => handleNavigate("/")} />;
-  }
-
-  // Route matching for Demo 3: Corporate Event
-  if (currentPath.includes("gala") || currentPath.includes("evento") || currentPath.includes("vitrexi")) {
-    return <CorporateDemo onBackToHome={() => handleNavigate("/")} />;
-  }
-
-  // Route matching for Demo 4: Baby Shower
-  if (currentPath.includes("baby-shower") || currentPath.includes("mateo")) {
-    return <BabyShowerDemo onBackToHome={() => handleNavigate("/")} />;
-  }
-
-  // Route matching for Demo 5: Bautizo
-  if (currentPath.includes("bautizo") || currentPath.includes("sofia")) {
-    return <BautizoDemo onBackToHome={() => handleNavigate("/")} />;
-  }
-
-  // Route matching for Demo 7: Bridal Shower
-  if (currentPath.includes("bridal") || currentPath.includes("isabella")) {
-    return <BridalShowerDemo onBackToHome={() => handleNavigate("/")} />;
-  }
-
-  // Route matching for Demo 8: Grand Opening
-  if (currentPath.includes("opening") || currentPath.includes("boutique") || currentPath.includes("inauguracion")) {
-    return <GrandOpeningDemo onBackToHome={() => handleNavigate("/")} />;
+  // Unknown route → 404 page
+  if (currentPath !== "/") {
+    return <NotFoundPage onBackToHome={() => handleNavigate("/")} />;
   }
 
   // Default: Main Official Invifty Website Landing Page

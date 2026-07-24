@@ -1,18 +1,43 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { EventType, InquiryFormData } from "../types";
+import { InquiryFormData } from "../types";
 import { createInquiryWhatsAppUrl } from "../utils/whatsapp";
-import { Send, MessageCircle, Sparkles, CheckCircle2 } from "lucide-react";
+import { MessageCircle, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { PRICING_PLANS } from "../data/pricingData";
+
+const ADVICE_PLAN_ID = "asesoria";
+
+// Single source of truth: plan labels are built from pricingData,
+// so price changes there are reflected here automatically.
+function planLabel(planId: string, isEs: boolean): string {
+  if (planId === ADVICE_PLAN_ID) {
+    return isEs ? "Necesito asesoría personalizada" : "I need custom advice";
+  }
+  const plan = PRICING_PLANS.find((p) => p.id === planId);
+  if (!plan) return planId;
+  const price = isEs
+    ? `RD$${plan.priceDOP.toLocaleString()} DOP`
+    : `$${plan.priceUSD} USD`;
+  const recommended = plan.isPopular ? (isEs ? " (Recomendado)" : " (Recommended)") : "";
+  return isEs
+    ? `Plan ${plan.name} — ${price}${recommended}`
+    : `${plan.name} Plan — ${price}${recommended}`;
+}
 
 export default function InquiryForm() {
   const { language } = useLanguage();
   const isEs = language === "es";
 
+  const defaultPlanId =
+    PRICING_PLANS.find((p) => p.isPopular)?.id ?? PRICING_PLANS[0]?.id ?? ADVICE_PLAN_ID;
+
+  // planInterest stores the plan id; the display label is resolved
+  // with the active language at render/submit time.
   const [formData, setFormData] = useState<InquiryFormData>({
     name: "",
-    eventType: "Boda",
+    eventType: "Boda / Matrimonio",
     eventDate: "",
-    planInterest: isEs ? "Popular — RD$2,500 DOP (Recomendado)" : "Popular — $49 USD (Recommended)",
+    planInterest: defaultPlanId,
     phone: "",
     message: ""
   });
@@ -28,21 +53,26 @@ export default function InquiryForm() {
     setErrorMessage("");
   };
 
+  const buildSubmissionData = (): InquiryFormData => ({
+    ...formData,
+    planInterest: planLabel(formData.planInterest, isEs)
+  });
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     if (!formData.name.trim()) {
-      setErrorMessage("Por favor ingresa tu nombre completo.");
+      setErrorMessage(isEs ? "Por favor ingresa tu nombre completo." : "Please enter your full name.");
       return;
     }
     if (!formData.phone.trim()) {
-      setErrorMessage("Por favor ingresa tu número de teléfono o WhatsApp.");
+      setErrorMessage(isEs ? "Por favor ingresa tu número de teléfono o WhatsApp." : "Please enter your phone or WhatsApp number.");
       return;
     }
 
     // Build WhatsApp URL
-    const url = createInquiryWhatsAppUrl(formData);
-    
+    const url = createInquiryWhatsAppUrl(buildSubmissionData());
+
     // Open WhatsApp in new window
     window.open(url, "_blank", "noopener,noreferrer");
 
@@ -53,7 +83,7 @@ export default function InquiryForm() {
   return (
     <section id="contacto" className="py-24 bg-[#0F0F0F] border-t border-white/5 relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         <div className="bg-[#0A0A0A] border border-white/10 p-8 sm:p-12 relative overflow-hidden">
           {/* Subtle Golden Glow */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/5 rounded-full filter blur-3xl pointer-events-none"></div>
@@ -84,7 +114,7 @@ export default function InquiryForm() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <a
-                  href={createInquiryWhatsAppUrl(formData)}
+                  href={createInquiryWhatsAppUrl(buildSubmissionData())}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-[#D4AF37] text-black font-semibold text-[10px] uppercase tracking-[0.2em] py-3.5 px-6 inline-flex items-center justify-center gap-2"
@@ -103,7 +133,7 @@ export default function InquiryForm() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {errorMessage && (
-                <div className="bg-red-900/40 border border-red-500/50 text-red-200 text-xs p-3 text-center">
+                <div role="alert" className="bg-red-900/40 border border-red-500/50 text-red-200 text-xs p-3 text-center">
                   {errorMessage}
                 </div>
               )}
@@ -111,13 +141,15 @@ export default function InquiryForm() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Nombre */}
                 <div>
-                  <label className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
+                  <label htmlFor="inquiry-name" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
                     Tu Nombre Completo *
                   </label>
                   <input
                     type="text"
+                    id="inquiry-name"
                     name="name"
                     required
+                    autoComplete="name"
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Ej. Sofía Rodríguez"
@@ -127,13 +159,15 @@ export default function InquiryForm() {
 
                 {/* Teléfono */}
                 <div>
-                  <label className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
+                  <label htmlFor="inquiry-phone" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
                     Teléfono / WhatsApp *
                   </label>
                   <input
                     type="tel"
+                    id="inquiry-phone"
                     name="phone"
                     required
+                    autoComplete="tel"
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Ej. +1 800-555-0199"
@@ -145,10 +179,11 @@ export default function InquiryForm() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Tipo de Evento */}
                 <div>
-                  <label className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
+                  <label htmlFor="inquiry-event-type" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
                     Tipo de Evento
                   </label>
                   <select
+                    id="inquiry-event-type"
                     name="eventType"
                     value={formData.eventType}
                     onChange={handleChange}
@@ -168,11 +203,12 @@ export default function InquiryForm() {
 
                 {/* Fecha del Evento */}
                 <div>
-                  <label className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
+                  <label htmlFor="inquiry-event-date" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
                     Fecha del Evento (Aproximada)
                   </label>
                   <input
                     type="date"
+                    id="inquiry-event-date"
                     name="eventDate"
                     value={formData.eventDate}
                     onChange={handleChange}
@@ -183,41 +219,32 @@ export default function InquiryForm() {
 
               {/* Plan de Interés */}
               <div>
-                <label className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
+                <label htmlFor="inquiry-plan" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
                   Plan de Interés
                 </label>
                 <select
+                  id="inquiry-plan"
                   name="planInterest"
                   value={formData.planInterest}
                   onChange={handleChange}
                   className="w-full bg-[#151515] border border-white/10 focus:border-[#D4AF37] py-3.5 px-4 text-base sm:text-xs text-white focus:outline-none transition-colors rounded-lg min-h-[44px]"
                 >
-                  {isEs ? (
-                    <>
-                      <option value="Plan Esencial — RD$1,200 DOP">Plan Esencial — RD$1,200 DOP</option>
-                      <option value="Plan Popular — RD$2,500 DOP (Recomendado)">Plan Popular — RD$2,500 DOP (Recomendado)</option>
-                      <option value="Plan Premium — RD$4,000 DOP">Plan Premium — RD$4,000 DOP</option>
-                      <option value="Plan Luxury — RD$6,500 DOP">Plan Luxury — RD$6,500 DOP</option>
-                      <option value="Duda / Asesoría Personalizada">Necesito asesoría personalizada</option>
-                    </>
-                  ) : (
-                    <>
-                      <option value="Essential Plan — $25 USD">Essential Plan — $25 USD</option>
-                      <option value="Popular Plan — $49 USD (Recommended)">Popular Plan — $49 USD (Recommended)</option>
-                      <option value="Premium Plan — $79 USD">Premium Plan — $79 USD</option>
-                      <option value="Luxury Plan — $129 USD">Luxury Plan — $129 USD</option>
-                      <option value="Question / Custom Advice">I need custom advice</option>
-                    </>
-                  )}
+                  {PRICING_PLANS.map((plan) => (
+                    <option key={plan.id} value={plan.id}>
+                      {planLabel(plan.id, isEs)}
+                    </option>
+                  ))}
+                  <option value={ADVICE_PLAN_ID}>{planLabel(ADVICE_PLAN_ID, isEs)}</option>
                 </select>
               </div>
 
               {/* Mensaje Opcional */}
               <div>
-                <label className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
+                <label htmlFor="inquiry-message" className="block text-[10px] uppercase font-semibold tracking-[0.2em] text-white/80 mb-2">
                   Detalles Adicionales (Opcional)
                 </label>
                 <textarea
+                  id="inquiry-message"
                   name="message"
                   rows={3}
                   value={formData.message}
