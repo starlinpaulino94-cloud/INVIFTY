@@ -1,0 +1,6 @@
+{
+  "name": "Invifty - Invitaciones Digitales Premium",
+  "description": "Página web oficial de Invifty: invitaciones digitales premium para bodas, cumpleaños y eventos corporativos en República Dominicana.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

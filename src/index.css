@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-serif-display {
+    font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+  }
+  .font-cormorant {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+  .font-script {
+    font-family: 'Alex Brush', cursive;
+  }
+  .font-sans-clean {
+    font-family: 'Montserrat', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom scrollbar and luxury metallic shimmer animations */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0F0F0F;
+}
+::-webkit-scrollbar-thumb {
+  background: #1A1A1A;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+@keyframes pulse-gold {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.03);
+  }
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 3s infinite ease-in-out;
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #F2D06B 0%, #D4AF37 50%, #A37E2C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.champagne-gradient-bg {
+  background: linear-gradient(135deg, #151515 0%, #0A0A0A 100%);
+}
+
+.dark-luxury-bg {
+  background: linear-gradient(180deg, #0F0F0F 0%, #151515 100%);
+}
+
+
