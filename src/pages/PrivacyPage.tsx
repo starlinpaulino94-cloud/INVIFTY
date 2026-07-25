@@ -43,8 +43,19 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
               </li>
               <li>
                 <strong>Datos de tu evento:</strong> si contratas una invitación, los datos y fotos
-                que nos envíes por WhatsApp se usan exclusivamente para diseñar y publicar tu
-                invitación, y se tratan con confidencialidad.
+                que nos envíes —por WhatsApp o a través del formulario privado que te enviamos por
+                enlace— se usan exclusivamente para diseñar y publicar tu invitación, y se tratan
+                con confidencialidad.
+              </li>
+              <li>
+                <strong>Dictado por voz:</strong> el formulario de tu evento incluye un botón de
+                micrófono opcional para que puedas responder hablando en lugar de escribir. Si lo
+                usas, tu navegador pedirá permiso para el micrófono y la transcripción la realiza
+                el servicio de voz de tu propio navegador (Google en Chrome, Apple en Safari),
+                sujeto a las políticas de privacidad de esos proveedores. Invifty no graba, no
+                recibe y no almacena tu audio: únicamente guardamos el texto resultante que queda
+                escrito en el formulario, y puedes editarlo o borrarlo antes de enviarlo. Usar el
+                dictado es siempre voluntario: puedes escribir con el teclado.
               </li>
             </ul>
           </section>
@@ -102,8 +113,17 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
               </li>
               <li>
                 <strong>Your event data:</strong> if you order an invitation, the details and photos
-                you send us via WhatsApp are used exclusively to design and publish your invitation,
-                and are treated confidentially.
+                you send us —via WhatsApp or through the private form we send you by link— are used
+                exclusively to design and publish your invitation, and are treated confidentially.
+              </li>
+              <li>
+                <strong>Voice dictation:</strong> your event form includes an optional microphone
+                button so you can answer by speaking instead of typing. If you use it, your browser
+                will ask for microphone permission and the transcription is performed by your own
+                browser&rsquo;s speech service (Google on Chrome, Apple on Safari), subject to those
+                providers&rsquo; privacy policies. Invifty does not record, receive or store your
+                audio: we only keep the resulting text that appears in the form, and you can edit or
+                delete it before submitting. Dictation is always optional — you can type instead.
               </li>
             </ul>
           </section>
