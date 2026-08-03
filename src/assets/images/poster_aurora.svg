@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="aurora" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B4FE0"/>
+      <stop offset="55%" stop-color="#7C5CE8"/>
+      <stop offset="100%" stop-color="#2BB3A3"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="#FAFAFA"/>
+  <path d="M0 0 H800 V240 C560 320 240 160 0 260 Z" fill="url(#aurora)" opacity="0.92"/>
+  <rect x="70" y="340" width="56" height="8" fill="#3B4FE0"/>
+  <text x="70" y="430" font-family="Arial, sans-serif" font-weight="bold" font-size="72" fill="#101828">AURORA</text>
+  <text x="70" y="510" font-family="Arial, sans-serif" font-weight="bold" font-size="72" fill="#101828">SUMMIT</text>
+  <text x="70" y="580" font-family="Arial, sans-serif" font-size="40" letter-spacing="6" fill="#3B4FE0">2027</text>
+  <line x1="70" y1="640" x2="730" y2="640" stroke="#E4E7EC" stroke-width="2"/>
+  <text x="70" y="700" font-family="Arial, sans-serif" font-size="24" fill="#475467">Innovación · Tecnología · Networking</text>
+  <text x="70" y="750" font-family="Arial, sans-serif" font-size="24" fill="#475467">Santo Domingo · 18 de marzo</text>
+  <text x="70" y="880" font-family="Arial, sans-serif" font-weight="bold" font-size="20" letter-spacing="4" fill="#98A2B3">VITREXI TECHNOLOGIES</text>
+  <rect x="70" y="900" width="120" height="6" fill="#2BB3A3"/>
+</svg>

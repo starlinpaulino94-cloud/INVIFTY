@@ -25,9 +25,23 @@ export interface PricingPlan {
   priceDOP: number;
   badge?: Localized;
   isPopular?: boolean;
+  /** Resultado principal que promete el plan, en una frase. */
   description: Localized;
   features: Localized[];
+  /** Tiempo de entrega visible en la tarjeta (ej: "48 horas"). */
+  deliveryTime: Localized;
+  /** Rondas de revisión incluidas en el precio. */
+  revisions: number;
+  /** Solo el plan recomendado: por qué es la opción sugerida. */
+  whyRecommended?: Localized;
   ctaText: Localized;
+}
+
+/** Fila de la tabla de comparación completa de planes. */
+export interface PlanComparisonRow {
+  label: Localized;
+  /** Un valor por plan, en el mismo orden que PRICING_PLANS: texto o ✓/—. */
+  values: (Localized | boolean)[];
 }
 
 export interface PricingExtra {

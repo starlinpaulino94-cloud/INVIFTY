@@ -6,6 +6,7 @@ import {
   Grid, Heart, Crown, Building2, Baby, Cake, Filter, RotateCcw, MapPin
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { trackEvent } from "../utils/analytics";
 
 interface PortfolioSectionProps {
   onNavigateDemo: (demoPath: string) => void;
@@ -208,7 +209,12 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
               return (
                 <button
                   key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
+                  onClick={() => {
+                    setActiveCategory(cat.id);
+                    if (cat.id !== "todas") {
+                      trackEvent("select_demo_style", { event_type: cat.id, placement: "portfolio_filter" });
+                    }
+                  }}
                   className={`shrink-0 whitespace-nowrap px-4 py-2.5 rounded-full text-xs font-medium transition-all duration-300 flex items-center gap-2 border active:scale-95 ${
                     isActive
                       ? "bg-[#D4AF37] text-black border-[#D4AF37] font-bold shadow-lg shadow-[#D4AF37]/20"
