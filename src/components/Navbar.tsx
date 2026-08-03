@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { CONFIG, buildWhatsAppUrl } from "../config";
 import { Menu, X, MessageCircle, Globe } from "lucide-react";
-import luxuryLogo from "../assets/images/invifty_luxury_logo.webp";
+import LogoInvifty from "./LogoInvifty";
 import { useLanguage } from "../context/LanguageContext";
 
 interface NavbarProps {
@@ -79,11 +79,9 @@ export default function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
           }}
           className="flex items-center gap-3.5 group text-left"
         >
-          <img
-            src={luxuryLogo}
-            alt="Invifty Logo"
-            className="w-10 h-10 rounded-full object-cover border border-[#D4AF37]/50 shadow-md group-hover:border-[#F2D06B] transition-all duration-300"
-            referrerPolicy="no-referrer"
+          <LogoInvifty
+            idSufijo="nav"
+            className="w-10 h-auto drop-shadow-[0_2px_6px_rgba(212,175,55,0.35)] group-hover:scale-105 transition-transform duration-300"
           />
           <div className="flex flex-col">
             <span className="text-xl sm:text-2xl font-serif tracking-[0.3em] font-light uppercase text-white group-hover:text-[#D4AF37] transition-colors leading-none">

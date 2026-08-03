@@ -1,6 +1,6 @@
 import { CONFIG, buildWhatsAppUrl } from "../config";
 import { Instagram, MessageCircle } from "lucide-react";
-import luxuryLogo from "../assets/images/invifty_luxury_logo.webp";
+import LogoInvifty from "./LogoInvifty";
 import { useLanguage } from "../context/LanguageContext";
 
 interface FooterProps {
@@ -45,13 +45,9 @@ export default function Footer({ onNavigate }: FooterProps) {
           {/* Brand Info (5 cols) */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3.5">
-              <img
-                src={luxuryLogo}
-                alt="Invifty Logo"
-                className="w-10 h-10 rounded-full object-cover border border-[#D4AF37]/50 shadow-md"
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                decoding="async"
+              <LogoInvifty
+                idSufijo="pie"
+                className="w-10 h-auto drop-shadow-[0_2px_6px_rgba(212,175,55,0.35)]"
               />
               <div className="flex flex-col">
                 <span className="font-serif text-2xl font-light uppercase tracking-[0.3em] text-white">
