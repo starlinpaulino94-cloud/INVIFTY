@@ -60,7 +60,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     },
     features: [
       { es: "Todo lo incluido en el plan Popular", en: "Everything in the Popular plan" },
-      { es: "Código QR individual para control en puerta", en: "Individual QR code for door check-in" },
+      { es: "Pase QR personal: cada invitado entra escaneando el suyo", en: "Personal QR pass: each guest checks in by scanning their own" },
       { es: "Galería de fotografías ilimitada", en: "Unlimited photo gallery" },
       { es: "Cronograma e itinerario interactivo del día", en: "Interactive day-of schedule & itinerary" },
       { es: "Mesa de regalos con datos bancarios y Amazon", en: "Gift registry with bank details and Amazon" },

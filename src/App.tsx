@@ -26,6 +26,12 @@ const AdultCumpleDemo = lazy(() => import("./demos/AdultCumpleDemo"));
 const BridalShowerDemo = lazy(() => import("./demos/BridalShowerDemo"));
 const GrandOpeningDemo = lazy(() => import("./demos/GrandOpeningDemo"));
 
+// Nueva colección de diseño (estilos del sistema de plantillas 2026)
+const EditorialBodaDemo = lazy(() => import("./demos/EditorialBodaDemo"));
+const QuinceCelestialDemo = lazy(() => import("./demos/QuinceCelestialDemo"));
+const NeonPartyDemo = lazy(() => import("./demos/NeonPartyDemo"));
+const AuroraSummitDemo = lazy(() => import("./demos/AuroraSummitDemo"));
+
 // Legal pages, also code-split
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
@@ -44,6 +50,10 @@ const ROUTES: Record<string, ComponentType<RoutedPageProps>> = {
   "/muestra/cumpleanos-50-roberto": AdultCumpleDemo,
   "/muestra/bridal-shower-isabella": BridalShowerDemo,
   "/muestra/grand-opening-boutique": GrandOpeningDemo,
+  "/muestra/boda-editorial-elena-gabriel": EditorialBodaDemo,
+  "/muestra/quince-celestial-amara": QuinceCelestialDemo,
+  "/muestra/neon-party-marcos-40": NeonPartyDemo,
+  "/muestra/summit-aurora-vitrexi": AuroraSummitDemo,
   "/privacidad": PrivacyPage,
   "/terminos": TermsPage,
 };

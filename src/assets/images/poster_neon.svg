@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <filter id="glowM" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="14" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowC" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="#050505"/>
+  <g stroke="#151515" stroke-width="1">
+    <line x1="0" y1="200" x2="800" y2="200"/><line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="0" y1="600" x2="800" y2="600"/><line x1="0" y1="800" x2="800" y2="800"/>
+    <line x1="200" y1="0" x2="200" y2="1000"/><line x1="400" y1="0" x2="400" y2="1000"/><line x1="600" y1="0" x2="600" y2="1000"/>
+  </g>
+  <text x="400" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="34" letter-spacing="18" fill="#22D3EE" filter="url(#glowC)">NEON PARTY</text>
+  <text x="400" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="340" fill="none" stroke="#FF2D95" stroke-width="6" filter="url(#glowM)">40</text>
+  <text x="400" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="44" letter-spacing="10" fill="#FFFFFF">MARCOS</text>
+  <line x1="260" y1="810" x2="540" y2="810" stroke="#22D3EE" stroke-width="2" filter="url(#glowC)"/>
+  <text x="400" y="870" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" letter-spacing="8" fill="#9CA3AF">05 · SEPTIEMBRE · 2026</text>
+</svg>

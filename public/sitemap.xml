@@ -6,6 +6,26 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://invifty.com/muestra/boda-editorial-elena-gabriel</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://invifty.com/muestra/quince-celestial-amara</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://invifty.com/muestra/neon-party-marcos-40</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://invifty.com/muestra/summit-aurora-vitrexi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://invifty.com/muestra/boda-camila-y-lucas</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

@@ -48,6 +48,11 @@ export default function PricingSection() {
               ? "Invitados ilimitados y un solo pago por tu evento: sin costos ocultos, sin suscripciones mensuales y sin cobrar por invitado."
               : "Unlimited guests and a single payment per event: no hidden costs, no monthly fees and no per-guest charges."}
           </p>
+          <p className="text-white/35 text-[11px] mt-3 tracking-wide">
+            {isEs
+              ? "Precios en pesos dominicanos (DOP). ¿Pagas desde el exterior? También aceptamos USD, Zelle y PayPal."
+              : "Prices shown in USD. Paying from the Dominican Republic? DOP pricing available — plus Zelle and PayPal."}
+          </p>
         </div>
 
         {/* Pricing Cards Grid */}

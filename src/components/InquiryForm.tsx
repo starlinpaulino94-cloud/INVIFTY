@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, useRef, ChangeEvent, FormEvent } from "react";
 import { InquiryFormData } from "../types";
 import { createInquiryWhatsAppUrl } from "../utils/whatsapp";
 import { MessageCircle, CheckCircle2 } from "lucide-react";
@@ -59,6 +59,14 @@ export default function InquiryForm() {
     ...formData,
     planInterest: planLabel(formData.planInterest, isEs)
   });
+
+  // begin_brief: se registra una sola vez, en el primer campo que recibe foco
+  const briefIniciado = useRef(false);
+  const handleFormFocus = () => {
+    if (briefIniciado.current) return;
+    briefIniciado.current = true;
+    trackEvent("begin_brief", { form: "inquiry" });
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -143,7 +151,7 @@ export default function InquiryForm() {
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} onFocus={handleFormFocus} className="space-y-6">
               {errorMessage && (
                 <div role="alert" className="bg-red-900/40 border border-red-500/50 text-red-200 text-xs p-3 text-center">
                   {errorMessage}
