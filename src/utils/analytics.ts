@@ -9,6 +9,8 @@
  * Eventos que se registran automáticamente:
  *  - whatsapp_click : cada clic en un enlace de WhatsApp (la conversión principal)
  *  - view_demo      : cuando un visitante abre una muestra interactiva
+ *  - view_pricing   : cuando la sección de planes entra en pantalla
+ *  - select_plan    : clic en el CTA de una tarjeta de plan (plan, precio, moneda)
  *  - inquiry_submit : cuando se envía el formulario de cotización
  */
 

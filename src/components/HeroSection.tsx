@@ -1,5 +1,4 @@
-import { CONFIG, buildWhatsAppUrl } from "../config";
-import { MessageCircle, Eye, ShieldCheck, Clock, Music, MapPin } from "lucide-react";
+import { Eye, ShieldCheck, Clock, Music, MapPin } from "lucide-react";
 import heroBg from "../assets/images/invifty_hero_bg.webp";
 import coupleImg from "../assets/images/wedding_couple_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
@@ -8,19 +7,17 @@ interface HeroSectionProps {
   onNavigateDemo?: (demoPath: string) => void;
 }
 
+/** Scroll que respeta la preferencia de movimiento reducido del visitante. */
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+}
+
 export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
   const { language, t } = useLanguage();
   const isEs = language === "es";
-
-  const scrollToPortfolio = () => {
-    const el = document.getElementById("portafolio");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const scrollToPricing = () => {
-    const el = document.getElementById("planes");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <section id="hero" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden min-h-[90vh] flex items-center bg-[#0F0F0F]">
@@ -28,7 +25,9 @@ export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
       <div className="absolute inset-0 z-0">
         <img
           src={heroBg}
-          alt="Invifty Eventos de Lujo"
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
           className="w-full h-full object-cover object-center opacity-20 filter scale-105"
           referrerPolicy="no-referrer"
         />
@@ -57,10 +56,10 @@ export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
               {t("hero.subtitle")}
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 mb-12">
+            {/* CTAs: máximo dos acciones principales por sección */}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 mb-4">
               <button
-                onClick={scrollToPortfolio}
+                onClick={() => scrollToSection("portafolio")}
                 className="w-full sm:w-auto px-8 py-4 bg-[#D4AF37] text-black font-semibold text-xs uppercase tracking-widest hover:bg-[#F2D06B] active:scale-95 transition-all shadow-lg flex items-center justify-center gap-2 group min-h-[48px] touch-manipulation"
               >
                 <Eye className="w-4 h-4 text-black group-hover:scale-110 transition-transform" />
@@ -68,22 +67,17 @@ export default function HeroSection({ onNavigateDemo }: HeroSectionProps) {
               </button>
 
               <button
-                onClick={scrollToPricing}
+                onClick={() => scrollToSection("planes")}
                 className="w-full sm:w-auto px-8 py-4 border border-white/20 text-white font-semibold text-xs uppercase tracking-widest hover:bg-white/10 active:scale-95 transition-all flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
               >
-                {isEs ? "Ver Planes y Precios" : "View Plans & Pricing"}
+                {t("hero.btnSecondary")}
               </button>
-
-              <a
-                href={buildWhatsAppUrl(isEs ? "Hola Invifty, quiero solicitar información para mi invitación digital." : "Hello Invifty, I would like information about a digital invitation.")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto px-6 py-4 bg-[#151515] border border-[#D4AF37]/50 text-[#D4AF37] font-semibold text-xs uppercase tracking-widest hover:bg-[#D4AF37] hover:text-black active:scale-95 transition-all flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
-              >
-                <MessageCircle className="w-4 h-4" />
-                {t("nav.requestInvite")}
-              </a>
             </div>
+
+            {/* Microcopy de confianza bajo los CTAs */}
+            <p className="text-[11px] text-white/40 tracking-wide mb-12 text-center lg:text-left">
+              {t("hero.microcopy")}
+            </p>
 
             {/* Trust Badges */}
             <div className="pt-6 border-t border-white/10 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 text-center lg:text-left">

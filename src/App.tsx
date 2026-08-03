@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import WhatsAppChangeNotice from "./components/WhatsAppChangeNotice";
 import HeroSection from "./components/HeroSection";
 import HowItWorks from "./components/HowItWorks";
+import BenefitsSection from "./components/BenefitsSection";
 import PortfolioSection from "./components/PortfolioSection";
 import PricingSection from "./components/PricingSection";
 import TestimonialsSection from "./components/TestimonialsSection";
@@ -13,6 +14,7 @@ import FloatingWhatsApp from "./components/FloatingWhatsApp";
 import NotFoundPage from "./components/NotFoundPage";
 import { trackEvent } from "./utils/analytics";
 import { useLanguage } from "./context/LanguageContext";
+import { PORTFOLIO_ITEMS } from "./data/portfolioData";
 
 // Demo pages are code-split so the landing page loads without them.
 const BodaDemo = lazy(() => import("./demos/BodaDemo"));
@@ -51,6 +53,35 @@ function normalizePath(path: string): string {
   return trimmed === "" ? "/" : trimmed;
 }
 
+/**
+ * SEO: título y descripción únicos por ruta (el informe de investigación
+ * recomienda que cada página tenga metadatos propios, no los genéricos).
+ */
+function getPageMeta(path: string, isEs: boolean): { title: string; description: string } {
+  if (path === "/privacidad") {
+    return isEs
+      ? { title: "Política de Privacidad · Invifty", description: "Cómo Invifty trata tus datos: qué recopilamos, para qué se usa y cómo solicitar acceso, corrección o eliminación." }
+      : { title: "Privacy Policy · Invifty", description: "How Invifty handles your data: what we collect, how it is used and how to request access, correction or deletion." };
+  }
+  if (path === "/terminos") {
+    return isEs
+      ? { title: "Términos del Servicio · Invifty", description: "Condiciones del servicio de invitaciones digitales de Invifty: alcance, revisiones, entrega, pagos y propiedad intelectual." }
+      : { title: "Terms of Service · Invifty", description: "Terms for Invifty's digital invitation service: scope, revisions, delivery, payments and intellectual property." };
+  }
+  const demo = PORTFOLIO_ITEMS.find((item) => item.demoPath === path);
+  if (demo) {
+    return {
+      title: `${demo.title} — ${isEs ? "Muestra Interactiva" : "Interactive Sample"} · Invifty`,
+      description: isEs
+        ? `Muestra interactiva de invitación digital: ${demo.title}. Explora el diseño, la música, la galería y el RSVP de Invifty.`
+        : `Interactive digital invitation sample: ${demo.title}. Explore Invifty's design, music, gallery and RSVP.`,
+    };
+  }
+  return isEs
+    ? { title: "Invifty — Invitaciones Digitales Premium", description: "Invitaciones digitales elegantes e interactivas para bodas, 15 años, cumpleaños y eventos corporativos. RSVP directo por WhatsApp, música, mapas y pases QR." }
+    : { title: "Invifty — Premium Digital Invitations", description: "Elegant, interactive digital invitations for weddings, quinceañeras, birthdays and corporate events. WhatsApp RSVP, music, maps and QR passes." };
+}
+
 function DemoLoadingFallback() {
   const { language } = useLanguage();
   return (
@@ -64,6 +95,7 @@ function DemoLoadingFallback() {
 }
 
 export default function App() {
+  const { language } = useLanguage();
   const [currentPath, setCurrentPath] = useState<string>(() =>
     normalizePath(window.location.pathname)
   );
@@ -76,6 +108,15 @@ export default function App() {
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
+
+  // Título y meta descripción propios de cada ruta e idioma
+  useEffect(() => {
+    const meta = getPageMeta(currentPath, language === "es");
+    document.title = meta.title;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", meta.description);
+  }, [currentPath, language]);
 
   // Helper to push history state and navigate
   const handleNavigate = (path: string) => {
@@ -105,6 +146,11 @@ export default function App() {
   // Default: Main Official Invifty Website Landing Page
   return (
     <div className="min-h-screen bg-[#0F0F0F] text-[#EAEAEA] font-sans-clean selection:bg-[#D4AF37]/30 selection:text-white">
+      {/* Accesibilidad: saltar la navegación con teclado */}
+      <a href="#contenido" className="skip-link">
+        {language === "es" ? "Saltar al contenido" : "Skip to content"}
+      </a>
+
       {/* Top Administrative Notice for WhatsApp Number change */}
       <WhatsAppChangeNotice />
 
@@ -112,10 +158,11 @@ export default function App() {
       <Navbar currentPath={currentPath} onNavigate={handleNavigate} />
 
       {/* Main Sections */}
-      <main>
+      <main id="contenido">
         <HeroSection onNavigateDemo={handleNavigate} />
         <HowItWorks />
         <PortfolioSection onNavigateDemo={handleNavigate} />
+        <BenefitsSection />
         <PricingSection />
         <TestimonialsSection />
         <FaqSection />

@@ -17,8 +17,8 @@ export const FAQ_ITEMS: FAQItem[] = [
       en: "2. How long does it take for my invitation to be ready?"
     },
     answer: {
-      es: "El tiempo estándar de entrega es de 48 horas una vez que nos envías los datos y fotografías de tu evento. Si necesitas tu invitación de manera inmediata, contamos con el servicio Urgente 24h para entregas en menos de un día.",
-      en: "Standard delivery is 48 hours once you send us your event details and photos. If you need your invitation right away, our Rush 24h service delivers in under a day."
+      es: "El tiempo estándar de entrega es de 48 horas una vez que nos envías los datos y fotografías de tu evento (el plan Luxury, por ser un diseño 100% a la medida, toma de 3 a 5 días hábiles). Si necesitas tu invitación de manera inmediata, contamos con el servicio Urgente 24h para entregas en menos de un día.",
+      en: "Standard delivery is 48 hours once you send us your event details and photos (the Luxury plan, being a fully bespoke design, takes 3 to 5 business days). If you need your invitation right away, our Rush 24h service delivers in under a day."
     }
   },
   {
@@ -59,6 +59,26 @@ export const FAQ_ITEMS: FAQItem[] = [
     answer: {
       es: "¡Por supuesto! Entendemos que en la organización de eventos surgen imprevistos. Los cambios de hora, lugar, Dress Code o detalles menores son completamente gratuitos antes y durante el día del evento.",
       en: "Of course! We know plans can change while organizing an event. Updates to time, venue, dress code or minor details are completely free before and during the day of your event."
+    }
+  },
+  {
+    question: {
+      es: "7. ¿Cuántas revisiones de diseño incluye mi plan?",
+      en: "7. How many design revisions does my plan include?"
+    },
+    answer: {
+      es: "Cada plan incluye rondas de revisión para ajustar el diseño antes de publicarlo: Esencial incluye 1, Popular 2, Premium 3 y Luxury 4. En cada ronda puedes agrupar todos tus comentarios y los aplicamos juntos. Los cambios de datos del evento (hora, lugar, dress code) no cuentan como revisión: esos son siempre gratuitos.",
+      en: "Every plan includes revision rounds to fine-tune the design before publishing: Essential includes 1, Popular 2, Premium 3 and Luxury 4. In each round you can group all your comments and we apply them together. Event-detail updates (time, venue, dress code) don't count as revisions — those are always free."
+    }
+  },
+  {
+    question: {
+      es: "8. ¿Qué pasa con mis datos y las fotos que les envío?",
+      en: "8. What happens to my data and the photos I send you?"
+    },
+    answer: {
+      es: "Tus datos y fotografías se usan exclusivamente para diseñar y publicar tu invitación, y se tratan con confidencialidad. La invitación es un enlace privado que no se muestra en buscadores, y al vencer tu plan puedes pedir que eliminemos todo el contenido. Los detalles completos están en nuestra Política de Privacidad, disponible al pie de la página.",
+      en: "Your details and photos are used exclusively to design and publish your invitation, and are treated confidentially. The invitation is a private link that is not shown in search engines, and when your plan expires you can ask us to delete all the content. Full details are in our Privacy Policy, linked at the bottom of the page."
     }
   }
 ];

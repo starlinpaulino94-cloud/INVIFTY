@@ -20,6 +20,48 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
+/*
+ * Accesibilidad (WCAG 2.2):
+ * - Foco visible en cualquier control al navegar con teclado.
+ * - Enlace "saltar al contenido" oculto hasta recibir foco.
+ * - Sin animaciones ni desplazamiento suave si el visitante
+ *   tiene activado "reducir movimiento" en su dispositivo.
+ */
+:focus-visible {
+  outline: 3px solid #F2D06B;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: #D4AF37;
+  color: #000;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 12px 20px;
+}
+.skip-link:focus-visible {
+  left: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html, body {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Hide scrollbar utility for clean mobile horizontal sliders */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
