@@ -1,12 +1,9 @@
+import { useDemoFonts } from "../hooks/useDemoFonts";
+import { parseAttendance } from "../utils/rsvp";
 import { useState, useEffect, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import { 
-  Music, MapPin, Calendar, Clock, Heart, Gift, 
-  CheckCircle2, Volume2, VolumeX, Copy, Check,
-  Send, ExternalLink, ArrowLeft, Camera, X, MessageSquare, Sparkles, Navigation,
-  Church, Wine, Utensils, Users, QrCode, ShieldCheck, Car, Globe
-} from "lucide-react";
+import { MapPin, Calendar, Clock, Heart, Gift, CheckCircle2, Volume2, VolumeX, Copy, Check, Send, ExternalLink, ArrowLeft, Camera, X, MessageSquare, Sparkles, Navigation, Church, Wine, Utensils, Users, QrCode, ShieldCheck, Globe } from "lucide-react";
 import coupleImg from "../assets/images/wedding_couple_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
 import VipPassModal from "../components/VipPassModal";
@@ -25,6 +22,7 @@ interface GuestbookMessage {
 
 export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
   const { language, setLanguage, t } = useLanguage();
+  useDemoFonts();
 
   // Target date: November 14, 2026 16:30:00 AST
   const targetDate = new Date("2026-11-14T16:30:00").getTime();
@@ -772,6 +770,8 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
                 alt={`Galería ${idx + 1}`}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <span className="text-white text-xs font-sans-clean font-bold bg-black/70 px-4 py-2 rounded-full border border-white/30 flex items-center gap-1.5">
@@ -913,9 +913,13 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
           {rsvpSubmitted ? (
             <div className="bg-[#161D1A] border border-[#D4AF37] p-8 rounded-3xl text-center">
               <CheckCircle2 className="w-12 h-12 text-[#D4AF37] mx-auto mb-3 animate-bounce" />
-              <h3 className="text-2xl font-bold mb-2">¡Asistencia Confirmada!</h3>
-              <p className="text-xs text-gray-300 font-sans-clean mb-6">
-                Se ha enviado tu confirmación a nuestro WhatsApp. ¡Estamos muy emocionados de celebrar juntos!
+              <h3 className="text-2xl font-bold mb-2">Se abrió WhatsApp</h3>
+              {/* El mensaje queda redactado, pero lo envía el invitado. */}
+              <p className="text-xs text-gray-300 font-sans-clean mb-2">
+                Tu confirmación quedó redactada en WhatsApp. Envía el mensaje para completarla.
+              </p>
+              <p className="text-[10px] text-gray-400 font-sans-clean mb-6">
+                Es una muestra: los datos no se guardan en ningún sistema.
               </p>
               <button
                 onClick={() => setRsvpSubmitted(false)}
@@ -947,11 +951,11 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
                   </label>
                   <select
                     value={rsvpData.attendance}
-                    onChange={(e) => setRsvpData({ ...rsvpData, attendance: e.target.value as any })}
+                    onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })}
                     className="w-full bg-[#0F1412] border border-[#2A3631] rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] focus:outline-none"
                   >
                     <option value="Confirmado">✅ Sí, asistiré</option>
-                    <option value="No podré asistir">❌ No podré asistir</option>
+                    <option value="Declina">❌ No podré asistir</option>
                   </select>
                 </div>
 
@@ -1042,7 +1046,6 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
       {showVipPassModal && (
         <VipPassModal
           eventName="Boda Camila & Lucas"
-          eventType="boda"
           defaultGuestName="Tía Sofía & Tío Roberto"
           tableNumber="Mesa Imperial #02"
           eventDate="14 de Noviembre, 2026 — 4:30 PM"

@@ -40,9 +40,10 @@ export default function TermsPage({ onBackToHome }: PageProps) {
           <section>
             <h2>3. Plazos de entrega</h2>
             <p>
-              El plazo estándar de entrega es de 48 horas laborales a partir de que recibimos los
-              datos completos y las fotografías del evento. El servicio urgente de 24 horas está
-              disponible con costo adicional y sujeto a disponibilidad.
+              El plazo estándar de entrega es de 3 a 5 días hábiles a partir de que recibimos los
+              datos completos y las fotografías del evento. Los pedidos del plan A medida, por ser
+              diseños 100% desde cero, toman de 5 a 7 días hábiles. Cualquier entrega en un plazo
+              menor se coordina caso a caso por WhatsApp.
             </p>
           </section>
 
@@ -115,9 +116,9 @@ export default function TermsPage({ onBackToHome }: PageProps) {
           <section>
             <h2>3. Delivery times</h2>
             <p>
-              Standard delivery is 48 business hours from the moment we receive the complete event
-              details and photos. The 24-hour rush service is available at an additional cost,
-              subject to availability.
+              Standard delivery is 3 to 5 business days from the moment we receive the complete event
+              details and photos. Custom plan orders, being fully bespoke designs, take 5 to 7
+              business days. Any shorter delivery is coordinated case by case via WhatsApp.
             </p>
           </section>
 

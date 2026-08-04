@@ -1,3 +1,13 @@
+# Invifty — web pública
+#
+# Todo lo que vive en este sitio es contenido comercial: la portada, las
+# páginas de contenido y las 12 MUESTRAS de invitación, que son ficticias y
+# están hechas para enseñarse. Por eso se permite indexarlo todo.
+#
+# Las invitaciones reales de clientes NO forman parte de este sitio ni de este
+# repositorio: se publican desde Invifty Studio, que es un proyecto aparte.
+# Ningún dato de un evento real debe llegar aquí.
+
 User-agent: *
 Allow: /
 

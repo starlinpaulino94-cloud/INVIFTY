@@ -2,19 +2,23 @@ import { useState, useEffect, lazy, Suspense, ComponentType } from "react";
 import Navbar from "./components/Navbar";
 import WhatsAppChangeNotice from "./components/WhatsAppChangeNotice";
 import HeroSection from "./components/HeroSection";
+import DemoSelector from "./components/DemoSelector";
 import HowItWorks from "./components/HowItWorks";
 import BenefitsSection from "./components/BenefitsSection";
 import PortfolioSection from "./components/PortfolioSection";
 import PricingSection from "./components/PricingSection";
-import TestimonialsSection from "./components/TestimonialsSection";
+import TrustSection from "./components/TrustSection";
 import FaqSection from "./components/FaqSection";
 import InquiryForm from "./components/InquiryForm";
 import Footer from "./components/Footer";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
 import NotFoundPage from "./components/NotFoundPage";
-import { trackEvent } from "./utils/analytics";
+import { resetOnceGuards, trackEvent } from "./services/analytics";
 import { useLanguage } from "./context/LanguageContext";
-import { PORTFOLIO_ITEMS } from "./data/portfolioData";
+import { useSelection } from "./context/SelectionContext";
+import { getDemoByUrl } from "./services/demos";
+import { applyRouteSeo, getRouteSeo, normalizeRoute as normalizePath } from "./services/seo";
+import { SEO_PAGE_INDEX } from "./data/seoPageIndex";
 
 // Demo pages are code-split so the landing page loads without them.
 const BodaDemo = lazy(() => import("./demos/BodaDemo"));
@@ -36,6 +40,9 @@ const AuroraSummitDemo = lazy(() => import("./demos/AuroraSummitDemo"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
 
+// Páginas SEO por tipo de evento (contenido indexable + JSON-LD)
+const SeoLandingPage = lazy(() => import("./components/SeoLandingPage"));
+
 interface RoutedPageProps {
   onBackToHome: () => void;
 }
@@ -56,41 +63,10 @@ const ROUTES: Record<string, ComponentType<RoutedPageProps>> = {
   "/muestra/summit-aurora-vitrexi": AuroraSummitDemo,
   "/privacidad": PrivacyPage,
   "/terminos": TermsPage,
+  ...Object.fromEntries(
+    SEO_PAGE_INDEX.map((seoPage) => [seoPage.path, SeoLandingPage])
+  ),
 };
-
-function normalizePath(path: string): string {
-  const trimmed = (path || "/").replace(/\/+$/, "");
-  return trimmed === "" ? "/" : trimmed;
-}
-
-/**
- * SEO: título y descripción únicos por ruta (el informe de investigación
- * recomienda que cada página tenga metadatos propios, no los genéricos).
- */
-function getPageMeta(path: string, isEs: boolean): { title: string; description: string } {
-  if (path === "/privacidad") {
-    return isEs
-      ? { title: "Política de Privacidad · Invifty", description: "Cómo Invifty trata tus datos: qué recopilamos, para qué se usa y cómo solicitar acceso, corrección o eliminación." }
-      : { title: "Privacy Policy · Invifty", description: "How Invifty handles your data: what we collect, how it is used and how to request access, correction or deletion." };
-  }
-  if (path === "/terminos") {
-    return isEs
-      ? { title: "Términos del Servicio · Invifty", description: "Condiciones del servicio de invitaciones digitales de Invifty: alcance, revisiones, entrega, pagos y propiedad intelectual." }
-      : { title: "Terms of Service · Invifty", description: "Terms for Invifty's digital invitation service: scope, revisions, delivery, payments and intellectual property." };
-  }
-  const demo = PORTFOLIO_ITEMS.find((item) => item.demoPath === path);
-  if (demo) {
-    return {
-      title: `${demo.title} — ${isEs ? "Muestra Interactiva" : "Interactive Sample"} · Invifty`,
-      description: isEs
-        ? `Muestra interactiva de invitación digital: ${demo.title}. Explora el diseño, la música, la galería y el RSVP de Invifty.`
-        : `Interactive digital invitation sample: ${demo.title}. Explore Invifty's design, music, gallery and RSVP.`,
-    };
-  }
-  return isEs
-    ? { title: "Invifty — Invitaciones Digitales Premium", description: "Invitaciones digitales elegantes e interactivas para bodas, 15 años, cumpleaños y eventos corporativos. RSVP directo por WhatsApp, música, mapas y pases QR." }
-    : { title: "Invifty — Premium Digital Invitations", description: "Elegant, interactive digital invitations for weddings, quinceañeras, birthdays and corporate events. WhatsApp RSVP, music, maps and QR passes." };
-}
 
 function DemoLoadingFallback() {
   const { language } = useLanguage();
@@ -106,6 +82,7 @@ function DemoLoadingFallback() {
 
 export default function App() {
   const { language } = useLanguage();
+  const { selectDemo } = useSelection();
   const [currentPath, setCurrentPath] = useState<string>(() =>
     normalizePath(window.location.pathname)
   );
@@ -119,13 +96,17 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  // Título y meta descripción propios de cada ruta e idioma
+  // page_view por cambio de ruta: la SPA no recarga, así que GA4 no lo detecta solo.
   useEffect(() => {
-    const meta = getPageMeta(currentPath, language === "es");
-    document.title = meta.title;
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute("content", meta.description);
+    resetOnceGuards();
+    trackEvent("page_view", { page_path: currentPath, language });
+  }, [currentPath, language]);
+
+  // Metadatos completos por ruta e idioma: título, descripción, canonical,
+  // Open Graph y Twitter Card. Antes sólo se actualizaban título y descripción,
+  // y el canonical apuntaba siempre a la portada.
+  useEffect(() => {
+    applyRouteSeo(getRouteSeo(currentPath, language));
   }, [currentPath, language]);
 
   // Helper to push history state and navigate
@@ -135,7 +116,19 @@ export default function App() {
     setCurrentPath(normalized);
     window.scrollTo({ top: 0, behavior: "smooth" });
     if (normalized.startsWith("/muestra/")) {
-      trackEvent("view_demo", { demo_path: normalized });
+      const demoId = normalized.replace("/muestra/", "");
+      // Conserva la demo que inspiró al visitante para el formulario y WhatsApp.
+      selectDemo(demoId);
+      // El catálogo aporta la categoría y el tipo de evento, para poder segmentar
+      // qué estilos generan más interés.
+      const demo = getDemoByUrl(normalized);
+      trackEvent("view_demo", {
+        demo_id: demoId,
+        category: demo?.category,
+        event_type: demo ? demo.eventTypeLabel.es : undefined,
+        language,
+        source_page: currentPath,
+      });
     }
   };
 
@@ -143,7 +136,7 @@ export default function App() {
   if (RoutedPage) {
     return (
       <Suspense fallback={<DemoLoadingFallback />}>
-        <RoutedPage onBackToHome={() => handleNavigate("/")} />
+        <RoutedPage key={currentPath} onBackToHome={() => handleNavigate("/")} />
       </Suspense>
     );
   }
@@ -170,11 +163,12 @@ export default function App() {
       {/* Main Sections */}
       <main id="contenido">
         <HeroSection onNavigateDemo={handleNavigate} />
+        <DemoSelector onNavigateDemo={handleNavigate} />
         <HowItWorks />
         <PortfolioSection onNavigateDemo={handleNavigate} />
         <BenefitsSection />
         <PricingSection />
-        <TestimonialsSection />
+        <TrustSection />
         <FaqSection />
         <InquiryForm />
       </main>

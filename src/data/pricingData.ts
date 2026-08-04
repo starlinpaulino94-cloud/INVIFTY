@@ -17,7 +17,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       { es: "Guía de código de vestimenta (Dress Code)", en: "Dress code guide" },
       { es: "Validez activa durante 3 meses", en: "Active for 3 months" }
     ],
-    deliveryTime: { es: "24–48 horas", en: "24–48 hours" },
+    deliveryTime: { es: "3–5 días hábiles", en: "3–5 business days" },
     revisions: 1,
     ctaText: { es: "Solicitar Plan Esencial", en: "Request Essential Plan" }
   },
@@ -40,7 +40,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       { es: "Sección de Historia de la Pareja o Homenaje", en: "Couple's Story or Tribute section" },
       { es: "Validez activa durante 6 meses", en: "Active for 6 months" }
     ],
-    deliveryTime: { es: "48 horas", en: "48 hours" },
+    deliveryTime: { es: "3–5 días hábiles", en: "3–5 business days" },
     revisions: 2,
     whyRecommended: {
       es: "La más elegida para bodas y 15 años: incluye RSVP, música, galería e historia sin pagar por funciones de control avanzado.",
@@ -67,19 +67,20 @@ export const PRICING_PLANS: PricingPlan[] = [
       { es: "Recordatorios de fecha vía WhatsApp", en: "Date reminders via WhatsApp" },
       { es: "Validez activa durante 9 meses", en: "Active for 9 months" }
     ],
-    deliveryTime: { es: "48–72 horas", en: "48–72 hours" },
+    deliveryTime: { es: "3–5 días hábiles", en: "3–5 business days" },
     revisions: 3,
     ctaText: { es: "Solicitar Plan Premium", en: "Request Premium Plan" }
   },
   {
-    id: "luxury",
-    name: { es: "Luxury", en: "Luxury" },
+    id: "a-medida",
+    name: { es: "A medida", en: "Custom" },
     priceUSD: 129,
     priceDOP: 6500,
-    badge: { es: "Exclusivo 100%", en: "100% Exclusive" },
+    badge: { es: "Diseño 100% a medida", en: "100% bespoke design" },
+    isCustom: true,
     description: {
-      es: "Un diseño único creado desde cero para tu evento.",
-      en: "A one-of-a-kind design created from scratch for your event."
+      es: "Un diseño único, creado desde cero para tu evento, con soporte dedicado.",
+      en: "A one-of-a-kind design, created from scratch for your event, with dedicated support."
     },
     features: [
       { es: "Todo lo incluido en el plan Premium", en: "Everything in the Premium plan" },
@@ -89,9 +90,9 @@ export const PRICING_PLANS: PricingPlan[] = [
       { es: "Galería de fotos post-evento para invitados", en: "Post-event photo gallery for guests" },
       { es: "Validez activa durante 1 año completo", en: "Active for a full year" }
     ],
-    deliveryTime: { es: "3–5 días hábiles", en: "3–5 business days" },
+    deliveryTime: { es: "5–7 días hábiles", en: "5–7 business days" },
     revisions: 4,
-    ctaText: { es: "Solicitar Plan Luxury", en: "Request Luxury Plan" }
+    ctaText: { es: "Solicitar diseño a medida", en: "Request a custom design" }
   }
 ];
 
@@ -103,10 +104,10 @@ export const PLAN_COMPARISON: PlanComparisonRow[] = [
   {
     label: { es: "Entrega estimada", en: "Estimated delivery" },
     values: [
-      { es: "24–48 h", en: "24–48 h" },
-      { es: "48 h", en: "48 h" },
-      { es: "48–72 h", en: "48–72 h" },
-      { es: "3–5 días", en: "3–5 days" }
+      { es: "3–5 días hábiles", en: "3–5 business days" },
+      { es: "3–5 días hábiles", en: "3–5 business days" },
+      { es: "3–5 días hábiles", en: "3–5 business days" },
+      { es: "5–7 días hábiles", en: "5–7 business days" }
     ]
   },
   {
@@ -116,6 +117,24 @@ export const PLAN_COMPARISON: PlanComparisonRow[] = [
       { es: "2", en: "2" },
       { es: "3", en: "3" },
       { es: "4", en: "4" }
+    ]
+  },
+  {
+    label: { es: "Invitados", en: "Guests" },
+    values: [
+      { es: "Ilimitados", en: "Unlimited" },
+      { es: "Ilimitados", en: "Unlimited" },
+      { es: "Ilimitados", en: "Unlimited" },
+      { es: "Ilimitados", en: "Unlimited" }
+    ]
+  },
+  {
+    label: { es: "Soporte", en: "Support" },
+    values: [
+      { es: "Por WhatsApp", en: "Via WhatsApp" },
+      { es: "Por WhatsApp", en: "Via WhatsApp" },
+      { es: "Por WhatsApp", en: "Via WhatsApp" },
+      { es: "Soporte dedicado", en: "Dedicated support" }
     ]
   },
   {

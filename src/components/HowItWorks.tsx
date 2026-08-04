@@ -1,4 +1,4 @@
-import { FileText, Send, Share2 } from "lucide-react";
+import { FileText, Send, CheckCheck, Share2 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 export default function HowItWorks() {
@@ -28,39 +28,49 @@ export default function HowItWorks() {
     },
     {
       number: "03",
-      title: { es: "Recibe tu invitación en 48 horas", en: "Receive your invitation in 48 hours" },
+      title: { es: "Revisa y aprueba tu diseño", en: "Review and approve your design" },
+      description: {
+        es: "Recibes tu propuesta, agrupas tus comentarios en las rondas de revisión incluidas y aprobamos juntos la versión final.",
+        en: "You receive your draft, group your feedback into the included revision rounds, and we approve the final version together."
+      },
+      icon: CheckCheck,
+      badge: { es: "Paso 3", en: "Step 3" }
+    },
+    {
+      number: "04",
+      title: { es: "Recibe tu enlace y compártelo", en: "Get your link and share it" },
       description: {
         es: "Te entregamos tu enlace personalizado listo para compartir al instante con todos tus invitados por WhatsApp.",
         en: "We deliver your personalized link, ready to share instantly with all your guests on WhatsApp."
       },
       icon: Share2,
-      badge: { es: "Paso 3", en: "Step 3" }
+      badge: { es: "Paso 4", en: "Step 4" }
     }
   ];
 
   return (
-    <section id="como-funciona" className="py-24 bg-[#151515] border-y border-white/5 relative">
+    <section id="como-funciona" className="py-24 bg-surface-raised border-y border-white/5 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-[11px] uppercase tracking-[0.4em] text-[#D4AF37] block mb-3 font-semibold">
+          <span className="text-[11px] uppercase tracking-[0.4em] text-gold block mb-3 font-semibold">
             {isEs ? "Proceso Ágil & Exclusivo" : "Fast & Exclusive Process"}
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-normal text-white mb-4">
             {isEs ? "¿Cómo funciona " : "How does "}
-            <span className="italic font-light text-[#D4AF37]">Invifty</span>
+            <span className="italic font-light text-gold">Invifty</span>
             {isEs ? "?" : " work?"}
           </h2>
           <p className="text-white/50 text-sm sm:text-base font-light italic">
             {isEs
-              ? "En solo 3 pasos tendrás una invitación web de categoría internacional lista para enviar."
-              : "In just 3 steps you'll have a world-class web invitation ready to send."}
+              ? "En solo 4 pasos tendrás una invitación web de categoría internacional lista para enviar."
+              : "In just 4 steps you'll have a world-class web invitation ready to send."}
           </p>
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
           {/* Connector Line for Desktop */}
           <div className="hidden md:block absolute top-1/2 left-12 right-12 h-[1px] bg-white/5 -translate-y-8 pointer-events-none"></div>
 
@@ -69,22 +79,22 @@ export default function HowItWorks() {
             return (
               <div
                 key={idx}
-                className="bg-[#0A0A0A] border border-white/5 hover:border-[#D4AF37]/30 p-8 relative transition-all duration-300 group flex flex-col justify-between"
+                className="bg-surface-sunken border border-white/5 hover:border-gold/30 p-8 relative transition-all duration-300 group flex flex-col justify-between"
               >
                 {/* Step Header */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] border border-[#D4AF37]/30 px-3 py-1 bg-black/40">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold border border-gold/30 px-3 py-1 bg-black/40">
                       {lx(step.badge)}
                     </span>
-                    <span className="font-serif text-3xl font-light text-white/20 group-hover:text-[#D4AF37]/40 transition-colors">
+                    <span className="font-serif text-3xl font-light text-white/40 group-hover:text-gold/60 transition-colors">
                       {step.number}
                     </span>
                   </div>
 
                   {/* Icon */}
-                  <div className="w-12 h-12 rounded-none bg-[#151515] border border-white/10 flex items-center justify-center mb-6 group-hover:border-[#D4AF37] transition-colors">
-                    <IconComponent className="w-5 h-5 text-[#D4AF37]" />
+                  <div className="w-12 h-12 rounded-none bg-surface-raised border border-white/10 flex items-center justify-center mb-6 group-hover:border-gold transition-colors">
+                    <IconComponent className="w-5 h-5 text-gold" />
                   </div>
 
                   {/* Title & Description */}

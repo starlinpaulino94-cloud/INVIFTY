@@ -1,11 +1,9 @@
+import { useDemoFonts } from "../hooks/useDemoFonts";
+import { parseAttendance } from "../utils/rsvp";
 import { useState, useEffect, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import { 
-  Sparkles, MapPin, Calendar, Clock, Award, CheckCircle2, 
-  ArrowLeft, Send, Building, Users, ExternalLink, QrCode, 
-  Car, Navigation, X, ShieldCheck
-} from "lucide-react";
+import { Sparkles, MapPin, Calendar, Clock, Award, CheckCircle2, ArrowLeft, Send, Building, Users, ExternalLink, QrCode, Car, Navigation, X, ShieldCheck } from "lucide-react";
 import corporateImg from "../assets/images/gala_corporate_demo.webp";
 import VipPassModal from "../components/VipPassModal";
 
@@ -14,6 +12,7 @@ interface CorporateDemoProps {
 }
 
 export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
+  useDemoFonts();
   // Target date: October 28, 2026 19:30:00 AST
   const targetDate = new Date("2026-10-28T19:30:00").getTime();
 
@@ -424,8 +423,14 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
           {rsvpSubmitted ? (
             <div className="bg-[#0B132B] border border-[#D4AF37] p-6 rounded-2xl">
               <CheckCircle2 className="w-10 h-10 text-[#D4AF37] mx-auto mb-2" />
-              <h3 className="font-bold text-xl text-white mb-1">¡Registro Confirmado!</h3>
-              <p className="text-xs text-gray-300">Hemos procesado sus datos y enviado la confirmación vía WhatsApp.</p>
+              <h3 className="font-bold text-xl text-white mb-1">Se abrió WhatsApp</h3>
+              {/* La muestra no procesa ni almacena nada: sólo abre el chat. */}
+              <p className="text-xs text-gray-300">
+                Su registro quedó redactado en WhatsApp. Envíe el mensaje para completarlo.
+              </p>
+              <p className="text-[10px] text-gray-400 mt-2">
+                Es una muestra: los datos no se guardan en ningún sistema.
+              </p>
             </div>
           ) : (
             <form onSubmit={handleRsvpSubmit} className="bg-[#0B132B] p-6 rounded-2xl border border-[#D4AF37]/30 text-left space-y-4">
@@ -471,11 +476,11 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
                 <label className="block text-xs font-bold uppercase text-gray-300 mb-1">Confirmación de Asistencia</label>
                 <select
                   value={rsvpData.attendance}
-                  onChange={(e) => setRsvpData({ ...rsvpData, attendance: e.target.value as any })}
+                  onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })}
                   className="w-full bg-[#1C2541] border border-[#D4AF37]/30 rounded-xl p-3 text-sm text-white focus:outline-none"
                 >
                   <option value="Confirmado">✅ Asistiré a la Gala</option>
-                  <option value="No podré asistir">❌ Excuso mi asistencia</option>
+                  <option value="Declina">❌ Excuso mi asistencia</option>
                 </select>
               </div>
 
@@ -507,7 +512,6 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
       {showVipPassModal && (
         <VipPassModal
           eventName="Gala Anual de Innovación & Elegancia 2026"
-          eventType="corporativo"
           defaultGuestName="Ing. Roberto Mendoza"
           tableNumber="Mesa Ejecutiva #04"
           eventDate="28 de Octubre, 2026 — 7:30 PM"

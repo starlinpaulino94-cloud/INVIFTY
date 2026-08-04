@@ -6,8 +6,77 @@
  * font-sans usa Montserrat, en vez de las fuentes genéricas del sistema.
  */
 @theme {
-  --font-serif: "Playfair Display", "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Montserrat", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Montserrat", system-ui, -apple-system, sans-serif;
+
+  /* ---------------------------------------------------------------------
+   * TOKENS DE MARCA
+   * =====================================================================
+   * Fuente única de los valores visuales del sitio comercial.
+   *
+   * Antes, `#D4AF37` aparecía 220 veces sólo en components/ y pages/:
+   * cambiar el dorado de marca exigía una búsqueda y reemplazo global.
+   * Ahora se cambia aquí.
+   *
+   * Tailwind genera una utilidad por token: `--color-gold` habilita
+   * `text-gold`, `bg-gold`, `border-gold`, `from-gold`, `bg-gold/10`…
+   *
+   * ⚠️ Las demos (src/demos/) NO usan estos tokens a propósito: cada una
+   * tiene su propia paleta, que es justo lo que se está vendiendo.
+   * ------------------------------------------------------------------- */
+
+  /* Dorado: reservado para acciones, estados y detalles destacados.
+     No debe usarse como color de fondo extenso. */
+  --color-gold: #D4AF37;
+  --color-gold-hover: #F2D06B;
+  --color-gold-deep: #A37E2C;
+
+  /* Superficies, de la más profunda a la más elevada. */
+  --color-surface-sunken: #0A0A0A;
+  --color-surface: #0F0F0F;
+  --color-surface-card: #121212;
+  --color-surface-raised: #151515;
+  --color-surface-hover: #1A1A1A;
+
+  /* Texto. `muted` es el gris más claro que aún cumple 4.5:1 sobre
+     `surface-sunken`; por debajo de ~47 % de blanco se incumple. */
+  --color-ink: #FFFFFF;
+  --color-ink-soft: #EAEAEA;
+  --color-ink-muted: #9A9A9A;
+
+  /* Verde oficial de WhatsApp, para el canal de contacto. */
+  --color-whatsapp: #25D366;
+
+  /* Radios */
+  --radius-card: 1rem;
+  --radius-pill: 9999px;
+
+  /* Sombras de marca */
+  --shadow-gold: 0 20px 50px -10px rgb(212 175 55 / 0.25);
+  --shadow-card: 0 25px 60px -15px rgb(0 0 0 / 0.9);
+
+  /* Transición estándar de la interfaz */
+  --default-transition-duration: 300ms;
+}
+
+/* ---------------------------------------------------------------------
+ * Altura mínima de control táctil (WCAG 2.2 · objetivo 44–48 px).
+ * ------------------------------------------------------------------- */
+@layer utilities {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/*
+ * Compensa la cabecera fija al navegar por anclas.
+ * Sin esto, el navegador desplaza la sección justo bajo el borde superior
+ * y la cabecera le tapa el titular.
+ */
+:target,
+section[id] {
+  scroll-margin-top: 6rem;
 }
 
 html, body {
@@ -82,7 +151,7 @@ html, body {
     font-family: 'Alex Brush', cursive;
   }
   .font-sans-clean {
-    font-family: 'Montserrat', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
   }
 }
 

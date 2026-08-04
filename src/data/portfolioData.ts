@@ -25,6 +25,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "boda-editorial-elena-gabriel",
     title: "Elena & Gabriel — Boda Editorial",
     eventType: "Boda Luxury",
+    category: "boda",
+    style: { es: "Editorial clásico · Marfil, negro y oro", en: "Classic editorial · Ivory, black & gold" },
+    minimumPlan: "popular",
     subtitle: "Zona Colonial, Santo Domingo · Estilo Editorial Clásico",
     image: posterEditorial,
     features: [
@@ -42,6 +45,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "quince-celestial-amara",
     title: "Amara Isabel — XV Celestial",
     eventType: "15 Años & Quinceañera",
+    category: "quinceanera",
+    style: { es: "Celestial · Azul noche y plata", en: "Celestial · Midnight blue & silver" },
+    minimumPlan: "premium",
     subtitle: "Hotel Jaragua, Santo Domingo · Estilo Cielo Estrellado",
     image: posterCelestial,
     features: [
@@ -58,6 +64,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "neon-party-marcos-40",
     title: "Marcos 40 — Neon Party",
     eventType: "Cumpleaños de Adultos",
+    category: "cumpleanos",
+    style: { es: "Neón eléctrico · Magenta y cian", en: "Electric neon · Magenta & cyan" },
+    minimumPlan: "popular",
     subtitle: "Sky Lounge 27, Naco · Estilo Neón Eléctrico",
     image: posterNeon,
     features: [
@@ -74,6 +83,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "summit-aurora-vitrexi",
     title: "Aurora Summit 2027 — Vitrexi",
     eventType: "Corporativo & Galas",
+    category: "corporativo",
+    style: { es: "Minimal corporativo · Violeta y gris", en: "Corporate minimal · Violet & grey" },
+    minimumPlan: "premium",
     subtitle: "Centro de Convenciones · Estilo Minimal Corporativo",
     image: posterAurora,
     features: [
@@ -93,6 +105,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "boda-camila-y-lucas",
     title: "Camila & Lucas — Boda de Gala",
     eventType: "Boda Luxury",
+    category: "boda",
+    style: { es: "Black tie · Verde profundo, oro y nude", en: "Black tie · Deep green, gold & nude" },
+    minimumPlan: "premium",
     subtitle: "Altos de Chavón, La Romana · Etiqueta Black Tie",
     image: weddingImage,
     features: [
@@ -114,6 +129,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "cumple-valeria-15",
     title: "Valeria Sofía — Mis 15 Años",
     eventType: "15 Años & Quinceañera",
+    category: "quinceanera",
+    style: { es: "Romántico · Coral, ciruela y oro", en: "Romantic · Coral, plum & gold" },
+    minimumPlan: "popular",
     subtitle: "Grand Ballroom Hotel Jaragua, Santo Domingo",
     image: quinceImage,
     features: [
@@ -131,6 +149,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "gala-anual-vitrexi",
     title: "Gala Anual de Innovación 2026",
     eventType: "Corporativo & Galas",
+    category: "corporativo",
+    style: { es: "Gala ejecutiva · Azul noche y oro", en: "Executive gala · Midnight blue & gold" },
+    minimumPlan: "premium",
     subtitle: "El Embajador, A Royal Hideaway Hotel · Santo Domingo",
     image: corporateImage,
     features: [
@@ -147,6 +168,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "baby-shower-mateo",
     title: "Bienvenida Mateo — Baby Shower",
     eventType: "Baby Shower",
+    category: "baby-shower",
+    style: { es: "Terracota suave · Nude, cacao y arena", en: "Soft terracotta · Nude, cocoa & sand" },
+    minimumPlan: "popular",
     subtitle: "Terraza Privada Casa de Campo · La Romana",
     image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&q=80&w=800",
     features: [
@@ -163,6 +187,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "bautizo-sofia-maria",
     title: "Bautizo & Recepción — Sofía María",
     eventType: "Bautizo & Comunión",
+    category: "bautizo",
+    style: { es: "Sacro sereno · Verde bosque y oro", en: "Serene sacred · Forest green & gold" },
+    minimumPlan: "popular",
     subtitle: "Catedral Primada de América & Restaurante Pepperoni",
     image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=800",
     features: [
@@ -178,6 +205,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "cumpleanos-50-roberto",
     title: "50 Años de Elegancia — Roberto Almanzar",
     eventType: "Cumpleaños de Adultos",
+    category: "cumpleanos",
+    style: { es: "Náutico elegante · Azul marino y oro", en: "Elegant nautical · Navy & gold" },
+    minimumPlan: "popular",
     subtitle: "Marina Casa de Campo · La Romana",
     image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=800",
     features: [
@@ -193,6 +223,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "bridal-shower-isabella",
     title: "Fiesta Blanca — Bridal Shower Isabella",
     eventType: "Bridal Shower",
+    category: "bridal-shower",
+    style: { es: "Fiesta blanca · Blanco, negro y bronce", en: "White party · White, black & bronze" },
+    minimumPlan: "popular",
     subtitle: "Punta Cana Resort & Club · Punta Cana",
     image: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80&w=800",
     features: [
@@ -208,6 +241,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     slug: "grand-opening-boutique",
     title: "Grand Opening — Boutique L'Élite",
     eventType: "Lanzamientos de Marca",
+    category: "apertura",
+    style: { es: "Apertura premium · Negro y oro", en: "Premium opening · Black & gold" },
+    minimumPlan: "premium",
     subtitle: "Torre Empresarial Piantini · Santo Domingo",
     image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800",
     features: [

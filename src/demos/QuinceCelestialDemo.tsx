@@ -1,9 +1,9 @@
+import { useDemoFonts } from "../hooks/useDemoFonts";
+import { parseAttendance } from "../utils/rsvp";
 import { useState, useEffect, useRef, ReactNode, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import {
-  ArrowLeft, Clock, Navigation, Send, CheckCircle2, Sparkles, Music2, GlassWater, PartyPopper,
-} from "lucide-react";
+import { ArrowLeft, Clock, Navigation, Send, CheckCircle2, Sparkles, Music2, GlassWater, PartyPopper } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 /**
@@ -73,6 +73,7 @@ interface DemoProps {
 
 export default function QuinceCelestialDemo({ onBackToHome }: DemoProps) {
   const { language } = useLanguage();
+  useDemoFonts();
   const isEs = language === "es";
 
   // Cuenta regresiva al 21 de noviembre de 2026, 8:00 PM
@@ -318,12 +319,12 @@ export default function QuinceCelestialDemo({ onBackToHome }: DemoProps) {
                     <select
                       id="qc-asistencia"
                       value={rsvp.attendance}
-                      onChange={(e) => setRsvp({ ...rsvp, attendance: e.target.value as RsvpFormData["attendance"] })}
+                      onChange={(e) => setRsvp({ ...rsvp, attendance: parseAttendance(e.target.value) })}
                       className="w-full border rounded-lg px-4 py-3 text-sm text-white focus:outline-none"
                       style={{ borderColor: `${PLATA_TENUE}66`, background: NOCHE_SUAVE }}
                     >
                       <option value="Confirmado">{isEs ? "¡Ahí estaré!" : "I'll be there!"}</option>
-                      <option value="No podré asistir">{isEs ? "No podré asistir" : "Can't make it"}</option>
+                      <option value="Declina">{isEs ? "No podré asistir" : "Can't make it"}</option>
                     </select>
                   </div>
                   <div>

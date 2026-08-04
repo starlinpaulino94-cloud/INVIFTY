@@ -71,16 +71,16 @@ export default function BenefitsSection() {
   const isEs = language === "es";
 
   return (
-    <section id="beneficios" className="py-24 bg-[#0F0F0F] border-t border-white/5">
+    <section id="beneficios" className="py-24 bg-surface border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-[11px] uppercase tracking-[0.4em] text-[#D4AF37] block mb-3 font-semibold">
+          <span className="text-[11px] uppercase tracking-[0.4em] text-gold block mb-3 font-semibold">
             {isEs ? "Más que una tarjeta" : "More than a card"}
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-normal text-white mb-4">
             {isEs ? "La experiencia digital de " : "The digital experience of "}
-            <span className="italic font-light text-[#D4AF37]">
+            <span className="italic font-light text-gold">
               {isEs ? "tu evento" : "your event"}
             </span>
           </h2>
@@ -98,10 +98,10 @@ export default function BenefitsSection() {
             return (
               <div
                 key={idx}
-                className="bg-[#151515] border border-white/5 p-7 hover:border-[#D4AF37]/40 transition-colors"
+                className="bg-surface-raised border border-white/5 p-7 hover:border-gold/40 transition-colors"
               >
-                <div className="w-10 h-10 flex items-center justify-center bg-[#D4AF37]/10 border border-[#D4AF37]/30 mb-5">
-                  <Icon className="w-5 h-5 text-[#D4AF37]" aria-hidden="true" />
+                <div className="w-10 h-10 flex items-center justify-center bg-gold/10 border border-gold/30 mb-5">
+                  <Icon className="w-5 h-5 text-gold" aria-hidden="true" />
                 </div>
                 <h3 className="font-serif text-lg text-white font-normal mb-2">
                   {lx(benefit.title)}

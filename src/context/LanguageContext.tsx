@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { trackEvent } from "../services/analytics";
 import { Localized } from "../types";
 
 export type Language = "es" | "en";
@@ -11,7 +12,7 @@ interface LanguageContextType {
   lx: (value: Localized) => string;
 }
 
-const translations: Record<Language, Record<string, string>> = {
+export const translations: Record<Language, Record<string, string>> = {
   es: {
     // Navbar
     "nav.home": "Inicio",
@@ -21,7 +22,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.faq": "Preguntas",
     "nav.contact": "Contacto",
     "nav.requestInvite": "Solicitar Invitación",
-    "nav.tagline": "ESTUDIO DIGITAL DE EVENTOS",
+    "nav.tagline": "EXPERIENCIA DIGITAL DE EVENTOS",
 
     // Hero
     "hero.badge": "INVITACIONES DIGITALES PREMIUM",
@@ -36,7 +37,7 @@ const translations: Record<Language, Record<string, string>> = {
     "hero.stat2": "Soporte Bilingüe",
     "hero.stat2Sub": "Español e Inglés para invitados internacionales",
     "hero.stat3": "Garantía de Entrega",
-    "hero.stat3Sub": "En menos de 48 horas laborales",
+    "hero.stat3Sub": "En 3 a 5 días hábiles",
 
     // Boda demo
     "boda.back": "Volver a Invifty",
@@ -63,7 +64,7 @@ const translations: Record<Language, Record<string, string>> = {
     // General
     "lang.spanish": "Español",
     "lang.english": "Inglés",
-    "lang.selectLanguage": "Idioma / Language",
+    "lang.selectLanguage": "Idioma / Language"
   },
   en: {
     // Navbar
@@ -74,7 +75,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.faq": "FAQ",
     "nav.contact": "Contact",
     "nav.requestInvite": "Request Invitation",
-    "nav.tagline": "DIGITAL EVENT STUDIO",
+    "nav.tagline": "DIGITAL EVENT EXPERIENCE",
 
     // Hero
     "hero.badge": "PREMIUM DIGITAL INVITATIONS",
@@ -89,7 +90,7 @@ const translations: Record<Language, Record<string, string>> = {
     "hero.stat2": "Bilingual Support",
     "hero.stat2Sub": "Spanish & English for international guests",
     "hero.stat3": "Turnaround Guarantee",
-    "hero.stat3Sub": "In less than 48 business hours",
+    "hero.stat3Sub": "In 3 to 5 business days",
 
     // Boda demo
     "boda.back": "Back to Invifty",
@@ -116,7 +117,7 @@ const translations: Record<Language, Record<string, string>> = {
     // General
     "lang.spanish": "Spanish",
     "lang.english": "English",
-    "lang.selectLanguage": "Language / Idioma",
+    "lang.selectLanguage": "Language / Idioma"
   }
 };
 
@@ -135,6 +136,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem("invifty_lang", lang);
+    trackEvent("change_language", { language: lang });
   };
 
   // Keep <html lang="..."> in sync for screen readers and SEO

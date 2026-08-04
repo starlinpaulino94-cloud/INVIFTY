@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancela ejecuciones anteriores de la misma rama: sólo interesa la última.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, pruebas y build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Comprobar tipos de TypeScript
+        run: npm run lint
+
+      - name: Ejecutar pruebas
+        run: npm test
+
+      - name: Compilar para producción
+        run: npm run build
+
+      # CI no debe modificar archivos. Si el build o las pruebas dejan cambios
+      # en el árbol de trabajo, es un error que hay que corregir en el código.
+      - name: Verificar que el árbol de trabajo quedó limpio
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::CI modificó archivos del repositorio:"
+            git status --porcelain
+            git diff
+            exit 1
+          fi
+          echo "El árbol de trabajo está limpio."
