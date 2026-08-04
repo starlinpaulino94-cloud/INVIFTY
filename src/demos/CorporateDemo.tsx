@@ -1,525 +1,820 @@
-import { useDemoFonts } from "../hooks/useDemoFonts";
-import { parseAttendance } from "../utils/rsvp";
 import { useState, useEffect, FormEvent } from "react";
-import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
-import { RsvpFormData } from "../types";
-import { Sparkles, MapPin, Calendar, Clock, Award, CheckCircle2, ArrowLeft, Send, Building, Users, ExternalLink, QrCode, Car, Navigation, X, ShieldCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Building,
+  Calendar,
+  Car,
+  CheckCircle2,
+  Globe,
+  Mic,
+  Navigation,
+  QrCode,
+  ShieldCheck,
+  Send,
+  Sparkles,
+  Users,
+  Utensils,
+  X,
+} from "lucide-react";
 import corporateImg from "../assets/images/gala_corporate_demo.webp";
+import Reveal from "../components/common/Reveal";
 import VipPassModal from "../components/VipPassModal";
+import { useDemoFonts } from "../hooks/useDemoFonts";
+import { useLanguage } from "../context/LanguageContext";
+import { RsvpFormData } from "../types";
+import { parseAttendance } from "../utils/rsvp";
+import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 
 interface CorporateDemoProps {
   onBackToHome: () => void;
 }
 
+/* Paleta ejecutiva: azul noche corporativo, oro y gris acero. */
+const NAVY_DEEP = "#070B19";
+const NAVY = "#0B132B";
+const NAVY_SOFT = "#1C2541";
+const GOLD = "#D4AF37";
+
+const GALLERY = [
+  "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=900",
+];
+
+function Divider() {
+  return (
+    <div className="flex items-center justify-center gap-4 py-2" aria-hidden="true">
+      <span className="h-px w-16 sm:w-24" style={{ background: `linear-gradient(to right, transparent, ${GOLD}80)` }} />
+      <span className="rotate-45 block w-1.5 h-1.5" style={{ background: GOLD }} />
+      <span className="h-px w-16 sm:w-24" style={{ background: `linear-gradient(to left, transparent, ${GOLD}80)` }} />
+    </div>
+  );
+}
+
+function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
+  return (
+    <div className="text-center mb-12">
+      <span className="text-[10px] uppercase tracking-[0.45em] font-semibold block mb-3" style={{ color: GOLD }}>
+        {eyebrow}
+      </span>
+      <h2 className="font-serif-display text-3xl sm:text-5xl font-bold text-white mb-4">{title}</h2>
+      <Divider />
+    </div>
+  );
+}
+
 export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
   useDemoFonts();
-  // Target date: October 28, 2026 19:30:00 AST
+  const { language, setLanguage } = useLanguage();
+  const isEs = language === "es";
+  const lx = (es: string, en: string) => (isEs ? es : en);
+
   const targetDate = new Date("2026-10-28T19:30:00").getTime();
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [showQrModal, setShowQrModal] = useState(false);
   const [showVipPassModal, setShowVipPassModal] = useState(false);
+  const [activePhoto, setActivePhoto] = useState<string | null>(null);
 
-  // Corporate RSVP Form State
   const [rsvpData, setRsvpData] = useState<RsvpFormData>({
     fullName: "",
     attendance: "Confirmado",
     guestCount: 1,
-    menuPreference: "Cena Ejecutiva de Tres Tiempos",
+    menuPreference: isEs ? "Cena ejecutiva de tres tiempos" : "Three-course executive dinner",
     dietaryNotes: "",
-    songRequest: ""
+    songRequest: "",
   });
   const [companyName, setCompanyName] = useState("");
   const [positionTitle, setPositionTitle] = useState("");
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
 
   useEffect(() => {
-    const updateTimer = () => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
-
-      if (difference > 0) {
+    const update = () => {
+      const diff = targetDate - Date.now();
+      if (diff > 0) {
         setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000)
+          days: Math.floor(diff / 86400000),
+          hours: Math.floor((diff % 86400000) / 3600000),
+          minutes: Math.floor((diff % 3600000) / 60000),
+          seconds: Math.floor((diff % 60000) / 1000),
         });
       } else {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     };
-
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
+    update();
+    const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, [targetDate]);
+
+  useEffect(() => {
+    if (!activePhoto) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setActivePhoto(null);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [activePhoto]);
 
   const handleRsvpSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!rsvpData.fullName.trim()) return;
 
-    const fullData: RsvpFormData = {
+    // La empresa y el cargo viajan en las notas: son los datos que la
+    // organización necesita para la acreditación en puerta.
+    const payload: RsvpFormData = {
       ...rsvpData,
-      dietaryNotes: `Empresa: ${companyName || "N/A"} | Cargo: ${positionTitle || "N/A"} | ${rsvpData.dietaryNotes}`
+      dietaryNotes: [
+        `${lx("Empresa", "Company")}: ${companyName || "—"}`,
+        `${lx("Cargo", "Role")}: ${positionTitle || "—"}`,
+        rsvpData.dietaryNotes ? `${lx("Notas", "Notes")}: ${rsvpData.dietaryNotes}` : "",
+      ]
+        .filter(Boolean)
+        .join(" | "),
     };
 
-    const url = createRsvpWhatsAppUrl("Gala Anual de Innovación 2026", fullData);
-    window.open(url, "_blank", "noopener,noreferrer");
+    window.open(createRsvpWhatsAppUrl("Gala Anual de Innovación 2026", payload), "_blank", "noopener,noreferrer");
     setRsvpSubmitted(true);
   };
 
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+  const scrollToSection = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  const calendarUrl = () => {
+    const p = new URLSearchParams({
+      action: "TEMPLATE",
+      text: "Gala Anual de Innovación 2026",
+      dates: "20261028T233000Z/20261029T040000Z",
+      details: "Gala Anual de Innovación 2026 — El Embajador, A Royal Hideaway Hotel.",
+      location: "El Embajador, A Royal Hideaway Hotel, Santo Domingo",
+    });
+    return `https://calendar.google.com/calendar/render?${p.toString()}`;
   };
 
-  const createGoogleCalendarUrl = () => {
-    const title = encodeURIComponent("Gala Anual de Innovación 2026 — Corporativo");
-    const details = encodeURIComponent("Gala Anual de Innovación 2026 en El Embajador, A Royal Hideaway Hotel.");
-    const location = encodeURIComponent("El Embajador, A Royal Hideaway Hotel, Santo Domingo");
-    const start = "20261028T233000Z";
-    const end = "20261029T040000Z";
-    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
-  };
+  const agenda = [
+    { time: "7:30 PM", icon: Users, es: "Recepción y acreditación", en: "Reception & accreditation", d_es: "Cóctel de bienvenida y entrega de credenciales.", d_en: "Welcome cocktail and badge pickup." },
+    { time: "8:15 PM", icon: Mic, es: "Palabras de apertura", en: "Opening remarks", d_es: "Presidencia del Consejo de Innovación.", d_en: "Chair of the Innovation Council." },
+    { time: "8:45 PM", icon: Sparkles, es: "Panel: Transformación digital", en: "Panel: Digital transformation", d_es: "Tres ponentes, cuarenta minutos, preguntas abiertas.", d_en: "Three speakers, forty minutes, open Q&A." },
+    { time: "9:30 PM", icon: Utensils, es: "Cena ejecutiva", en: "Executive dinner", d_es: "Menú de tres tiempos servido en mesa.", d_en: "Three-course plated menu." },
+    { time: "10:45 PM", icon: CheckCircle2, es: "Premios a la excelencia", en: "Excellence awards", d_es: "Reconocimiento a las empresas del año.", d_en: "Recognition of the year's companies." },
+    { time: "11:30 PM", icon: Building, es: "Networking y cierre", en: "Networking & close", d_es: "Terraza abierta hasta la medianoche.", d_en: "Terrace open until midnight." },
+  ];
 
   const speakers = [
     {
       name: "Ing. Guillermo Henríquez",
-      title: "Presidente del Consejo de Innovación",
-      topic: "Transformación Digital e Inteligencia Artificial en R.D."
+      role_es: "Presidente del Consejo de Innovación",
+      role_en: "Chair of the Innovation Council",
+      topic_es: "Transformación digital e inteligencia artificial en R.D.",
+      topic_en: "Digital transformation and AI in the D.R.",
+      photo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=500",
     },
     {
-      name: "Dra. Elena Vasquez",
-      title: "Directora de Inteligencia de Negocios",
-      topic: "El Futuro del Liderazgo Ejecutivo 2030"
+      name: "Dra. Elena Vásquez",
+      role_es: "Directora de Inteligencia de Negocios",
+      role_en: "Director of Business Intelligence",
+      topic_es: "El futuro del liderazgo ejecutivo hacia 2030",
+      topic_en: "The future of executive leadership toward 2030",
+      photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=500",
     },
     {
       name: "Lic. Marcos De la Cruz",
-      title: "Vicepresidente de Alianzas Estratégicas",
-      topic: "Estrategias de Sostenibilidad y Mercado Global"
-    }
+      role_es: "Vicepresidente de Alianzas Estratégicas",
+      role_en: "VP of Strategic Partnerships",
+      topic_es: "Sostenibilidad y acceso a mercados globales",
+      topic_en: "Sustainability and access to global markets",
+      photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=500",
+    },
+  ];
+
+  const inputClass =
+    "w-full px-4 py-3 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus-visible:ring-2 transition-colors min-h-[48px]";
+  const inputStyle = { background: NAVY_DEEP, border: `1px solid ${GOLD}33` };
+
+  const navItems = [
+    { id: "gala", es: "La Gala", en: "The Gala" },
+    { id: "agenda", es: "Agenda", en: "Agenda" },
+    { id: "ponentes", es: "Ponentes", en: "Speakers" },
+    { id: "pase", es: "Pase de Acceso", en: "Access Pass" },
+    { id: "ubicacion", es: "Ubicación", en: "Venue" },
+    { id: "galeria", es: "Ediciones", en: "Past Editions" },
   ];
 
   return (
-    <div className="bg-[#0B132B] text-[#E0E6ED] min-h-screen font-sans-clean selection:bg-[#D4AF37]/30 relative pb-20">
-      
-      {/* Top Floating Watermark Bar */}
-      <div className="bg-[#070B19] text-[#FFF1CB] py-2.5 px-4 sticky top-0 z-50 shadow-md border-b border-[#D4AF37]/30 flex items-center justify-between gap-3 text-xs">
-        <button
-          onClick={onBackToHome}
-          className="flex items-center gap-1.5 text-gray-300 hover:text-[#D4AF37] font-medium transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" /> Volver a Invifty
+    <div className="min-h-screen font-sans-clean selection:bg-[#D4AF37]/30 relative" style={{ background: NAVY, color: "#E0E6ED" }}>
+      {/* Barra de demostración */}
+      <div
+        className="py-2.5 px-4 sticky top-0 z-50 shadow-md border-b flex items-center justify-between gap-3 text-xs"
+        style={{ background: NAVY_DEEP, borderColor: `${GOLD}4D` }}
+      >
+        <button onClick={onBackToHome} className="flex items-center gap-1.5 text-white/70 hover:text-[#D4AF37] font-medium transition-colors">
+          <ArrowLeft className="w-4 h-4" aria-hidden="true" /> {lx("Volver a Invifty", "Back to Invifty")}
         </button>
+
+        {/* Selector de idioma: era la única muestra sin él, y un evento
+            corporativo es justo donde más hace falta. */}
+        <div className="flex items-center gap-1 bg-white/10 border rounded-full p-1 text-[10px] font-semibold" style={{ borderColor: `${GOLD}66` }}>
+          <Globe className="w-3.5 h-3.5 ml-1 mr-0.5" style={{ color: GOLD }} aria-hidden="true" />
+          <button
+            onClick={() => setLanguage("es")}
+            aria-pressed={isEs}
+            className={`px-2 py-0.5 rounded-full transition-all ${isEs ? "text-black font-bold" : "text-white/70 hover:text-white"}`}
+            style={isEs ? { background: GOLD } : undefined}
+          >
+            ES
+          </button>
+          <span className="text-white/30 text-[9px]" aria-hidden="true">|</span>
+          <button
+            onClick={() => setLanguage("en")}
+            aria-pressed={!isEs}
+            className={`px-2 py-0.5 rounded-full transition-all ${!isEs ? "text-black font-bold" : "text-white/70 hover:text-white"}`}
+            style={!isEs ? { background: GOLD } : undefined}
+          >
+            EN
+          </button>
+        </div>
 
         <a
           href={createDemoWatermarkWhatsAppUrl("Gala Empresarial Vitrexi")}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-[#D4AF37] text-black font-semibold px-4 py-1.5 text-[10px] uppercase tracking-widest flex items-center gap-1.5 hover:bg-[#F2D06B] transition-colors"
+          className="hidden sm:flex text-black font-semibold px-4 py-1.5 text-[10px] uppercase tracking-widest items-center gap-1.5 rounded-full"
+          style={{ background: GOLD }}
         >
-          ◆ Muestra de Exhibición — Cotizar este diseño
+          ◆ {lx("Cotizar este diseño", "Quote this design")}
         </a>
       </div>
 
-      {/* Sticky Internal Navigation Bar */}
-      <div className="bg-[#1C2541]/90 backdrop-blur-md border-b border-[#D4AF37]/30 sticky top-10 z-40 py-2 px-4 overflow-x-auto shadow-sm">
-        <div className="max-w-4xl mx-auto flex items-center justify-center gap-2 sm:gap-4 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap text-[#D4AF37]">
-          <button onClick={() => scrollToSection("agenda")} className="hover:text-white transition-colors px-2 py-1">
-            Agenda
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("ponentes")} className="hover:text-white transition-colors px-2 py-1">
-            Ponentes
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("ubicacion")} className="hover:text-white transition-colors px-2 py-1">
-            Ubicación
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("vestimenta")} className="hover:text-white transition-colors px-2 py-1">
-            Dress Code
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("parqueo")} className="hover:text-white transition-colors px-2 py-1">
-            Parqueo & Valet
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("registro")} className="bg-[#D4AF37] text-[#0B132B] px-3 py-1 rounded-full text-[10px] font-bold">
-            Registro Ejecutivos
+      {/* Navegación interna */}
+      <nav
+        className="backdrop-blur-md border-b sticky top-10 z-40 py-2.5 px-4 overflow-x-auto no-scrollbar"
+        style={{ background: `${NAVY_SOFT}E6`, borderColor: `${GOLD}4D` }}
+        aria-label={lx("Secciones del evento", "Event sections")}
+      >
+        <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-center gap-3 sm:gap-4 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap">
+          {navItems.map((item) => (
+            <button key={item.id} onClick={() => scrollToSection(item.id)} className="hover:text-white transition-colors" style={{ color: GOLD }}>
+              {lx(item.es, item.en)}
+            </button>
+          ))}
+          <button
+            onClick={() => scrollToSection("registro")}
+            className="px-3.5 py-1 rounded-full text-[10px] font-bold"
+            style={{ background: GOLD, color: NAVY }}
+          >
+            {lx("Registro", "Register")}
           </button>
         </div>
-      </div>
+      </nav>
 
-      {/* HERO COVER */}
-      <header className="relative min-h-[80vh] flex items-center justify-center text-center p-6 overflow-hidden">
+      {/* ---------------------------------------------------------------- HERO */}
+      <header id="gala" className="relative min-h-[90vh] flex items-center justify-center text-center px-5 overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={corporateImg}
-            alt="Gala Empresarial"
-            className="w-full h-full object-cover object-center opacity-25 filter scale-105"
+            alt=""
+            aria-hidden="true"
+            width={900}
+            height={502}
+            className="w-full h-full object-cover object-center scale-105"
+            style={{ opacity: 0.22 }}
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B132B]/80 via-[#0B132B]/90 to-[#0B132B]"></div>
+          <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${NAVY_DEEP}E6, ${NAVY}CC 50%, ${NAVY})` }} />
+          <div
+            className="absolute -top-24 left-1/2 -translate-x-1/2 w-[720px] h-[400px] rounded-full blur-3xl pointer-events-none"
+            style={{ background: `${GOLD}1A` }}
+          />
         </div>
 
-        <div className="relative z-10 max-w-3xl mx-auto space-y-6 pt-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1C2541] border border-[#D4AF37]/40 text-[#D4AF37] text-xs font-bold uppercase tracking-widest">
-            <Building className="w-4 h-4" />
-            Evento Corporativo Exclusivo
-          </div>
+        <div className="relative z-10 max-w-3xl py-20">
+          <Reveal from="none">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] mb-7 border"
+              style={{ color: GOLD, borderColor: `${GOLD}66`, background: `${GOLD}14` }}
+            >
+              <Building className="w-3.5 h-3.5" aria-hidden="true" />
+              {lx("Evento corporativo exclusivo", "Exclusive corporate event")}
+            </div>
+          </Reveal>
 
-          <h1 className="text-4xl sm:text-6xl font-bold font-serif-display tracking-tight text-white leading-tight">
-            Gala Anual de Innovación <span className="gold-gradient-text block font-normal italic">2026</span>
-          </h1>
+          <Reveal delay={120}>
+            <h1 className="font-serif-display text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.08] mb-2">
+              {lx("Gala Anual de", "Annual Gala of")}
+              <span className="block">{lx("Innovación", "Innovation")}</span>
+              <span className="block italic font-normal mt-2" style={{ color: GOLD }}>
+                2026
+              </span>
+            </h1>
+          </Reveal>
 
-          <p className="text-sm sm:text-base text-gray-300 max-w-xl mx-auto font-light leading-relaxed">
-            Una noche dedicada a reconocer la excelencia empresarial, el liderazgo transformador y la innovación tecnológica.
-          </p>
+          <Reveal delay={220}>
+            <Divider />
+            <p className="text-[11px] sm:text-xs uppercase tracking-[0.3em] font-semibold my-6 text-white/80">
+              {lx("Miércoles 28 de Octubre, 2026 · 7:30 PM", "Wednesday, October 28, 2026 · 7:30 PM")}
+              <span className="block mt-2 text-white/45 tracking-[0.18em]">El Embajador, A Royal Hideaway Hotel</span>
+            </p>
+          </Reveal>
 
-          <div className="pt-4 text-xs uppercase tracking-widest text-[#FFF1CB] font-bold flex items-center justify-center gap-6">
-            <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-[#D4AF37]" /> 28.OCT.2026</span>
-            <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#D4AF37]" /> Hotel El Embajador</span>
-          </div>
+          <Reveal delay={300}>
+            <p className="text-base sm:text-lg text-white/70 font-light max-w-xl mx-auto mb-10 leading-relaxed">
+              {lx(
+                "Una noche dedicada a reconocer la excelencia empresarial, el liderazgo transformador y la innovación tecnológica.",
+                "An evening devoted to recognising business excellence, transformative leadership and technological innovation."
+              )}
+            </p>
+          </Reveal>
+
+          <Reveal delay={380}>
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-md mx-auto mb-10">
+              {[
+                { v: timeLeft.days, l: lx("Días", "Days") },
+                { v: timeLeft.hours, l: lx("Horas", "Hours") },
+                { v: timeLeft.minutes, l: lx("Min", "Min") },
+                { v: timeLeft.seconds, l: lx("Seg", "Sec") },
+              ].map((u) => (
+                <div key={u.l} className="py-4 rounded-2xl border backdrop-blur-sm" style={{ background: `${NAVY_SOFT}CC`, borderColor: `${GOLD}33` }}>
+                  <span className="font-serif-display text-3xl sm:text-4xl font-bold block" style={{ color: GOLD }}>
+                    {String(u.v).padStart(2, "0")}
+                  </span>
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-white/60">{u.l}</span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal delay={460}>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => scrollToSection("registro")}
+                className="px-8 py-4 font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl shadow-lg transition-transform active:scale-95 min-h-[48px] inline-flex items-center justify-center gap-2"
+                style={{ background: GOLD, color: NAVY }}
+              >
+                {lx("Registrar mi asistencia", "Register my attendance")}
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </button>
+              <a
+                href={calendarUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 border font-semibold text-[11px] uppercase tracking-[0.2em] rounded-xl transition-colors min-h-[48px] inline-flex items-center justify-center gap-2 hover:bg-white/5"
+                style={{ borderColor: `${GOLD}80`, color: GOLD }}
+              >
+                <Calendar className="w-4 h-4" aria-hidden="true" />
+                {lx("Añadir al calendario", "Add to calendar")}
+              </a>
+            </div>
+          </Reveal>
         </div>
       </header>
 
-      {/* COUNTDOWN TIMER */}
-      <section className="max-w-3xl mx-auto -mt-12 relative z-20 px-4">
-        <div className="bg-[#1C2541] border border-[#D4AF37]/40 rounded-3xl p-6 sm:p-8 shadow-2xl text-center">
-          <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-bold block mb-4">
-            CUENTA REGRESIVA DEL EVENTO
-          </span>
+      {/* -------------------------------------------------------------- AGENDA */}
+      <section id="agenda" className="py-24 px-5" style={{ background: NAVY_DEEP }}>
+        <div className="max-w-3xl mx-auto">
+          <Reveal>
+            <SectionTitle eyebrow={lx("Programa oficial", "Official programme")} title={lx("Agenda ejecutiva", "Executive agenda")} />
+          </Reveal>
 
-          <div className="grid grid-cols-4 gap-3 max-w-md mx-auto mb-6">
-            <div className="bg-[#0B132B] p-3 rounded-2xl border border-[#D4AF37]/30">
-              <span className="block text-2xl sm:text-4xl font-bold text-white">{timeLeft.days}</span>
-              <span className="text-[10px] uppercase text-gray-400">Días</span>
-            </div>
-            <div className="bg-[#0B132B] p-3 rounded-2xl border border-[#D4AF37]/30">
-              <span className="block text-2xl sm:text-4xl font-bold text-white">{timeLeft.hours}</span>
-              <span className="text-[10px] uppercase text-gray-400">Horas</span>
-            </div>
-            <div className="bg-[#0B132B] p-3 rounded-2xl border border-[#D4AF37]/30">
-              <span className="block text-2xl sm:text-4xl font-bold text-white">{timeLeft.minutes}</span>
-              <span className="text-[10px] uppercase text-gray-400">Min</span>
-            </div>
-            <div className="bg-[#0B132B] p-3 rounded-2xl border border-[#D4AF37]/30">
-              <span className="block text-2xl sm:text-4xl font-bold text-white">{timeLeft.seconds}</span>
-              <span className="text-[10px] uppercase text-gray-400">Seg</span>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={createGoogleCalendarUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#D4AF37] text-[#0B132B] text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-[#FFF1CB] transition-colors shadow-sm"
-            >
-              <Calendar className="w-4 h-4" /> Agregar a mi Google Calendar
-            </a>
-            <button
-              onClick={() => setShowVipPassModal(true)}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#D4AF37] to-[#F2D06B] text-black text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-xl hover:scale-102 transition-all shadow-lg"
-            >
-              <ShieldCheck className="w-4 h-4 text-black" /> Ver Pase VIP con QR
-            </button>
-            <button
-              onClick={() => setShowQrModal(true)}
-              className="inline-flex items-center gap-2 bg-black/60 border border-[#D4AF37]/50 text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-black transition-colors"
-            >
-              <QrCode className="w-4 h-4 text-[#D4AF37]" /> Código de Ubicación
-            </button>
-          </div>
+          <ol className="space-y-4">
+            {agenda.map((item, idx) => (
+              <li key={item.time}>
+                <Reveal delay={idx * 70}>
+                  <div
+                    className="flex items-start gap-5 p-5 sm:p-6 rounded-2xl border transition-colors hover:border-[#D4AF37]/50"
+                    style={{ background: NAVY_SOFT, borderColor: `${GOLD}26` }}
+                  >
+                    <div className="w-12 h-12 shrink-0 rounded-xl border flex items-center justify-center" style={{ borderColor: `${GOLD}66`, background: `${GOLD}0F` }}>
+                      <item.icon className="w-5 h-5" style={{ color: GOLD }} aria-hidden="true" />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-[10px] uppercase tracking-[0.25em] font-bold block mb-1" style={{ color: GOLD }}>
+                        {item.time}
+                      </span>
+                      <h3 className="font-serif-display text-xl font-bold text-white mb-1">{lx(item.es, item.en)}</h3>
+                      <p className="text-xs text-white/60 leading-relaxed">{lx(item.d_es, item.d_en)}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
-      {/* AGENDA DEL EVENTO */}
-      <section id="agenda" className="py-20 px-4 max-w-3xl mx-auto text-center scroll-mt-20">
-        <Clock className="w-8 h-8 text-[#D4AF37] mx-auto mb-3" />
-        <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-bold block mb-1">
-          PROGRAMA OFICIAL
-        </span>
-        <h2 className="text-3xl font-serif-display font-bold text-white mb-8">Agenda Ejecutiva</h2>
+      {/* ------------------------------------------------------------ PONENTES */}
+      <section id="ponentes" className="py-24 px-5">
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <SectionTitle eyebrow={lx("Quiénes hablan", "Who speaks")} title={lx("Ponentes principales", "Featured speakers")} />
+          </Reveal>
 
-        <div className="space-y-4 text-left">
-          {[
-            { time: "07:30 PM", title: "Acreditación & Cóctel VIP de Bienvenida", detail: "Foyer Principal, Hotel El Embajador" },
-            { time: "08:15 PM", title: "Conferencia Magistral & Panel de Ponentes", detail: "Salón Gran Embajador" },
-            { time: "09:00 PM", title: "Entrega de Galardones a la Excelencia", detail: "Premio Innovador Corporativo del Año" },
-            { time: "09:45 PM", title: "Cena de Gala & Networking de Alto Nivel", detail: "Cena gourmet de tres tiempos" },
-            { time: "11:00 PM", title: "Brindis de Cierre & Presentación Musical", detail: "Show en vivo para ejecutivos invitados" }
-          ].map((item, idx) => (
-            <div key={idx} className="bg-[#1C2541] p-5 rounded-2xl border border-[#D4AF37]/20 flex items-center gap-4">
-              <span className="bg-[#D4AF37] text-[#0B132B] text-xs font-bold px-3 py-1.5 rounded-xl shrink-0">
-                {item.time}
-              </span>
-              <div>
-                <h3 className="font-bold text-white text-base">{item.title}</h3>
-                <p className="text-xs text-gray-300 mt-0.5">{item.detail}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* PONENTES DESTACADOS */}
-      <section id="ponentes" className="py-16 bg-[#1C2541]/50 border-y border-[#D4AF37]/20 px-4 scroll-mt-20">
-        <div className="max-w-5xl mx-auto text-center">
-          <Users className="w-8 h-8 text-[#D4AF37] mx-auto mb-3" />
-          <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-bold block mb-1">
-            EXPOSITORES ESTELARES
-          </span>
-          <h2 className="text-3xl font-serif-display font-bold text-white mb-8">Ponentes Principales</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-            {speakers.map((speaker, idx) => (
-              <div key={idx} className="bg-[#0B132B] p-6 rounded-2xl border border-[#D4AF37]/30 shadow-md">
-                <Award className="w-6 h-6 text-[#D4AF37] mb-3" />
-                <h3 className="font-bold text-white text-base mb-1">{speaker.name}</h3>
-                <p className="text-xs text-[#D4AF37] font-semibold mb-3">{speaker.title}</p>
-                <p className="text-xs text-gray-400 font-light leading-relaxed">
-                  Tema: <em>"{speaker.topic}"</em>
-                </p>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {speakers.map((sp, idx) => (
+              <Reveal key={sp.name} delay={idx * 100}>
+                <article className="rounded-3xl border overflow-hidden h-full flex flex-col" style={{ background: NAVY_SOFT, borderColor: `${GOLD}33` }}>
+                  <div className="relative h-56 overflow-hidden">
+                    <img
+                      src={sp.photo}
+                      alt={sp.name}
+                      loading="lazy"
+                      decoding="async"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover object-center"
+                    />
+                    <div className="absolute inset-0" style={{ background: `linear-gradient(to top, ${NAVY_SOFT}, transparent 60%)` }} />
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="font-serif-display text-lg font-bold text-white mb-1">{sp.name}</h3>
+                    <p className="text-[10px] uppercase tracking-[0.18em] font-semibold mb-4" style={{ color: GOLD }}>
+                      {lx(sp.role_es, sp.role_en)}
+                    </p>
+                    <p className="text-xs text-white/65 leading-relaxed mt-auto">“{lx(sp.topic_es, sp.topic_en)}”</p>
+                  </div>
+                </article>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* UBICACIÓN, DRESS CODE & PARQUEO */}
-      <section id="ubicacion" className="py-20 px-4 max-w-5xl mx-auto scroll-mt-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          
-          <div className="bg-[#1C2541] p-6 rounded-3xl border border-[#D4AF37]/30">
-            <MapPin className="w-8 h-8 text-[#D4AF37] mb-3" />
-            <h3 className="text-2xl font-bold text-white mb-1">Sede del Evento</h3>
-            <p className="text-sm text-[#D4AF37] font-bold mb-1">El Embajador, A Royal Hideaway Hotel</p>
-            <p className="text-xs text-gray-400 mb-4">Bella Vista, Santo Domingo, R.D.</p>
+      {/* ----------------------------------------------------------- PASE QR */}
+      <section id="pase" className="py-24 px-5" style={{ background: NAVY_DEEP }}>
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <SectionTitle eyebrow={lx("Control de acceso", "Access control")} title={lx("Tu pase personal", "Your personal pass")} />
+          </Reveal>
 
-            <div className="rounded-2xl overflow-hidden border border-[#D4AF37]/30 h-48 mb-4 shadow-inner">
-              <iframe
-                title="Hotel El Embajador Santo Domingo"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.7431289154627!2d-69.93284562398285!3d18.45032828262846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ea5620fc12b32f9%3A0x6b45a90e38604d55!2sEl%20Embajador%2C%20a%20Royal%20Hideaway%20Hotel!5e0!3m2!1ses!2sdo!4v1700000000000!5m2!1ses!2sdo"
-                className="w-full h-full border-0"
-                loading="lazy"
-              ></iframe>
+          <Reveal delay={100}>
+            <div className="rounded-3xl border p-8 sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center" style={{ background: NAVY_SOFT, borderColor: `${GOLD}4D` }}>
+              <div>
+                <h3 className="font-serif-display text-2xl font-bold text-white mb-3">
+                  {lx("Acreditación en segundos", "Accreditation in seconds")}
+                </h3>
+                <p className="text-sm text-white/65 leading-relaxed mb-6">
+                  {lx(
+                    "Cada invitado confirmado recibe un código QR único con su nombre y su mesa. En la entrada se escanea y queda registrada la llegada, sin listas impresas ni colas.",
+                    "Every confirmed guest receives a unique QR code with their name and table. At the door it is scanned and the arrival is logged — no printed lists, no queues."
+                  )}
+                </p>
+
+                <ul className="space-y-2.5 mb-7">
+                  {[
+                    { es: "Código único e intransferible por invitado", en: "Unique, non-transferable code per guest" },
+                    { es: "Mesa asignada visible en el pase", en: "Assigned table shown on the pass" },
+                    { es: "Se guarda en el teléfono o se comparte", en: "Save to phone or share it" },
+                  ].map((f) => (
+                    <li key={f.es} className="flex items-start gap-2.5 text-xs text-white/75">
+                      <ShieldCheck className="w-4 h-4 shrink-0 mt-0.5" style={{ color: GOLD }} aria-hidden="true" />
+                      {lx(f.es, f.en)}
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  onClick={() => setShowVipPassModal(true)}
+                  className="px-7 py-3.5 font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl inline-flex items-center gap-2 min-h-[48px] transition-transform active:scale-95"
+                  style={{ background: GOLD, color: NAVY }}
+                >
+                  <QrCode className="w-4 h-4" aria-hidden="true" />
+                  {lx("Ver mi pase de ejemplo", "See a sample pass")}
+                </button>
+              </div>
+
+              {/* Representación del pase */}
+              <div className="rounded-2xl border p-7 text-center" style={{ background: NAVY_DEEP, borderColor: `${GOLD}33` }}>
+                <QrCode className="w-24 h-24 mx-auto mb-4" style={{ color: GOLD }} aria-hidden="true" />
+                <p className="text-[10px] uppercase tracking-[0.3em] font-bold mb-1" style={{ color: GOLD }}>
+                  {lx("Pase ejecutivo", "Executive pass")}
+                </p>
+                <p className="text-xs text-white/50">{lx("Mesa asignada · Acceso VIP", "Assigned table · VIP access")}</p>
+              </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <a
-                href="https://maps.google.com/?q=El+Embajador+Royal+Hideaway+Hotel"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#D4AF37] text-[#0B132B] font-bold text-xs py-3 rounded-xl text-center uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-[#FFF1CB] transition-colors"
-              >
-                Google Maps <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="https://waze.com/ul?q=Hotel+El+Embajador+Santo+Domingo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-black/60 border border-[#D4AF37]/50 text-white font-bold text-xs py-3 rounded-xl text-center uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-black transition-colors"
-              >
-                Abrir Waze <Navigation className="w-3.5 h-3.5 text-[#D4AF37]" />
-              </a>
-            </div>
-          </div>
-
-          <div id="vestimenta" className="bg-[#1C2541] p-6 rounded-3xl border border-[#D4AF37]/30 flex flex-col justify-between scroll-mt-20">
-            <div>
-              <Sparkles className="w-8 h-8 text-[#D4AF37] mb-3" />
-              <h3 className="text-2xl font-bold text-white mb-2">Código de Vestimenta</h3>
-              <p className="text-xs text-[#D4AF37] font-bold uppercase tracking-wider mb-3">
-                Etiqueta Negra / Black Tie Corporate
-              </p>
-              <p className="text-xs text-gray-300 leading-relaxed mb-6">
-                Traje de noche formal o esmoquin para ejecutivos. Vestido largo o traje de sastrería de alta costura para ejecutivas.
-              </p>
-            </div>
-
-            <div className="bg-[#0B132B] p-5 rounded-2xl border border-[#D4AF37]/30 text-center">
-              <QrCode className="w-8 h-8 text-[#D4AF37] mx-auto mb-2" />
-              <span className="text-xs text-[#D4AF37] font-bold uppercase block mb-1">
-                Acreditación Digital Express
-              </span>
-              <p className="text-[11px] text-gray-300 mb-3">
-                Su confirmación genera un código QR exclusivo que agiliza la entrada sin filas.
-              </p>
-              <button
-                onClick={() => setShowQrModal(true)}
-                className="bg-[#D4AF37] text-[#0B132B] text-[10px] uppercase font-bold px-4 py-2 rounded-xl hover:bg-[#FFF1CB]"
-              >
-                Ver Ejemplo de Pase QR
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-        {/* PARQUEO & VALET PARKING */}
-        <div id="parqueo" className="bg-[#1C2541] p-6 rounded-3xl border border-[#D4AF37]/30 flex flex-col sm:flex-row items-center gap-6 scroll-mt-20">
-          <div className="w-14 h-14 rounded-2xl bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center shrink-0">
-            <Car className="w-7 h-7 text-[#D4AF37]" />
-          </div>
-          <div className="text-left space-y-1">
-            <h4 className="text-lg font-bold text-white">Servicio de Valet Parking & Parqueo Privado</h4>
-            <p className="text-xs text-gray-300 leading-relaxed">
-              El evento cuenta con servicio complementario de Valet Parking en la entrada principal del Hotel El Embajador y parqueo de dos niveles vigilado 24/7.
-            </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* QR MODAL PREVIEW */}
-      {showQrModal && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-md">
-          <div className="bg-[#1C2541] border border-[#D4AF37] p-8 rounded-3xl max-w-sm w-full text-center relative shadow-2xl space-y-4">
-            <button
-              onClick={() => setShowQrModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
-            >
-              <X className="w-6 h-6" />
-            </button>
+      {/* ----------------------------------------------------------- UBICACIÓN */}
+      <section id="ubicacion" className="py-24 px-5">
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <SectionTitle eyebrow={lx("Dónde", "Where")} title={lx("Sede del evento", "Event venue")} />
+          </Reveal>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#D4AF37]/20 text-[#D4AF37] rounded-full text-[10px] font-bold uppercase">
-              <ShieldCheck className="w-3.5 h-3.5" /> Pase VIP Acreditado
-            </div>
-
-            <h3 className="text-xl font-bold text-white">Gala de Innovación 2026</h3>
-            <p className="text-xs text-gray-300">Acreditación Ejecutiva Individual</p>
-
-            <div className="bg-white p-4 rounded-2xl border-4 border-[#D4AF37] w-48 h-48 mx-auto flex flex-col items-center justify-center gap-2 shadow-lg">
-              <QrCode className="w-32 h-32 text-black" />
-              <span className="text-[10px] font-mono text-black font-bold">INVIFTY-GALA-2026</span>
-            </div>
-
-            <p className="text-[11px] text-gray-400">
-              Presente este código en su teléfono móvil al ingresar al Foyer Principal.
-            </p>
-
-            <button
-              onClick={() => setShowQrModal(false)}
-              className="w-full bg-[#D4AF37] text-[#0B132B] font-bold text-xs uppercase py-3 rounded-xl"
-            >
-              Cerrar Vista Previa
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* REGISTRO DE ASISTENCIA */}
-      <section className="py-20 px-4 bg-[#1C2541] border-t border-[#D4AF37]/30">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-serif-display font-bold text-white mb-2">
-            Registro de Asistencia Ejecutiva
-          </h2>
-          <p className="text-xs text-gray-300 mb-8">Por favor confirme su participación para la reserva de cupo y acreditación.</p>
-
-          {rsvpSubmitted ? (
-            <div className="bg-[#0B132B] border border-[#D4AF37] p-6 rounded-2xl">
-              <CheckCircle2 className="w-10 h-10 text-[#D4AF37] mx-auto mb-2" />
-              <h3 className="font-bold text-xl text-white mb-1">Se abrió WhatsApp</h3>
-              {/* La muestra no procesa ni almacena nada: sólo abre el chat. */}
-              <p className="text-xs text-gray-300">
-                Su registro quedó redactado en WhatsApp. Envíe el mensaje para completarlo.
-              </p>
-              <p className="text-[10px] text-gray-400 mt-2">
-                Es una muestra: los datos no se guardan en ningún sistema.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleRsvpSubmit} className="bg-[#0B132B] p-6 rounded-2xl border border-[#D4AF37]/30 text-left space-y-4">
-              <div>
-                <label className="block text-xs font-bold uppercase text-gray-300 mb-1">Nombre Completo *</label>
-                <input
-                  type="text"
-                  required
-                  value={rsvpData.fullName}
-                  onChange={(e) => setRsvpData({ ...rsvpData, fullName: e.target.value })}
-                  placeholder="Ej. Ing. Roberto Mendoza"
-                  className="w-full bg-[#1C2541] border border-[#D4AF37]/30 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Reveal from="left">
+              <div className="rounded-3xl overflow-hidden border h-full min-h-[340px]" style={{ borderColor: `${GOLD}33` }}>
+                <iframe
+                  title={lx("Mapa de El Embajador", "Map of El Embajador")}
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.7431289154627!2d-69.93284562398285!3d18.45032828262846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ea5620fc12b32f9%3A0x6b45a90e38604d55!2sEl%20Embajador%2C%20a%20Royal%20Hideaway%20Hotel!5e0!3m2!1ses!2sdo!4v1700000000000"
+                  className="w-full h-full min-h-[340px] border-0"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
                 />
               </div>
+            </Reveal>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold uppercase text-gray-300 mb-1">Empresa / Institución</label>
-                  <input
-                    type="text"
-                    required
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="Ej. Banco Caribe"
-                    className="w-full bg-[#1C2541] border border-[#D4AF37]/30 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
-                  />
+            <Reveal from="right" delay={100}>
+              <div className="space-y-5">
+                <div className="p-7 rounded-3xl border" style={{ background: NAVY_SOFT, borderColor: `${GOLD}33` }}>
+                  <h3 className="font-serif-display text-2xl font-bold text-white mb-1.5">El Embajador</h3>
+                  <p className="text-sm text-white/60 mb-6">
+                    {lx("A Royal Hideaway Hotel · Salón Embajador · Santo Domingo", "A Royal Hideaway Hotel · Embajador Ballroom · Santo Domingo")}
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=El+Embajador+Royal+Hideaway+Santo+Domingo"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 min-h-[48px]"
+                      style={{ background: GOLD, color: NAVY }}
+                    >
+                      <Navigation className="w-4 h-4" aria-hidden="true" /> Google Maps
+                    </a>
+                    <a
+                      href="https://waze.com/ul?q=El%20Embajador%20Santo%20Domingo"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 px-5 py-3.5 border text-[11px] font-bold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 min-h-[48px] hover:bg-white/5 transition-colors"
+                      style={{ borderColor: `${GOLD}80`, color: GOLD }}
+                    >
+                      <Navigation className="w-4 h-4" aria-hidden="true" /> Waze
+                    </a>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold uppercase text-gray-300 mb-1">Cargo / Posición</label>
-                  <input
-                    type="text"
-                    required
-                    value={positionTitle}
-                    onChange={(e) => setPositionTitle(e.target.value)}
-                    placeholder="Ej. Director de Operaciones"
-                    className="w-full bg-[#1C2541] border border-[#D4AF37]/30 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
-                  />
+                <div id="vestimenta" className="p-7 rounded-3xl border scroll-mt-24" style={{ background: NAVY_SOFT, borderColor: `${GOLD}33` }}>
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] font-semibold mb-3" style={{ color: GOLD }}>
+                    <Sparkles className="w-4 h-4" aria-hidden="true" /> {lx("Código de vestimenta", "Dress code")}
+                  </div>
+                  <h3 className="font-serif-display text-xl font-bold text-white mb-1.5">Black Tie</h3>
+                  <p className="text-sm text-white/60 mb-5">
+                    {lx(
+                      "Esmoquin o traje oscuro para caballeros. Vestido largo para damas.",
+                      "Tuxedo or dark suit for gentlemen. Long dress for ladies."
+                    )}
+                  </p>
+                  <div className="flex items-center gap-3">
+                    {[
+                      { n: lx("Negro", "Black"), c: "#111111" },
+                      { n: lx("Azul noche", "Midnight"), c: NAVY },
+                      { n: lx("Oro", "Gold"), c: GOLD },
+                      { n: lx("Marfil", "Ivory"), c: "#F3EFE7" },
+                    ].map((c) => (
+                      <div key={c.n} className="text-center">
+                        <span className="block w-11 h-11 rounded-full border mb-1.5" style={{ background: c.c, borderColor: "rgba(255,255,255,0.25)" }} aria-hidden="true" />
+                        <span className="text-[9px] text-white/50 uppercase tracking-wider">{c.n}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div id="parqueo" className="p-7 rounded-3xl border scroll-mt-24" style={{ background: NAVY_SOFT, borderColor: `${GOLD}33` }}>
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] font-semibold mb-3" style={{ color: GOLD }}>
+                    <Car className="w-4 h-4" aria-hidden="true" /> {lx("Parqueo y valet", "Parking & valet")}
+                  </div>
+                  <p className="text-sm text-white/65 leading-relaxed">
+                    {lx(
+                      "Valet parking cortesía del evento en la entrada principal. Presenta tu pase QR al llegar y el personal se encargará del resto.",
+                      "Complimentary valet parking at the main entrance. Show your QR pass on arrival and the staff will take care of the rest."
+                    )}
+                  </p>
                 </div>
               </div>
-
-              <div>
-                <label className="block text-xs font-bold uppercase text-gray-300 mb-1">Confirmación de Asistencia</label>
-                <select
-                  value={rsvpData.attendance}
-                  onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })}
-                  className="w-full bg-[#1C2541] border border-[#D4AF37]/30 rounded-xl p-3 text-sm text-white focus:outline-none"
-                >
-                  <option value="Confirmado">✅ Asistiré a la Gala</option>
-                  <option value="Declina">❌ Excuso mi asistencia</option>
-                </select>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#D4AF37] text-[#0B132B] font-bold text-xs uppercase py-3.5 rounded-xl flex items-center justify-center gap-2 hover:bg-[#FFF1CB]"
-              >
-                <Send className="w-4 h-4" />
-                Completar Registro por WhatsApp
-              </button>
-            </form>
-          )}
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* WATERMARK FOOTER */}
-      <footer className="bg-[#050811] py-8 text-center border-t border-[#D4AF37]/20">
-        <a
-          href={createDemoWatermarkWhatsAppUrl("Gala Empresarial Vitrexi")}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4AF37] hover:underline"
-        >
-          ◆ Diseñado por Invifty — Solicitud de invitaciones digitales para eventos
-        </a>
-      </footer>
+      {/* ------------------------------------------------------------ GALERÍA */}
+      <section id="galeria" className="py-24 px-5" style={{ background: NAVY_DEEP }}>
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <SectionTitle eyebrow={lx("Antecedentes", "Background")} title={lx("Ediciones anteriores", "Past editions")} />
+          </Reveal>
 
-      {/* VIP PASS MODAL */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {GALLERY.map((img, idx) => (
+              <Reveal key={img} delay={idx * 80}>
+                <button
+                  type="button"
+                  onClick={() => setActivePhoto(img)}
+                  aria-label={lx(`Ampliar fotografía ${idx + 1}`, `Enlarge photo ${idx + 1}`)}
+                  className="group relative block w-full h-52 rounded-2xl overflow-hidden border focus-visible:outline-none focus-visible:ring-2"
+                  style={{ borderColor: `${GOLD}33` }}
+                >
+                  <img
+                    src={img}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <span className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white border border-white/50 rounded-full px-4 py-1.5">
+                      {lx("Ampliar", "Enlarge")}
+                    </span>
+                  </span>
+                </button>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ REGISTRO */}
+      <section id="registro" className="py-24 px-5 pb-32">
+        <div className="max-w-xl mx-auto">
+          <Reveal>
+            <SectionTitle eyebrow={lx("Aforo limitado", "Limited capacity")} title={lx("Registro de ejecutivos", "Executive registration")} />
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="p-7 sm:p-9 rounded-3xl border-2 shadow-2xl" style={{ background: NAVY_SOFT, borderColor: GOLD }}>
+              <p className="text-xs text-white/60 text-center mb-7">
+                {lx(
+                  "Confirme su participación para la reserva de cupo y la acreditación.",
+                  "Confirm your participation for seat reservation and accreditation."
+                )}
+              </p>
+
+              <form onSubmit={handleRsvpSubmit} className="space-y-5">
+                <div>
+                  <label htmlFor="corp-name" className="block text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 mb-2">
+                    {lx("Nombre completo *", "Full name *")}
+                  </label>
+                  <input
+                    id="corp-name"
+                    type="text"
+                    required
+                    value={rsvpData.fullName}
+                    onChange={(e) => setRsvpData({ ...rsvpData, fullName: e.target.value })}
+                    placeholder={lx("Ej. Lic. Alejandro Mendoza", "E.g. Alejandro Mendoza")}
+                    className={inputClass}
+                    style={inputStyle}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="corp-company" className="block text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 mb-2">
+                      {lx("Empresa", "Company")}
+                    </label>
+                    <input
+                      id="corp-company"
+                      type="text"
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder={lx("Ej. Vitrexi Technologies", "E.g. Vitrexi Technologies")}
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="corp-role" className="block text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 mb-2">
+                      {lx("Cargo", "Role")}
+                    </label>
+                    <input
+                      id="corp-role"
+                      type="text"
+                      value={positionTitle}
+                      onChange={(e) => setPositionTitle(e.target.value)}
+                      placeholder={lx("Ej. Directora de Operaciones", "E.g. Operations Director")}
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="corp-attendance" className="block text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 mb-2">
+                      {lx("Asistencia", "Attendance")}
+                    </label>
+                    <select
+                      id="corp-attendance"
+                      value={rsvpData.attendance}
+                      onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })}
+                      className={inputClass}
+                      style={inputStyle}
+                    >
+                      <option value="Confirmado">{lx("Confirmo mi asistencia", "I confirm my attendance")}</option>
+                      <option value="Declina">{lx("Excuso mi asistencia", "I must decline")}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="corp-guests" className="block text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 mb-2">
+                      {lx("Acompañantes", "Companions")}
+                    </label>
+                    <select
+                      id="corp-guests"
+                      value={rsvpData.guestCount}
+                      onChange={(e) => setRsvpData({ ...rsvpData, guestCount: Number(e.target.value) })}
+                      className={inputClass}
+                      style={inputStyle}
+                    >
+                      {[1, 2, 3].map((n) => (
+                        <option key={n} value={n}>
+                          {n}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="corp-menu" className="block text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 mb-2">
+                    {lx("Preferencia de menú", "Menu preference")}
+                  </label>
+                  <select
+                    id="corp-menu"
+                    value={rsvpData.menuPreference}
+                    onChange={(e) => setRsvpData({ ...rsvpData, menuPreference: e.target.value })}
+                    className={inputClass}
+                    style={inputStyle}
+                  >
+                    <option>{lx("Cena ejecutiva de tres tiempos", "Three-course executive dinner")}</option>
+                    <option>{lx("Opción vegetariana", "Vegetarian option")}</option>
+                    <option>{lx("Opción sin gluten", "Gluten-free option")}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="corp-notes" className="block text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 mb-2">
+                    {lx("Requerimientos especiales (opcional)", "Special requirements (optional)")}
+                  </label>
+                  <input
+                    id="corp-notes"
+                    type="text"
+                    value={rsvpData.dietaryNotes}
+                    onChange={(e) => setRsvpData({ ...rsvpData, dietaryNotes: e.target.value })}
+                    placeholder={lx("Ej. Acceso sin escaleras", "E.g. Step-free access")}
+                    className={inputClass}
+                    style={inputStyle}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-4 font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl shadow-lg inline-flex items-center justify-center gap-2 min-h-[52px] transition-transform active:scale-95"
+                  style={{ background: GOLD, color: NAVY }}
+                >
+                  <Send className="w-4 h-4" aria-hidden="true" />
+                  {lx("Enviar registro por WhatsApp", "Send registration via WhatsApp")}
+                </button>
+              </form>
+
+              {rsvpSubmitted && (
+                <div className="mt-5 p-5 rounded-2xl border text-center" style={{ background: NAVY_DEEP, borderColor: GOLD }}>
+                  <CheckCircle2 className="w-9 h-9 mx-auto mb-2" style={{ color: GOLD }} aria-hidden="true" />
+                  <h3 className="font-bold text-lg text-white mb-1">{lx("Se abrió WhatsApp", "WhatsApp opened")}</h3>
+                  {/* La muestra no procesa ni almacena nada: sólo abre el chat. */}
+                  <p className="text-xs text-white/70">
+                    {lx(
+                      "Su registro quedó redactado en WhatsApp. Envíe el mensaje para completarlo.",
+                      "Your registration is written out in WhatsApp. Send the message to complete it."
+                    )}
+                  </p>
+                  <p className="text-[10px] text-white/45 mt-2">
+                    {lx(
+                      "Es una muestra: los datos no se guardan en ningún sistema.",
+                      "This is a sample: no data is stored anywhere."
+                    )}
+                  </p>
+                </div>
+              )}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {showVipPassModal && (
         <VipPassModal
-          eventName="Gala Anual de Innovación & Elegancia 2026"
-          defaultGuestName="Ing. Roberto Mendoza"
-          tableNumber="Mesa Ejecutiva #04"
+          eventName="Gala Anual de Innovación 2026"
+          defaultGuestName={rsvpData.fullName || "Lic. Alejandro Mendoza"}
+          tableNumber="Mesa VIP #04"
           eventDate="28 de Octubre, 2026 — 7:30 PM"
-          eventLocation="Hotel El Embajador, Santo Domingo"
+          eventLocation="El Embajador, A Royal Hideaway Hotel"
           onClose={() => setShowVipPassModal(false)}
         />
       )}
 
+      {activePhoto && (
+        <div
+          className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-sm flex items-center justify-center p-5"
+          onClick={() => setActivePhoto(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lx("Fotografía ampliada", "Enlarged photo")}
+        >
+          <button
+            onClick={() => setActivePhoto(null)}
+            aria-label={lx("Cerrar", "Close")}
+            className="absolute top-5 right-5 w-11 h-11 rounded-full border border-white/30 text-white flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <X className="w-5 h-5" aria-hidden="true" />
+          </button>
+          <img src={activePhoto} alt="" className="max-w-full max-h-[85vh] rounded-2xl object-contain shadow-2xl" referrerPolicy="no-referrer" />
+        </div>
+      )}
     </div>
   );
 }

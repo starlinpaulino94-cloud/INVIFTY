@@ -75,11 +75,16 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "El Embajador, A Royal Hideaway Hotel · Santo Domingo",
     image: corporateImage,
     features: [
-      { es: "Diseño corporativo de alta sobriedad", en: "Refined corporate design" },
-      { es: "Programa oficial & Ponentes estelares", en: "Official program & keynote speakers" },
-      { es: "Confirmación de asistencia con QR de acceso", en: "RSVP with QR access pass" },
-      { es: "Código de vestimenta Black Tie", en: "Black Tie dress code" },
-      { es: "Instrucciones de parqueo y mapa", en: "Parking instructions & map" }
+      { es: "Portada ejecutiva con cuenta regresiva", en: "Executive cover with countdown" },
+      { es: "Agenda oficial hora por hora", en: "Hour-by-hour official agenda" },
+      { es: "Ponentes con retrato y tema de su charla", en: "Speakers with portrait and talk topic" },
+      { es: "Pase QR personal con mesa asignada", en: "Personal QR pass with assigned table" },
+      { es: "Ubicación con mapa, Google Maps y Waze", en: "Venue with map, Google Maps and Waze" },
+      { es: "Dress code Black Tie con paleta de colores", en: "Black Tie dress code with colour palette" },
+      { es: "Instrucciones de parqueo y valet", en: "Parking and valet instructions" },
+      { es: "Galería de ediciones anteriores", en: "Gallery of past editions" },
+      { es: "Registro con empresa, cargo, menú y acompañantes", en: "Registration with company, role, menu and companions" },
+      { es: "Invitación bilingüe español / inglés", en: "Bilingual Spanish / English invitation" }
     ],
     demoPath: "/muestra/gala-anual-vitrexi"
   },
@@ -131,10 +136,15 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Marina Casa de Campo · La Romana",
     image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=800",
     features: [
-      { es: "Estética refinada en tono azul noche y oro", en: "Refined midnight blue & gold aesthetic" },
-      { es: "Confirmación de asistencia RSVP en vivo", en: "Live RSVP confirmation" },
-      { es: "Sugerencia de código de vestir de gala", en: "Formal dress code suggestion" },
-      { es: "Música y ambiente personalizado", en: "Custom music & ambiance" }
+      { es: "Portada inmersiva con monograma y cuenta regresiva", en: "Immersive cover with monogram and countdown" },
+      { es: "Homenaje: medio siglo contado en una cronología", en: "Tribute: half a century told as a timeline" },
+      { es: "Programa de la velada hora por hora", en: "Hour-by-hour evening schedule" },
+      { es: "Ubicación con mapa, Google Maps y Waze", en: "Venue with map, Google Maps and Waze" },
+      { es: "Código de vestimenta con paleta de colores", en: "Dress code with colour palette" },
+      { es: "Galería de fotos con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "Muro de brindis para dejar unas palabras", en: "Toast wall to leave a few words" },
+      { es: "RSVP con acompañantes, menú, alergias y canción", en: "RSVP with guests, menu, allergies and song request" },
+      { es: "Música de fondo y guardar la fecha en el calendario", en: "Background music and save-the-date" }
     ],
     demoPath: "/muestra/cumpleanos-50-roberto"
   },
