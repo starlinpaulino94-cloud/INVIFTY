@@ -31,16 +31,16 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Altos de Chavón, La Romana · Etiqueta Black Tie",
     image: weddingImage,
     features: [
-      { es: "Reloj regresivo & Guardar en Calendario", en: "Countdown clock & Save to Calendar" },
-      { es: "Sinfonía romántica de fondo interactiva", en: "Interactive romantic background music" },
-      { es: "Confirmación RSVP con asignación de pases", en: "RSVP confirmation with pass assignment" },
-      { es: "Línea de tiempo & Historia de Amor", en: "Timeline & Love Story" },
-      { es: "Itinerario de ceremonia, banquete y hora loca", en: "Ceremony, banquet & after-party itinerary" },
-      { es: "Mesa de regalos bancaria & Zelle (Copia en 1-clic)", en: "Bank & Zelle gift registry (1-click copy)" },
-      { es: "Geolocalización Waze & Google Maps", en: "Waze & Google Maps geolocation" },
-      { es: "Código de vestimenta con paleta de colores", en: "Dress code with color palette" },
+      { es: "Portada de gala con cuenta regresiva y calendario", en: "Gala cover with countdown and calendar" },
+      { es: "Historia de la pareja en línea de tiempo", en: "Couple’s story as a timeline" },
+      { es: "Ceremonia y recepción con mapas directos", en: "Ceremony and reception with direct maps" },
+      { es: "Itinerario completo: ceremonia, banquete y hora loca", en: "Full itinerary: ceremony, banquet and after-party" },
+      { es: "Corte de honor y padrinos", en: "Bridal party and godparents" },
+      { es: "Recomendaciones de hospedaje para invitados", en: "Lodging recommendations for guests" },
+      { es: "Mesa de regalos bancaria con copia en un clic", en: "Bank gift registry with one-click copy" },
+      { es: "Galería fotográfica con vista ampliada", en: "Photo gallery with lightbox" },
       { es: "Muro interactivo de buenos deseos", en: "Interactive well-wishes wall" },
-      { es: "Galería fotográfica con vista ampliada", en: "Photo gallery with enlarged view" }
+      { es: "RSVP con pases, menú, alergias y canción", en: "RSVP with passes, menu, allergies and song" }
     ],
     demoPath: "/muestra/boda-camila-y-lucas"
   },
@@ -51,16 +51,20 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     eventType: "15 Años & Quinceañera",
     category: "quinceanera",
     style: { es: "Romántico · Coral, ciruela y oro", en: "Romantic · Coral, plum & gold" },
-    minimumPlan: "popular",
+    minimumPlan: "premium",
     subtitle: "Grand Ballroom Hotel Jaragua, Santo Domingo",
     image: quinceImage,
     features: [
-      { es: "Paleta Rose Gold & Cristal", en: "Rose Gold & Crystal palette" },
-      { es: "Música festiva y cuenta regresiva", en: "Festive music & countdown" },
-      { es: "Código de vestimenta & Paleta sugerida", en: "Dress code & suggested palette" },
-      { es: "Módulo de pases e invitados especiales", en: "Passes & special guests module" },
-      { es: "Muro de felicitaciones y firmas", en: "Congratulations & signatures wall" },
-      { es: "Geolocalización del salón de fiesta", en: "Ballroom geolocation" }
+      { es: "Portada con retrato, monograma y cuenta regresiva", en: "Cover with portrait, monogram and countdown" }, 
+      { es: "Programa de la noche paso a paso", en: "Step-by-step night programme" },
+      { es: "Galería de fotos con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "Playlist colaborativa: pide tu canción", en: "Collaborative playlist: request your song" },
+      { es: "Ubicación del salón con mapa y Waze", en: "Venue location with map and Waze" },
+      { es: "Código de vestimenta con paleta sugerida", en: "Dress code with suggested palette" },
+      { es: "Lluvia de sobres y mesa de regalos", en: "Gift registry and envelope shower" },
+      { es: "Muro de felicitaciones y firmas", en: "Well-wishes and signature wall" },
+      { es: "RSVP con pases, menú, alergias y canción", en: "RSVP with passes, menu, allergies and song" },
+      { es: "Música de fondo e invitación bilingüe", en: "Background music and bilingual invitation" }
     ],
     demoPath: "/muestra/cumple-valeria-15"
   },
