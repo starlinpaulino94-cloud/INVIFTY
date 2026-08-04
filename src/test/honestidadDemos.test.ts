@@ -92,10 +92,12 @@ describe("elementos obligatorios de cada demo", () => {
   });
 
   it("incluye la marca de agua para solicitar una invitación similar", () => {
+    // Puede venir directamente o a través de DemoTopBar, que la incorpora.
     for (const file of demoFiles) {
-      expect(read(file), `${file} no ofrece pedir una invitación similar`).toContain(
-        "createDemoWatermarkWhatsAppUrl"
-      );
+      const source = read(file);
+      const ofrece =
+        source.includes("createDemoWatermarkWhatsAppUrl") || source.includes("DemoTopBar");
+      expect(ofrece, `${file} no ofrece pedir una invitación similar`).toBe(true);
     }
   });
 

@@ -87,8 +87,7 @@ describe("muestra · Gala Anual de Innovación", () => {
     expect(message).toContain("Directora de Operaciones");
     expect(message).toContain("Opción vegetariana");
     expect(message).toContain("2");
-    // userEvent teclea carácter a carácter; este caso rellena cinco campos.
-  }, 20000);
+  });
 
   it("no afirma que el registro quedó procesado", async () => {
     const user = userEvent.setup();

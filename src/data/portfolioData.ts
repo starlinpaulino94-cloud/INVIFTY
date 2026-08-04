@@ -99,15 +99,19 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     eventType: "Baby Shower",
     category: "baby-shower",
     style: { es: "Terracota suave · Nude, cacao y arena", en: "Soft terracotta · Nude, cocoa & sand" },
-    minimumPlan: "popular",
+    minimumPlan: "premium",
     subtitle: "Terraza Privada Casa de Campo · La Romana",
     image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&q=80&w=800",
     features: [
-      { es: "Temática cálida botánica & crema", en: "Warm botanical & cream theme" },
-      { es: "Mesa de obsequios & Wishlist de bebé", en: "Gift table & baby wishlist" },
-      { es: "Confirmación RSVP para familiares", en: "RSVP confirmation for family" },
-      { es: "Juegos y dinámicas de la recepción", en: "Reception games & activities" },
-      { es: "Mapa e instrucciones de llegada", en: "Map & arrival instructions" }
+      { es: "Portada cálida con cuenta regresiva", en: "Warm cover with countdown" },
+      { es: "Programa de la merienda hora por hora", en: "Hour-by-hour afternoon programme" },
+      { es: "Ubicación con mapa, Google Maps y Waze", en: "Venue with map, Google Maps and Waze" },
+      { es: "Juego de predicciones: peso y fecha de nacimiento", en: "Guessing game: weight and birth date" },
+      { es: "Galería de la espera con vista ampliada", en: "Pregnancy gallery with lightbox" },
+      { es: "Mesa de regalos con copia en un clic", en: "Gift registry with one-click copy" },
+      { es: "Muro de amor para el bebé", en: "Wall of love for the baby" },
+      { es: "Dress code con paleta de colores", en: "Dress code with colour palette" },
+      { es: "RSVP con acompañantes, menú y alergias", en: "RSVP with guests, menu and allergies" }
     ],
     demoPath: "/muestra/baby-shower-mateo"
   },
@@ -122,10 +126,15 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Catedral Primada de América & Restaurante Pepperoni",
     image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=800",
     features: [
-      { es: "Estética celestial en tonos blanco y dorado", en: "Heavenly aesthetic in white & gold" },
-      { es: "Detalles de ceremonia religiosa & padrinos", en: "Religious ceremony & godparents details" },
-      { es: "Ubicación de iglesia y almuerzo", en: "Church & luncheon locations" },
-      { es: "Confirmación de familiares e íntimos", en: "RSVP for family & close friends" }
+      { es: "Portada sacra con cuenta regresiva", en: "Sacred cover with countdown" },
+      { es: "Programa del día: misa, fotos y almuerzo", en: "Day programme: mass, photos and lunch" },
+      { es: "Sección de padrinos de bautismo", en: "Baptism godparents section" },
+      { es: "Dos sedes con mapa, Google Maps y Waze", en: "Two venues with map, Google Maps and Waze" },
+      { es: "Dress code con paleta de colores", en: "Dress code with colour palette" },
+      { es: "Galería de fotos con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "Cuenta de ahorro para el futuro del bebé", en: "Savings account for the baby’s future" },
+      { es: "Muro de bendiciones para la familia", en: "Wall of blessings for the family" },
+      { es: "RSVP con acompañantes, menú y alergias", en: "RSVP with guests, menu and allergies" }
     ],
     demoPath: "/muestra/bautizo-sofia-maria"
   },
@@ -159,14 +168,19 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     eventType: "Bridal Shower",
     category: "bridal-shower",
     style: { es: "Fiesta blanca · Blanco, negro y bronce", en: "White party · White, black & bronze" },
-    minimumPlan: "popular",
+    minimumPlan: "premium",
     subtitle: "Punta Cana Resort & Club · Punta Cana",
     image: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80&w=800",
     features: [
-      { es: "Diseño contemporáneo blanco & champán", en: "Contemporary white & champagne design" },
-      { es: "Lista de obsequios para el hogar", en: "Home gift wishlist" },
-      { es: "Dress code total white", en: "All-white dress code" },
-      { es: "Confirmación RSVP rápida vía WhatsApp", en: "Quick RSVP via WhatsApp" }
+      { es: "Portada inmersiva con cuenta regresiva", en: "Immersive cover with countdown" },
+      { es: "Programa de la tarde hora por hora", en: "Hour-by-hour afternoon programme" },
+      { es: "Dress code total white con paleta de colores", en: "Total-white dress code with colour palette" },
+      { es: "Ubicación con mapa, Google Maps y Waze", en: "Venue with map, Google Maps and Waze" },
+      { es: "Galería de fotos con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "Mesa de regalos con copia en un clic", en: "Gift registry with one-click copy" },
+      { es: "Muro de mensajes para la novia", en: "Message wall for the bride" },
+      { es: "RSVP con acompañantes, menú, alergias y canción", en: "RSVP with guests, menu, allergies and song" },
+      { es: "Música de fondo y guardar la fecha", en: "Background music and save-the-date" }
     ],
     demoPath: "/muestra/bridal-shower-isabella"
   },
@@ -181,10 +195,15 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Torre Empresarial Piantini · Santo Domingo",
     image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800",
     features: [
-      { es: "Invitación ejecutiva VIP para personalidades", en: "Executive VIP invitation for dignitaries" },
-      { es: "Código QR para acreditación en puerta", en: "QR code for door accreditation" },
-      { es: "Agenda de inauguración & corte de cinta", en: "Opening agenda & ribbon cutting" },
-      { es: "Ubicación y servicio de Valet Parking", en: "Location & valet parking service" }
+      { es: "Portada premium con cuenta regresiva", en: "Premium cover with countdown" },
+      { es: "Programa VIP: alfombra, corte de cinta y showcase", en: "VIP programme: carpet, ribbon cutting and showcase" },
+      { es: "Beneficios exclusivos para invitadas", en: "Exclusive guest privileges" },
+      { es: "Galería de la colección cápsula", en: "Capsule collection gallery" },
+      { es: "Pase QR personal para acreditación en puerta", en: "Personal QR pass for door accreditation" },
+      { es: "Ubicación con mapa, Waze y valet parking", en: "Venue with map, Waze and valet parking" },
+      { es: "Dress code con paleta de colores", en: "Dress code with colour palette" },
+      { es: "Acreditación con empresa, medio y acompañantes", en: "Accreditation with company, media and companions" },
+      { es: "Invitación bilingüe español / inglés", en: "Bilingual Spanish / English invitation" }
     ],
     demoPath: "/muestra/grand-opening-boutique"
   },

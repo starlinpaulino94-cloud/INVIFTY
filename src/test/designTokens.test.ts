@@ -119,7 +119,13 @@ describe("contraste de texto", () => {
         // `text-white/40` sigue permitido en los dos casos revisados a mano
         // (número de paso y icono "no incluido"), ambos con umbral 3:1.
         if (alpha === 40) continue;
-        if (new RegExp(`text-white/${alpha}\\b`).test(source)) {
+
+        // Se revisa línea a línea para poder excluir lo decorativo: un elemento
+        // marcado con `aria-hidden` no transmite información, así que no le
+        // aplica el contraste mínimo de texto (WCAG 1.4.3).
+        for (const line of source.split("\n")) {
+          if (!new RegExp(`text-white/${alpha}\\b`).test(line)) continue;
+          if (line.includes("aria-hidden")) continue;
           offenders.push(`${file}: text-white/${alpha}`);
         }
       }
