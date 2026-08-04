@@ -1,11 +1,9 @@
+import DemoMusicToggle from "../components/common/DemoMusicToggle";
+import DemoRsvpNotice from "../components/common/DemoRsvpNotice";
 import { useState, useEffect, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import { 
-  Sparkles, Music, MapPin, Calendar, Clock, Gift, 
-  CheckCircle2, Volume2, VolumeX, ArrowLeft, Send, 
-  Heart, ExternalLink, Copy, Check, Navigation, Globe, Wine
-} from "lucide-react";
+import { Sparkles, MapPin, ArrowLeft, Send, Navigation, Globe, Wine } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 interface BridalShowerDemoProps {
@@ -100,6 +98,23 @@ export default function BridalShowerDemo({ onBackToHome }: BridalShowerDemoProps
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-[#262626] font-sans selection:bg-[#E5D4C0]/30 relative">
+      {/* Control de música: la demo tenía el audio implementado pero sin ningún
+          control visible, así que nunca se podía reproducir ni detener. */}
+      <div className="fixed bottom-6 left-6 z-40">
+        <DemoMusicToggle
+          isPlaying={isPlayingMusic}
+          onToggle={toggleMusic}
+          isEs={language === "es"}
+          labelOn={language === "es" ? "Sonando" : "Playing"}
+          labelOff={language === "es" ? "Reproducir música" : "Play music"}
+          className={`p-3.5 rounded-full shadow-2xl flex items-center gap-2 text-xs font-semibold tracking-wider uppercase transition-all duration-300 border ${
+            isPlayingMusic
+              ? "bg-[#1A1A1A] text-white border-[#1A1A1A]"
+              : "bg-white text-[#262626] border-[#E5D4C0] hover:bg-[#F5EFE7]"
+          }`}
+        />
+      </div>
+
       {/* Top Demo Bar */}
       <div className="bg-[#1A1A1A] text-white py-2 px-4 flex items-center justify-between text-xs font-medium sticky top-0 z-50 shadow-md">
         <button
@@ -259,6 +274,7 @@ export default function BridalShowerDemo({ onBackToHome }: BridalShowerDemoProps
               <Send className="w-4 h-4" /> {language === "es" ? "Confirmar por WhatsApp" : "Confirm via WhatsApp"}
             </button>
           </form>
+          {rsvpSubmitted && <DemoRsvpNotice isEs={language === "es"} tone="light" />}
         </div>
       </section>
     </div>

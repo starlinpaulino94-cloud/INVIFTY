@@ -1,12 +1,8 @@
+import { parseAttendance } from "../utils/rsvp";
 import { useState, useEffect, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import { 
-  Sparkles, Music, MapPin, Calendar, Clock, Gift, 
-  CheckCircle2, Volume2, VolumeX, ArrowLeft, Send, 
-  MessageSquare, Heart, PartyPopper, ExternalLink, Copy, Check,
-  Camera, X, Navigation, Globe, Disc, Play, ThumbsUp, Radio
-} from "lucide-react";
+import { Sparkles, Music, MapPin, Calendar, Clock, Gift, CheckCircle2, Volume2, VolumeX, ArrowLeft, Send, MessageSquare, PartyPopper, ExternalLink, Copy, Check, Camera, X, Navigation, Globe, Disc, ThumbsUp, Radio } from "lucide-react";
 import quinceImg from "../assets/images/quince_valeria_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
 
@@ -453,6 +449,8 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
                 alt={`Valeria 15 años foto ${idx + 1}`}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <span className="text-white text-xs font-bold bg-black/70 px-4 py-2 rounded-full border border-white/30 flex items-center gap-1.5">
@@ -781,8 +779,19 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
           {rsvpSubmitted ? (
             <div className="bg-[#120B10] border border-[#E29578] p-8 rounded-3xl">
               <CheckCircle2 className="w-12 h-12 text-[#E29578] mx-auto mb-3" />
-              <h3 className="font-bold text-xl text-white mb-1">{language === "es" ? "¡Gracias por Confirmar!" : "Thank You!"}</h3>
-              <p className="text-xs text-gray-300">{language === "es" ? "Hemos registrado tu respuesta y te contactaremos por WhatsApp con tus pases digitales." : "We received your RSVP via WhatsApp!"}</p>
+              <h3 className="font-bold text-xl text-white mb-1">{language === "es" ? "Se abrió WhatsApp" : "WhatsApp opened"}</h3>
+              {/* Esta muestra no tiene backend: sólo redacta el mensaje. Decir
+                  "hemos registrado tu respuesta" sería falso. */}
+              <p className="text-xs text-gray-300">
+                {language === "es"
+                  ? "Tu confirmación quedó redactada en WhatsApp. Envía el mensaje para completarla."
+                  : "Your RSVP is written out in WhatsApp. Send the message to complete it."}
+              </p>
+              <p className="text-[10px] text-gray-400 mt-2">
+                {language === "es"
+                  ? "Es una muestra: los datos no se guardan en ningún sistema."
+                  : "This is a sample: no data is stored anywhere."}
+              </p>
             </div>
           ) : (
             <form onSubmit={handleRsvpSubmit} className="bg-[#120B10] p-6 sm:p-8 rounded-3xl border border-[#E29578]/30 text-left space-y-4">
@@ -803,11 +812,11 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
                   <label className="block text-xs font-bold uppercase text-gray-300 mb-1">{language === "es" ? "Asistencia" : "Attendance"}</label>
                   <select
                     value={rsvpData.attendance}
-                    onChange={(e) => setRsvpData({ ...rsvpData, attendance: e.target.value })}
+                    onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })}
                     className="w-full bg-[#1E1119] border border-[#E29578]/30 rounded-xl p-3 text-sm text-white focus:outline-none"
                   >
                     <option value="Confirmado">{language === "es" ? "✅ Sí, asistiré con gusto" : "✅ Yes, I will attend"}</option>
-                    <option value="No podré asistir">{language === "es" ? "❌ Lamentablemente no podré asistir" : "❌ Regretfully cannot attend"}</option>
+                    <option value="Declina">{language === "es" ? "❌ Lamentablemente no podré asistir" : "❌ Regretfully cannot attend"}</option>
                   </select>
                 </div>
 

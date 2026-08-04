@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef, ReactNode } from "react";
 import { createDemoWatermarkWhatsAppUrl } from "../utils/whatsapp";
 import { buildWhatsAppUrl } from "../config";
-import {
-  ArrowLeft, Navigation, Sparkles, CalendarPlus, QrCode, MessageCircle, Clock,
-} from "lucide-react";
+import { ArrowLeft, Navigation, Sparkles, CalendarPlus, QrCode, MessageCircle, Clock } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 /**

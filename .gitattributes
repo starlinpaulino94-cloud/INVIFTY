@@ -1,0 +1,18 @@
+# Normaliza los fines de línea en el repositorio.
+# La convivencia de CRLF (Windows) y LF (ZIP/Linux) hacía que `diff` marcara
+# como distintos archivos que eran idénticos, ocultando las diferencias reales
+# entre las dos copias del proyecto. Ver docs/consolidacion-repositorio.md.
+
+* text=auto eol=lf
+
+# Binarios: nunca normalizar.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.mp3 binary
+*.mp4 binary

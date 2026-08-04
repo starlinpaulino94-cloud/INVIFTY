@@ -1,9 +1,9 @@
+import { useDemoFonts } from "../hooks/useDemoFonts";
+import { parseAttendance } from "../utils/rsvp";
 import { useState, useEffect, useRef, ReactNode, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import {
-  ArrowLeft, Clock, Navigation, Send, CheckCircle2, Sparkles,
-} from "lucide-react";
+import { ArrowLeft, Clock, Navigation, Send, CheckCircle2, Sparkles } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 /**
@@ -78,6 +78,7 @@ interface DemoProps {
 
 export default function EditorialBodaDemo({ onBackToHome }: DemoProps) {
   const { language } = useLanguage();
+  useDemoFonts();
   const isEs = language === "es";
 
   // Sobre lacrado: cerrado → abriéndose → retirado
@@ -338,12 +339,12 @@ export default function EditorialBodaDemo({ onBackToHome }: DemoProps) {
                     <select
                       id="ed-asistencia"
                       value={rsvp.attendance}
-                      onChange={(e) => setRsvp({ ...rsvp, attendance: e.target.value as RsvpFormData["attendance"] })}
+                      onChange={(e) => setRsvp({ ...rsvp, attendance: parseAttendance(e.target.value) })}
                       className="w-full border bg-white px-4 py-3 text-sm focus:outline-none"
                       style={{ borderColor: `${ORO}80`, color: TINTA }}
                     >
                       <option value="Confirmado">{isEs ? "¡Ahí estaré!" : "I'll be there!"}</option>
-                      <option value="No podré asistir">{isEs ? "No podré asistir" : "Can't make it"}</option>
+                      <option value="Declina">{isEs ? "No podré asistir" : "Can't make it"}</option>
                     </select>
                   </div>
                   <div>

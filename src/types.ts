@@ -4,6 +4,24 @@ export interface Localized {
   en: string;
 }
 
+/**
+ * Categoría de evento: identificador **estable y neutral al idioma**.
+ *
+ * El catálogo se filtraba antes comparando texto en español
+ * (`eventType.includes("boda")`), lo que ataba el filtrado a la copia visible.
+ * Estos ids también viajan en la analítica como `category`.
+ */
+export type DemoCategory =
+  | "boda"
+  | "quinceanera"
+  | "cumpleanos"
+  | "baby-shower"
+  | "bautizo"
+  | "bridal-shower"
+  | "corporativo"
+  | "apertura"
+  | "otro";
+
 export type EventType =
   | "Boda" 
   | "Boda Luxury" 
@@ -25,10 +43,12 @@ export interface PricingPlan {
   priceDOP: number;
   badge?: Localized;
   isPopular?: boolean;
+  /** true = opción "A medida" (se muestra como banda distinta, precio "Desde"). */
+  isCustom?: boolean;
   /** Resultado principal que promete el plan, en una frase. */
   description: Localized;
   features: Localized[];
-  /** Tiempo de entrega visible en la tarjeta (ej: "48 horas"). */
+  /** Tiempo de entrega visible en la tarjeta (ej: "3 a 5 días hábiles"). */
   deliveryTime: Localized;
   /** Rondas de revisión incluidas en el precio. */
   revisions: number;
@@ -57,22 +77,19 @@ export interface PortfolioItem {
   slug: string;
   title: string;
   eventType: EventType;
+  /** Categoría estable para filtrar y medir. No depende del idioma. */
+  category: DemoCategory;
   subtitle: string;
+  /** Estilo visual y paleta, en una frase. */
+  style: Localized;
   image: string;
   features: Localized[];
+  /**
+   * Plan mínimo que reproduce lo que enseña la muestra.
+   * Debe coincidir con un id de PRICING_PLANS.
+   */
+  minimumPlan?: string;
   demoPath: string;
-}
-
-export interface Testimonial {
-  id: string;
-  name: string;
-  eventType: Localized;
-  location: string;
-  comment: Localized;
-  rating: number;
-  date: string;
-  /** true = historia ilustrativa (se etiqueta así en el sitio); false = testimonio real */
-  isProvisionalNotice?: boolean;
 }
 
 export interface FAQItem {
@@ -89,9 +106,17 @@ export interface InquiryFormData {
   message?: string;
 }
 
+/**
+ * Valores internos de asistencia. Son identificadores, no texto visible:
+ * el texto que ve el invitado vive en las opciones del `<select>` de cada demo,
+ * traducido por idioma. Antes convivían "Declina" y "No podré asistir" como
+ * valores, lo que rompía el tipo; ahora hay un único valor canónico.
+ */
+export type RsvpAttendance = "Confirmado" | "Declina";
+
 export interface RsvpFormData {
   fullName: string;
-  attendance: "Confirmado" | "No podré asistir";
+  attendance: RsvpAttendance;
   guestCount: number;
   menuPreference?: string;
   dietaryNotes?: string;

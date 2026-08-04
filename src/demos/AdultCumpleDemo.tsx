@@ -1,12 +1,10 @@
+import DemoMusicToggle from "../components/common/DemoMusicToggle";
+import DemoRsvpNotice from "../components/common/DemoRsvpNotice";
+import { parseAttendance } from "../utils/rsvp";
 import { useState, useEffect, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import { 
-  Sparkles, Music, MapPin, Calendar, Clock, Gift, 
-  CheckCircle2, Volume2, VolumeX, ArrowLeft, Send, 
-  MessageSquare, Heart, ExternalLink, Copy, Check,
-  Camera, X, Navigation, Globe, Award, GlassWater
-} from "lucide-react";
+import { Sparkles, MapPin, ArrowLeft, Send, Navigation, Globe, Award, GlassWater } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 interface AdultCumpleDemoProps {
@@ -23,14 +21,6 @@ export default function AdultCumpleDemo({ onBackToHome }: AdultCumpleDemoProps) 
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
 
-  // Wishes Wall state
-  const [wishes, setWishes] = useState<Array<{ id: string; name: string; text: string; date: string }>>([
-    { id: "1", name: "Ing. Alejandro Sterling", text: "¡Felices 50 años estimado Roberto! Un brindis por décadas de amistad, éxitos y grandes vivencias.", date: "Hace 4 horas" },
-    { id: "2", name: "Familia Vicini", text: "Listos para celebrar en la Marina este hito inolvidable.", date: "Ayer" }
-  ]);
-  const [newWishName, setNewWishName] = useState("");
-  const [newWishText, setNewWishText] = useState("");
-  const [wishPublished, setWishPublished] = useState(false);
 
   // RSVP Form State
   const [rsvpData, setRsvpData] = useState<RsvpFormData>({
@@ -94,25 +84,6 @@ export default function AdultCumpleDemo({ onBackToHome }: AdultCumpleDemoProps) 
     }
   };
 
-  const handleAddWish = (e: FormEvent) => {
-    e.preventDefault();
-    if (!newWishName.trim() || !newWishText.trim()) return;
-
-    setWishes([
-      {
-        id: Date.now().toString(),
-        name: newWishName.trim(),
-        text: newWishText.trim(),
-        date: "Justo ahora"
-      },
-      ...wishes
-    ]);
-
-    setNewWishName("");
-    setNewWishText("");
-    setWishPublished(true);
-    setTimeout(() => setWishPublished(false), 4000);
-  };
 
   const handleRsvpSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -130,6 +101,23 @@ export default function AdultCumpleDemo({ onBackToHome }: AdultCumpleDemoProps) 
 
   return (
     <div className="min-h-screen bg-[#0B132B] text-[#E0E1DD] font-sans selection:bg-[#D4AF37]/30 relative">
+      {/* Control de música: la demo tenía el audio implementado pero sin ningún
+          control visible, así que nunca se podía reproducir ni detener. */}
+      <div className="fixed bottom-6 left-6 z-40">
+        <DemoMusicToggle
+          isPlaying={isPlayingMusic}
+          onToggle={toggleMusic}
+          isEs={language === "es"}
+          labelOn={language === "es" ? "Sonando" : "Playing"}
+          labelOff={language === "es" ? "Reproducir música" : "Play music"}
+          className={`p-3.5 rounded-full shadow-2xl flex items-center gap-2 text-xs font-semibold tracking-wider uppercase transition-all duration-300 border ${
+            isPlayingMusic
+              ? "bg-[#D4AF37] text-[#0B132B] border-[#D4AF37]"
+              : "bg-[#1C2541] text-[#E0E1DD] border-white/20 hover:bg-[#25335A]"
+          }`}
+        />
+      </div>
+
       {/* Top Demo Bar */}
       <div className="bg-[#1C2541] text-white py-2 px-4 flex items-center justify-between text-xs font-medium sticky top-0 z-50 shadow-md">
         <button
@@ -297,7 +285,7 @@ export default function AdultCumpleDemo({ onBackToHome }: AdultCumpleDemoProps) 
               <label className="block text-xs font-semibold text-gray-200 mb-1">{language === "es" ? "Asistencia" : "Attendance"}</label>
               <select
                 value={rsvpData.attendance}
-                onChange={(e) => setRsvpData({ ...rsvpData, attendance: e.target.value })}
+                onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })}
                 className="w-full px-4 py-3 bg-[#0B132B] border border-white/20 rounded-xl text-xs text-white focus:outline-none focus:border-[#D4AF37]"
               >
                 <option value="Confirmado">{language === "es" ? "¡Ahí estaré para brindar!" : "I will be there to toast!"}</option>
@@ -312,6 +300,7 @@ export default function AdultCumpleDemo({ onBackToHome }: AdultCumpleDemoProps) 
               <Send className="w-4 h-4" /> {language === "es" ? "Enviar Confirmación por WhatsApp" : "Send Confirmation via WhatsApp"}
             </button>
           </form>
+          {rsvpSubmitted && <DemoRsvpNotice isEs={language === "es"} tone="dark" />}
         </div>
       </section>
     </div>

@@ -1,14 +1,9 @@
-import { useState, useRef } from "react";
-import { 
-  X, QrCode, Sparkles, Download, Share2, CheckCircle2, 
-  ShieldCheck, Award, User, Building, MapPin, Calendar, 
-  Clock, Check, RefreshCw, Zap, Lock, CreditCard
-} from "lucide-react";
+import { useState } from "react";
+import { X, QrCode, Sparkles, Share2, CheckCircle2, ShieldCheck, MapPin, Calendar, Check, RefreshCw, Lock } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 interface VipPassModalProps {
   eventName?: string;
-  eventType?: "boda" | "corporativo" | "quince" | "general";
   defaultGuestName?: string;
   tableNumber?: string;
   eventDate?: string;
@@ -18,7 +13,6 @@ interface VipPassModalProps {
 
 export default function VipPassModal({
   eventName = "Gala Anual de Innovación & Elegancia 2026",
-  eventType = "corporativo",
   defaultGuestName = "Lic. Alejandro Mendoza",
   tableNumber = "Mesa VIP #04",
   eventDate = "28 de Octubre, 2026 — 7:30 PM",
@@ -30,7 +24,8 @@ export default function VipPassModal({
 
   const [guestName, setGuestName] = useState(defaultGuestName);
   const [guestTable, setGuestTable] = useState(tableNumber);
-  const [passType, setPassType] = useState<"VIP Executive" | "Guest Pass" | "Acceso Total" | "Mesa de Honor">("VIP Executive");
+  // Tipo de pase fijo: la demo no ofrece selector, así que no necesita estado.
+  const passType = "VIP Executive";
   const [passCode] = useState(() => `INV-${Math.floor(100000 + Math.random() * 900000)}`);
   
   const [isScanning, setIsScanning] = useState(false);
@@ -68,7 +63,7 @@ export default function VipPassModal({
     <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fadeIn select-none">
       
       {/* Outer Card Wrapper */}
-      <div className="bg-[#121212] border border-[#D4AF37]/50 rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative shadow-[0_25px_70px_-15px_rgba(212,175,55,0.3)] my-auto">
+      <div className="bg-surface-card border border-gold/50 rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative shadow-[0_25px_70px_-15px_rgba(212,175,55,0.3)] my-auto">
         
         {/* Close Modal Button */}
         <button
@@ -80,8 +75,8 @@ export default function VipPassModal({
 
         {/* Header Badge */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] text-[10px] uppercase tracking-[0.25em] font-semibold mb-2">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-[10px] uppercase tracking-[0.25em] font-semibold mb-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-gold" />
             {isEs ? "Acreditación Digital Segura" : "Secure Digital Pass"}
           </div>
 
@@ -97,16 +92,16 @@ export default function VipPassModal({
         </div>
 
         {/* VIP PASS CARD DISPLAY (PHYSICAL METALLIC LOOK) */}
-        <div className="relative rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#1F1C18] via-[#121110] to-[#0A0A0A] border-2 border-[#D4AF37] shadow-2xl overflow-hidden mb-8 group">
+        <div className="relative rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#1F1C18] via-[#121110] to-surface-sunken border-2 border-gold shadow-2xl overflow-hidden mb-8 group">
           
           {/* Holographic Metallic Overlay */}
-          <div className="absolute -top-24 -right-24 w-60 h-60 bg-gradient-to-bl from-[#D4AF37]/20 via-[#F2D06B]/10 to-transparent rounded-full filter blur-2xl pointer-events-none"></div>
-          <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-[#D4AF37]/10 rounded-full filter blur-xl pointer-events-none"></div>
+          <div className="absolute -top-24 -right-24 w-60 h-60 bg-gradient-to-bl from-gold/20 via-gold-hover/10 to-transparent rounded-full filter blur-2xl pointer-events-none"></div>
+          <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-gold/10 rounded-full filter blur-xl pointer-events-none"></div>
 
           {/* Pass Top Bar */}
           <div className="flex items-start justify-between gap-4 mb-6 relative z-10 border-b border-white/10 pb-4">
             <div>
-              <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-[#D4AF37] block mb-0.5">
+              <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-gold block mb-0.5">
                 PASE DE ACCESO OFICIAL • {passCode}
               </span>
               <h4 className="font-serif text-lg sm:text-xl text-white font-medium leading-tight">
@@ -114,7 +109,7 @@ export default function VipPassModal({
               </h4>
             </div>
 
-            <div className="bg-[#D4AF37] text-black text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg shrink-0 flex items-center gap-1">
+            <div className="bg-gold text-black text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg shrink-0 flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-black" />
               {passType}
             </div>
@@ -127,24 +122,24 @@ export default function VipPassModal({
             <div className="sm:col-span-2 space-y-4">
               
               <div>
-                <span className="text-[9px] uppercase tracking-wider text-white/40 block mb-1">
+                <span className="text-[9px] uppercase tracking-wider text-white/60 block mb-1">
                   {isEs ? "Nombre del Invitado" : "Guest Name"}
                 </span>
-                <div className="font-serif text-xl sm:text-2xl text-white font-medium text-[#D4AF37] tracking-wide">
+                <div className="font-serif text-xl sm:text-2xl text-white font-medium text-gold tracking-wide">
                   {guestName || (isEs ? "Nombre de Invitado" : "Guest Name")}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/5 text-xs">
                 <div>
-                  <span className="text-[9px] uppercase tracking-wider text-white/40 block">
+                  <span className="text-[9px] uppercase tracking-wider text-white/60 block">
                     {isEs ? "Ubicación / Mesa" : "Seat / Table"}
                   </span>
                   <span className="text-white font-semibold">{guestTable || "General VIP"}</span>
                 </div>
 
                 <div>
-                  <span className="text-[9px] uppercase tracking-wider text-white/40 block">
+                  <span className="text-[9px] uppercase tracking-wider text-white/60 block">
                     {isEs ? "Estado" : "Status"}
                   </span>
                   <span className="text-emerald-400 font-bold flex items-center gap-1">
@@ -155,11 +150,11 @@ export default function VipPassModal({
 
               <div className="space-y-1 text-[11px] text-white/60 font-light">
                 <div className="flex items-center gap-1.5">
-                  <Calendar className="w-3 h-3 text-[#D4AF37]" />
+                  <Calendar className="w-3 h-3 text-gold" />
                   <span>{eventDate}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <MapPin className="w-3 h-3 text-[#D4AF37]" />
+                  <MapPin className="w-3 h-3 text-gold" />
                   <span>{eventLocation}</span>
                 </div>
               </div>
@@ -167,7 +162,7 @@ export default function VipPassModal({
             </div>
 
             {/* Right Col: Dynamic QR Code Box */}
-            <div className="flex flex-col items-center justify-center bg-white p-3.5 rounded-2xl border border-[#D4AF37]/50 shadow-inner">
+            <div className="flex flex-col items-center justify-center bg-white p-3.5 rounded-2xl border border-gold/50 shadow-inner">
               <img 
                 src={qrImageUrl} 
                 alt="QR Code Pass" 
@@ -181,19 +176,19 @@ export default function VipPassModal({
           </div>
 
           {/* Pass Footer Shield */}
-          <div className="mt-6 pt-3 border-t border-white/10 flex items-center justify-between text-[10px] text-white/40 relative z-10">
+          <div className="mt-6 pt-3 border-t border-white/10 flex items-center justify-between text-[10px] text-white/60 relative z-10">
             <span className="flex items-center gap-1">
-              <Lock className="w-3 h-3 text-[#D4AF37]" />
+              <Lock className="w-3 h-3 text-gold" />
               {isEs ? "Código Criptográfico Único — Antifraude" : "Encrypted Anti-Fraud Pass"}
             </span>
-            <span className="font-mono text-[#D4AF37]">INVIFTY VIP SYSTEM</span>
+            <span className="font-mono text-gold">INVIFTY VIP SYSTEM</span>
           </div>
 
         </div>
 
         {/* INTERACTIVE CUSTOMIZER CONTROLS */}
-        <div className="bg-[#0A0A0A] p-4 sm:p-5 rounded-2xl border border-white/10 mb-6 space-y-4">
-          <span className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold block mb-2">
+        <div className="bg-surface-sunken p-4 sm:p-5 rounded-2xl border border-white/10 mb-6 space-y-4">
+          <span className="text-[10px] uppercase tracking-widest text-gold font-bold block mb-2">
             {isEs ? "Personalizar Nombre para Prueba:" : "Personalize Guest Name for Testing:"}
           </span>
 
@@ -207,7 +202,7 @@ export default function VipPassModal({
                 value={guestName}
                 onChange={(e) => setGuestName(e.target.value)}
                 placeholder="Ej: Dra. Carmen Morales"
-                className="w-full bg-[#151515] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
+                className="w-full bg-surface-raised border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-gold"
               />
             </div>
 
@@ -220,20 +215,20 @@ export default function VipPassModal({
                 value={guestTable}
                 onChange={(e) => setGuestTable(e.target.value)}
                 placeholder="Ej: Mesa Imperial #01"
-                className="w-full bg-[#151515] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
+                className="w-full bg-surface-raised border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-gold"
               />
             </div>
           </div>
         </div>
 
         {/* CHECK-IN SCANNER SIMULATOR BUTTON & FEEDBACK */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#151515] p-4 rounded-2xl border border-white/10">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-surface-raised p-4 rounded-2xl border border-white/10">
           
           <div>
             <span className="text-xs font-semibold text-white block">
               {isEs ? "Simulador de Escaneo en Puerta" : "Door Check-in Scanner Simulator"}
             </span>
-            <p className="text-[10px] text-white/40">
+            <p className="text-[10px] text-white/60">
               {isEs 
                 ? "Prueba cómo el recepcionista del evento validará esta entrada en tiempo real."
                 : "Test how event staff will scan & validate this pass at reception."}
@@ -243,7 +238,7 @@ export default function VipPassModal({
           <button
             onClick={handleSimulateScan}
             disabled={isScanning}
-            className="w-full sm:w-auto px-5 py-2.5 bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-[#F2D06B] transition-colors flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+            className="w-full sm:w-auto px-5 py-2.5 bg-gold text-black font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-gold-hover transition-colors flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
           >
             {isScanning ? (
               <>
@@ -279,15 +274,15 @@ export default function VipPassModal({
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-white/10">
           <button
             onClick={handleCopyPass}
-            className="w-full sm:w-auto px-5 py-2.5 bg-[#0A0A0A] border border-white/10 hover:border-white/30 text-white font-medium text-xs rounded-xl flex items-center justify-center gap-2 transition-colors"
+            className="w-full sm:w-auto px-5 py-2.5 bg-surface-sunken border border-white/10 hover:border-white/30 text-white font-medium text-xs rounded-xl flex items-center justify-center gap-2 transition-colors"
           >
-            {copiedLink ? <Check className="w-4 h-4 text-[#D4AF37]" /> : <Share2 className="w-4 h-4" />}
+            {copiedLink ? <Check className="w-4 h-4 text-gold" /> : <Share2 className="w-4 h-4" />}
             {copiedLink ? (isEs ? "¡Pase Copiado!" : "Pass Copied!") : (isEs ? "Compartir Pase" : "Share Pass")}
           </button>
 
           <button
             onClick={onClose}
-            className="w-full sm:w-auto px-6 py-2.5 bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-[#F2D06B] transition-colors"
+            className="w-full sm:w-auto px-6 py-2.5 bg-gold text-black font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-gold-hover transition-colors"
           >
             {isEs ? "Entendido / Cerrar" : "Got it / Close"}
           </button>

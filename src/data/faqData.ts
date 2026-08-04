@@ -17,8 +17,8 @@ export const FAQ_ITEMS: FAQItem[] = [
       en: "2. How long does it take for my invitation to be ready?"
     },
     answer: {
-      es: "El tiempo estándar de entrega es de 48 horas una vez que nos envías los datos y fotografías de tu evento (el plan Luxury, por ser un diseño 100% a la medida, toma de 3 a 5 días hábiles). Si necesitas tu invitación de manera inmediata, contamos con el servicio Urgente 24h para entregas en menos de un día.",
-      en: "Standard delivery is 48 hours once you send us your event details and photos (the Luxury plan, being a fully bespoke design, takes 3 to 5 business days). If you need your invitation right away, our Rush 24h service delivers in under a day."
+      es: "El tiempo estándar de entrega es de 3 a 5 días hábiles una vez que nos envías los datos y fotografías de tu evento. El plan A medida, por ser un diseño 100% desde cero, toma de 5 a 7 días hábiles.",
+      en: "Standard delivery is 3 to 5 business days once you send us your event details and photos. The Custom plan, being a fully bespoke design, takes 5 to 7 business days."
     }
   },
   {
@@ -67,8 +67,8 @@ export const FAQ_ITEMS: FAQItem[] = [
       en: "7. How many design revisions does my plan include?"
     },
     answer: {
-      es: "Cada plan incluye rondas de revisión para ajustar el diseño antes de publicarlo: Esencial incluye 1, Popular 2, Premium 3 y Luxury 4. En cada ronda puedes agrupar todos tus comentarios y los aplicamos juntos. Los cambios de datos del evento (hora, lugar, dress code) no cuentan como revisión: esos son siempre gratuitos.",
-      en: "Every plan includes revision rounds to fine-tune the design before publishing: Essential includes 1, Popular 2, Premium 3 and Luxury 4. In each round you can group all your comments and we apply them together. Event-detail updates (time, venue, dress code) don't count as revisions — those are always free."
+      es: "Cada plan incluye rondas de revisión para ajustar el diseño antes de publicarlo: Esencial incluye 1, Popular 2, Premium 3 y A medida 4. En cada ronda puedes agrupar todos tus comentarios y los aplicamos juntos. Los cambios de datos del evento (hora, lugar, dress code) no cuentan como revisión: esos son siempre gratuitos.",
+      en: "Every plan includes revision rounds to fine-tune the design before publishing: Essential includes 1, Popular 2, Premium 3 and Custom 4. In each round you can group all your comments and we apply them together. Event-detail updates (time, venue, dress code) don't count as revisions — those are always free."
     }
   },
   {

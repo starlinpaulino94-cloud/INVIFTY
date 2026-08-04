@@ -1,30 +1,49 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FAQ_ITEMS } from "../data/faqData";
-import { ChevronDown, HelpCircle, MessageCircle } from "lucide-react";
+import { ChevronDown, MessageCircle } from "lucide-react";
 import { buildWhatsAppUrl } from "../config";
 import { useLanguage } from "../context/LanguageContext";
+import { trackEventOnce } from "../services/analytics";
 
 export default function FaqSection() {
   const { language, lx } = useLanguage();
   const isEs = language === "es";
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  // view_faq: una sola vez, cuando la sección entra en pantalla.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          trackEventOnce("view_faq", {}, "faq");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   const toggleFaq = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <section id="faq" className="py-24 bg-[#151515] border-t border-white/5 relative">
+    <section id="faq" ref={sectionRef} className="py-24 bg-surface-raised border-t border-white/5 relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center mb-12">
-          <span className="text-[11px] uppercase tracking-[0.4em] text-[#D4AF37] block mb-3 font-semibold">
+          <span className="text-[11px] uppercase tracking-[0.4em] text-gold block mb-3 font-semibold">
             {isEs ? "Respuestas Claras" : "Clear Answers"}
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-normal text-white mb-3">
             {isEs ? "Preguntas " : "Frequently Asked "}
-            <span className="italic font-light text-[#D4AF37]">{isEs ? "Frecuentes" : "Questions"}</span>
+            <span className="italic font-light text-gold">{isEs ? "Frecuentes" : "Questions"}</span>
           </h2>
           <p className="text-white/50 text-sm font-light italic">
             {isEs
@@ -40,7 +59,7 @@ export default function FaqSection() {
             return (
               <div
                 key={index}
-                className="bg-[#0A0A0A] border border-white/5 transition-colors"
+                className="bg-surface-sunken border border-white/5 transition-colors"
               >
                 <button
                   onClick={() => toggleFaq(index)}
@@ -49,7 +68,7 @@ export default function FaqSection() {
                   <span className="font-serif text-base sm:text-lg font-normal text-white">
                     {lx(item.question)}
                   </span>
-                  <div className={`w-8 h-8 rounded-none bg-[#151515] flex items-center justify-center shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180 bg-[#D4AF37] text-black" : "text-[#D4AF37]"}`}>
+                  <div className={`w-8 h-8 rounded-none bg-surface-raised flex items-center justify-center shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180 bg-gold text-black" : "text-gold"}`}>
                     <ChevronDown className="w-4 h-4" />
                   </div>
                 </button>
@@ -65,12 +84,12 @@ export default function FaqSection() {
         </div>
 
         {/* FAQ WhatsApp Helper */}
-        <div className="mt-12 text-center bg-[#0A0A0A] border border-[#D4AF37]/30 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-12 text-center bg-surface-sunken border border-gold/30 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-left">
             <h4 className="font-serif text-base text-white">
               {isEs ? "¿Tienes alguna pregunta adicional?" : "Have another question?"}
             </h4>
-            <p className="text-xs text-white/40 font-light italic">
+            <p className="text-xs text-white/60 font-light italic">
               {isEs
                 ? "Estamos disponibles en WhatsApp para responder cualquier duda."
                 : "We're available on WhatsApp to answer any questions."}
@@ -80,7 +99,7 @@ export default function FaqSection() {
             href={buildWhatsAppUrl(isEs ? "Hola Invifty, tengo una consulta sobre las invitaciones digitales." : "Hello Invifty, I have a question about your digital invitations.")}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#D4AF37] hover:bg-[#F2D06B] text-black font-semibold text-[10px] uppercase tracking-[0.2em] py-3.5 px-6 transition-colors flex items-center gap-2 shrink-0"
+            className="bg-gold hover:bg-gold-hover text-black font-semibold text-[10px] uppercase tracking-[0.2em] py-3.5 px-6 transition-colors flex items-center gap-2 shrink-0"
           >
             <MessageCircle className="w-4 h-4" />
             {isEs ? "WhatsApp Oficial" : "Official WhatsApp"}

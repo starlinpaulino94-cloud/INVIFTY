@@ -1,12 +1,9 @@
+import DemoRsvpNotice from "../components/common/DemoRsvpNotice";
+import { parseAttendance } from "../utils/rsvp";
 import { useState, useEffect, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import { 
-  Sparkles, Music, MapPin, Calendar, Clock, Gift, 
-  CheckCircle2, Volume2, VolumeX, ArrowLeft, Send, 
-  MessageSquare, Heart, ExternalLink, Copy, Check,
-  Camera, X, Navigation, Globe, Baby
-} from "lucide-react";
+import { Sparkles, MapPin, Gift, Volume2, VolumeX, ArrowLeft, Send, ExternalLink, Copy, Check, Navigation, Globe, Baby } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 interface BabyShowerDemoProps {
@@ -426,7 +423,7 @@ export default function BabyShowerDemo({ onBackToHome }: BabyShowerDemoProps) {
               <label className="block text-xs font-semibold text-[#3D302F] mb-1">{language === "es" ? "Asistencia" : "Attendance"}</label>
               <select
                 value={rsvpData.attendance}
-                onChange={(e) => setRsvpData({ ...rsvpData, attendance: e.target.value })}
+                onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })}
                 className="w-full px-4 py-3 bg-[#FAF6F0] border border-[#E8C5B0] rounded-xl text-xs focus:outline-none focus:border-[#C88A72]"
               >
                 <option value="Confirmado">{language === "es" ? "¡Sí, asistiré con mucho gusto!" : "Yes, I will attend!"}</option>
@@ -453,6 +450,7 @@ export default function BabyShowerDemo({ onBackToHome }: BabyShowerDemoProps) {
               <Send className="w-4 h-4" /> {language === "es" ? "Enviar por WhatsApp" : "Send via WhatsApp"}
             </button>
           </form>
+          {rsvpSubmitted && <DemoRsvpNotice isEs={language === "es"} tone="light" />}
         </div>
       </section>
     </div>

@@ -1,11 +1,9 @@
+import DemoRsvpNotice from "../components/common/DemoRsvpNotice";
+import { parseAttendance } from "../utils/rsvp";
 import { useState, useEffect, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import { 
-  Church, MapPin, Calendar, Clock, Gift, 
-  CheckCircle2, Volume2, VolumeX, ArrowLeft, Send, 
-  Heart, ExternalLink, Copy, Check, Navigation, Globe, Sparkles, Utensils
-} from "lucide-react";
+import { Church, Volume2, VolumeX, ArrowLeft, Send, Navigation, Globe, Utensils } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 interface BautizoDemoProps {
@@ -21,16 +19,7 @@ export default function BautizoDemo({ onBackToHome }: BautizoDemoProps) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
-  const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
 
-  // Wishes Wall state
-  const [wishes, setWishes] = useState<Array<{ id: string; name: string; text: string; date: string }>>([
-    { id: "1", name: "Padrino Carlos", text: "Un privilegio ser tu guía spiritual mi niña amada. Que el Señor derrame infinitas bendiciones sobre tu vida.", date: "Hace 1 día" },
-    { id: "2", name: "Familia Rivas Santos", text: "Acompañándolos con todo el corazón en este sagrado sacramento.", date: "Hace 2 días" }
-  ]);
-  const [newWishName, setNewWishName] = useState("");
-  const [newWishText, setNewWishText] = useState("");
-  const [wishPublished, setWishPublished] = useState(false);
 
   // RSVP Form State
   const [rsvpData, setRsvpData] = useState<RsvpFormData>({
@@ -94,31 +83,7 @@ export default function BautizoDemo({ onBackToHome }: BautizoDemoProps) {
     }
   };
 
-  const handleCopy = (text: string, id: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedAccount(id);
-    setTimeout(() => setCopiedAccount(null), 2500);
-  };
 
-  const handleAddWish = (e: FormEvent) => {
-    e.preventDefault();
-    if (!newWishName.trim() || !newWishText.trim()) return;
-
-    setWishes([
-      {
-        id: Date.now().toString(),
-        name: newWishName.trim(),
-        text: newWishText.trim(),
-        date: "Justo ahora"
-      },
-      ...wishes
-    ]);
-
-    setNewWishName("");
-    setNewWishText("");
-    setWishPublished(true);
-    setTimeout(() => setWishPublished(false), 4000);
-  };
 
   const handleRsvpSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -343,7 +308,7 @@ export default function BautizoDemo({ onBackToHome }: BautizoDemoProps) {
               <label className="block text-xs font-semibold text-[#1C2621] mb-1">{language === "es" ? "Asistencia" : "Attendance"}</label>
               <select
                 value={rsvpData.attendance}
-                onChange={(e) => setRsvpData({ ...rsvpData, attendance: e.target.value })}
+                onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })}
                 className="w-full px-4 py-3 bg-[#FDFCF7] border border-[#E8D3C5] rounded-xl text-xs focus:outline-none focus:border-[#1C2621]"
               >
                 <option value="Confirmado">{language === "es" ? "¡Confirmado! Asistiremos" : "Confirmed! We will attend"}</option>
@@ -358,6 +323,7 @@ export default function BautizoDemo({ onBackToHome }: BautizoDemoProps) {
               <Send className="w-4 h-4" /> {language === "es" ? "Confirmar Asistencia por WhatsApp" : "Confirm via WhatsApp"}
             </button>
           </form>
+          {rsvpSubmitted && <DemoRsvpNotice isEs={language === "es"} tone="light" />}
         </div>
       </section>
     </div>

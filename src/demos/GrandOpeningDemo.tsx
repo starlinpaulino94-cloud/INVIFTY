@@ -1,11 +1,8 @@
+import DemoRsvpNotice from "../components/common/DemoRsvpNotice";
 import { useState, useEffect, FormEvent } from "react";
 import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
 import { RsvpFormData } from "../types";
-import { 
-  Sparkles, MapPin, Calendar, Clock, Award, CheckCircle2, 
-  ArrowLeft, Send, Building, Users, ExternalLink, QrCode, 
-  Car, Navigation, X, ShieldCheck, Globe
-} from "lucide-react";
+import { Sparkles, ArrowLeft, QrCode, X, Globe } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 interface GrandOpeningDemoProps {
@@ -31,7 +28,7 @@ export default function GrandOpeningDemo({ onBackToHome }: GrandOpeningDemoProps
     songRequest: ""
   });
   const [companyName, setCompanyName] = useState("");
-  const [positionTitle, setPositionTitle] = useState("");
+  const [positionTitle] = useState("");
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
 
   useEffect(() => {
@@ -235,6 +232,7 @@ export default function GrandOpeningDemo({ onBackToHome }: GrandOpeningDemoProps
               <QrCode className="w-4 h-4" /> {language === "es" ? "Generar Pase QR por WhatsApp" : "Generate Pass via WhatsApp"}
             </button>
           </form>
+          {rsvpSubmitted && <DemoRsvpNotice isEs={language === "es"} tone="dark" />}
         </div>
       </section>
 
