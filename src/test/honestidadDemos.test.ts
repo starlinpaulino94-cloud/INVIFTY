@@ -3,7 +3,9 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const DEMOS_DIR = join(process.cwd(), "src/demos");
-const demoFiles = readdirSync(DEMOS_DIR).filter((f) => f.endsWith(".tsx"));
+const demoFiles = readdirSync(DEMOS_DIR).filter(
+  (f) => f.endsWith(".tsx") && !f.includes(".test.")
+);
 
 function read(file: string): string {
   return readFileSync(join(DEMOS_DIR, file), "utf8");
