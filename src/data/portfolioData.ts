@@ -19,86 +19,6 @@ import posterAurora from "../assets/images/poster_aurora.svg";
  */
 
 export const PORTFOLIO_ITEMS: PortfolioItem[] = [
-  /* ===== NUEVA COLECCIÓN 2026: estilos del sistema de diseño Invifty ===== */
-  {
-    id: "muestra-boda-editorial",
-    slug: "boda-editorial-elena-gabriel",
-    title: "Elena & Gabriel — Boda Editorial",
-    eventType: "Boda Luxury",
-    category: "boda",
-    style: { es: "Editorial clásico · Marfil, negro y oro", en: "Classic editorial · Ivory, black & gold" },
-    minimumPlan: "popular",
-    subtitle: "Zona Colonial, Santo Domingo · Estilo Editorial Clásico",
-    image: posterEditorial,
-    features: [
-      { es: "Apertura de sobre lacrado con sello dorado", en: "Sealed-envelope opening with gold wax seal" },
-      { es: "Estética editorial en papel marfil y oro", en: "Editorial aesthetic in ivory paper & gold" },
-      { es: "Revelado suave de secciones al desplazarse", en: "Soft scroll-reveal of sections" },
-      { es: "Ceremonia y recepción con mapas directos", en: "Ceremony & reception with direct maps" },
-      { es: "Paleta de vestimenta sugerida", en: "Suggested attire palette" },
-      { es: "Confirmación RSVP integrada por WhatsApp", en: "Integrated WhatsApp RSVP" }
-    ],
-    demoPath: "/muestra/boda-editorial-elena-gabriel"
-  },
-  {
-    id: "muestra-quince-celestial",
-    slug: "quince-celestial-amara",
-    title: "Amara Isabel — XV Celestial",
-    eventType: "15 Años & Quinceañera",
-    category: "quinceanera",
-    style: { es: "Celestial · Azul noche y plata", en: "Celestial · Midnight blue & silver" },
-    minimumPlan: "premium",
-    subtitle: "Hotel Jaragua, Santo Domingo · Estilo Cielo Estrellado",
-    image: posterCelestial,
-    features: [
-      { es: "Cielo nocturno con estrellas animadas", en: "Night sky with animated stars" },
-      { es: "Tipografía imperial plateada", en: "Imperial silver typography" },
-      { es: "Itinerario de la noche paso a paso", en: "Step-by-step night itinerary" },
-      { es: "Dress code con paleta azul noche y plata", en: "Midnight blue & silver dress code palette" },
-      { es: "Confirmación RSVP integrada por WhatsApp", en: "Integrated WhatsApp RSVP" }
-    ],
-    demoPath: "/muestra/quince-celestial-amara"
-  },
-  {
-    id: "muestra-neon-party",
-    slug: "neon-party-marcos-40",
-    title: "Marcos 40 — Neon Party",
-    eventType: "Cumpleaños de Adultos",
-    category: "cumpleanos",
-    style: { es: "Neón eléctrico · Magenta y cian", en: "Electric neon · Magenta & cyan" },
-    minimumPlan: "popular",
-    subtitle: "Sky Lounge 27, Naco · Estilo Neón Eléctrico",
-    image: posterNeon,
-    features: [
-      { es: "Números gigantes con brillo neón magenta y cian", en: "Giant numerals with magenta & cyan neon glow" },
-      { es: "Line-up de la noche: open bar, DJ y karaoke", en: "Night line-up: open bar, DJ & karaoke" },
-      { es: "Dress code 'negro total + un toque neón'", en: "'All black + a neon touch' dress code" },
-      { es: "Cuenta regresiva bicolor animada", en: "Animated two-tone countdown" },
-      { es: "Confirmación en un toque por WhatsApp", en: "One-tap WhatsApp confirmation" }
-    ],
-    demoPath: "/muestra/neon-party-marcos-40"
-  },
-  {
-    id: "muestra-summit-aurora",
-    slug: "summit-aurora-vitrexi",
-    title: "Aurora Summit 2027 — Vitrexi",
-    eventType: "Corporativo & Galas",
-    category: "corporativo",
-    style: { es: "Minimal corporativo · Violeta y gris", en: "Corporate minimal · Violet & grey" },
-    minimumPlan: "premium",
-    subtitle: "Centro de Convenciones · Estilo Minimal Corporativo",
-    image: posterAurora,
-    features: [
-      { es: "Diseño minimal claro con acento de marca", en: "Clean minimal design with brand accent" },
-      { es: "Agenda cronológica del evento", en: "Chronological event agenda" },
-      { es: "Tarjetas de ponentes destacados", en: "Featured speaker cards" },
-      { es: "Acceso con pase QR personal explicado", en: "Personal QR pass access explained" },
-      { es: "Botón 'Agendar' a Google Calendar", en: "'Add to calendar' Google Calendar button" },
-      { es: "Registro de asistentes por WhatsApp", en: "Attendee registration via WhatsApp" }
-    ],
-    demoPath: "/muestra/summit-aurora-vitrexi"
-  },
-
   /* ===== Colección original ===== */
   {
     id: "muestra-boda",
@@ -253,6 +173,86 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       { es: "Ubicación y servicio de Valet Parking", en: "Location & valet parking service" }
     ],
     demoPath: "/muestra/grand-opening-boutique"
+  },
+
+  /* ===== Sistema de diseño Invifty · se muestran al final ===== */
+  {
+    id: "muestra-boda-editorial",
+    slug: "boda-editorial-elena-gabriel",
+    title: "Elena & Gabriel — Boda Editorial",
+    eventType: "Boda Luxury",
+    category: "boda",
+    style: { es: "Editorial clásico · Marfil, negro y oro", en: "Classic editorial · Ivory, black & gold" },
+    minimumPlan: "popular",
+    subtitle: "Zona Colonial, Santo Domingo · Estilo Editorial Clásico",
+    image: posterEditorial,
+    features: [
+      { es: "Apertura de sobre lacrado con sello dorado", en: "Sealed-envelope opening with gold wax seal" },
+      { es: "Estética editorial en papel marfil y oro", en: "Editorial aesthetic in ivory paper & gold" },
+      { es: "Revelado suave de secciones al desplazarse", en: "Soft scroll-reveal of sections" },
+      { es: "Ceremonia y recepción con mapas directos", en: "Ceremony & reception with direct maps" },
+      { es: "Paleta de vestimenta sugerida", en: "Suggested attire palette" },
+      { es: "Confirmación RSVP integrada por WhatsApp", en: "Integrated WhatsApp RSVP" }
+    ],
+    demoPath: "/muestra/boda-editorial-elena-gabriel"
+  },
+  {
+    id: "muestra-quince-celestial",
+    slug: "quince-celestial-amara",
+    title: "Amara Isabel — XV Celestial",
+    eventType: "15 Años & Quinceañera",
+    category: "quinceanera",
+    style: { es: "Celestial · Azul noche y plata", en: "Celestial · Midnight blue & silver" },
+    minimumPlan: "premium",
+    subtitle: "Hotel Jaragua, Santo Domingo · Estilo Cielo Estrellado",
+    image: posterCelestial,
+    features: [
+      { es: "Cielo nocturno con estrellas animadas", en: "Night sky with animated stars" },
+      { es: "Tipografía imperial plateada", en: "Imperial silver typography" },
+      { es: "Itinerario de la noche paso a paso", en: "Step-by-step night itinerary" },
+      { es: "Dress code con paleta azul noche y plata", en: "Midnight blue & silver dress code palette" },
+      { es: "Confirmación RSVP integrada por WhatsApp", en: "Integrated WhatsApp RSVP" }
+    ],
+    demoPath: "/muestra/quince-celestial-amara"
+  },
+  {
+    id: "muestra-neon-party",
+    slug: "neon-party-marcos-40",
+    title: "Marcos 40 — Neon Party",
+    eventType: "Cumpleaños de Adultos",
+    category: "cumpleanos",
+    style: { es: "Neón eléctrico · Magenta y cian", en: "Electric neon · Magenta & cyan" },
+    minimumPlan: "popular",
+    subtitle: "Sky Lounge 27, Naco · Estilo Neón Eléctrico",
+    image: posterNeon,
+    features: [
+      { es: "Números gigantes con brillo neón magenta y cian", en: "Giant numerals with magenta & cyan neon glow" },
+      { es: "Line-up de la noche: open bar, DJ y karaoke", en: "Night line-up: open bar, DJ & karaoke" },
+      { es: "Dress code 'negro total + un toque neón'", en: "'All black + a neon touch' dress code" },
+      { es: "Cuenta regresiva bicolor animada", en: "Animated two-tone countdown" },
+      { es: "Confirmación en un toque por WhatsApp", en: "One-tap WhatsApp confirmation" }
+    ],
+    demoPath: "/muestra/neon-party-marcos-40"
+  },
+  {
+    id: "muestra-summit-aurora",
+    slug: "summit-aurora-vitrexi",
+    title: "Aurora Summit 2027 — Vitrexi",
+    eventType: "Corporativo & Galas",
+    category: "corporativo",
+    style: { es: "Minimal corporativo · Violeta y gris", en: "Corporate minimal · Violet & grey" },
+    minimumPlan: "premium",
+    subtitle: "Centro de Convenciones · Estilo Minimal Corporativo",
+    image: posterAurora,
+    features: [
+      { es: "Diseño minimal claro con acento de marca", en: "Clean minimal design with brand accent" },
+      { es: "Agenda cronológica del evento", en: "Chronological event agenda" },
+      { es: "Tarjetas de ponentes destacados", en: "Featured speaker cards" },
+      { es: "Acceso con pase QR personal explicado", en: "Personal QR pass access explained" },
+      { es: "Botón 'Agendar' a Google Calendar", en: "'Add to calendar' Google Calendar button" },
+      { es: "Registro de asistentes por WhatsApp", en: "Attendee registration via WhatsApp" }
+    ],
+    demoPath: "/muestra/summit-aurora-vitrexi"
   }
 ];
 

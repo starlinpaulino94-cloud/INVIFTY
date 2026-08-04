@@ -8,7 +8,8 @@ interface DemoSelectorProps {
 }
 
 /**
- * Muestras destacadas de la home, una por tipo de evento principal.
+ * Muestras destacadas de la home: una por tipo de evento principal
+ * (boda, 15 años, cumpleaños y corporativo).
  *
  * Antes este componente mantenía su propia lista con títulos, capacidades,
  * imágenes y rutas copiadas del catálogo: dos fuentes de verdad que podían
@@ -16,10 +17,10 @@ interface DemoSelectorProps {
  * sale de `services/demos`.
  */
 const FEATURED_DEMO_IDS = [
-  "muestra-boda-editorial",
-  "muestra-quince-celestial",
-  "muestra-neon-party",
-  "muestra-summit-aurora",
+  "muestra-boda",
+  "muestra-cumple",
+  "muestra-cumple-adulto",
+  "muestra-empresarial",
 ] as const;
 
 export default function DemoSelector({ onNavigateDemo }: DemoSelectorProps) {
