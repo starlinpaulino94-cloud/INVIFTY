@@ -46,9 +46,12 @@ export const FAQ_ITEMS: FAQItem[] = [
       es: "5. ¿Cuáles son las formas de pago disponibles?",
       en: "5. What payment methods are available?"
     },
+    // Sólo transferencia. Antes se anunciaban además tarjetas, Zelle y PayPal,
+    // que no están disponibles: prometer un medio de pago que no existe rompe
+    // la venta justo en el momento de cobrar.
     answer: {
-      es: "Aceptamos transferencias bancarias en pesos dominicanos (Banreservas, Banco Popular, BHD), tarjetas de crédito/débito y pagos internacionales vía Zelle o PayPal.",
-      en: "We accept bank transfers in Dominican pesos (Banreservas, Banco Popular, BHD), credit/debit cards, and international payments via Zelle or PayPal."
+      es: "Por el momento el pago es por transferencia bancaria en pesos dominicanos. Coordinamos los datos de la cuenta por WhatsApp al confirmar tu pedido.",
+      en: "For now, payment is by bank transfer in Dominican pesos. We share the account details over WhatsApp once your order is confirmed."
     }
   },
   {

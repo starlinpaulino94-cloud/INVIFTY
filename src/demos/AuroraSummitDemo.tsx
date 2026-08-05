@@ -124,7 +124,7 @@ export default function AuroraSummitDemo({ onBackToHome }: AuroraSummitDemoProps
 
   const speakers = [
     { name: "Dra. Laura Peña", role_es: "Directora de Innovación", role_en: "Head of Innovation", topic_es: "Automatización con propósito", topic_en: "Automation with purpose" },
-    { name: "Ing. Rafael Núñez", role_es: "CTO, Vitrexi Technologies", role_en: "CTO, Vitrexi Technologies", topic_es: "Arquitecturas que escalan en el Caribe", topic_en: "Architectures that scale in the Caribbean" },
+    { name: "Ing. Rafael Núñez", role_es: "CTO, Grupo Aurora", role_en: "CTO, Grupo Aurora", topic_es: "Arquitecturas que escalan en el Caribe", topic_en: "Architectures that scale in the Caribbean" },
     { name: "Lic. Sofía Herrera", role_es: "Directora de Estrategia", role_en: "Strategy Director", topic_es: "Del piloto al producto en doce meses", topic_en: "From pilot to product in twelve months" },
   ];
 
@@ -173,7 +173,7 @@ export default function AuroraSummitDemo({ onBackToHome }: AuroraSummitDemoProps
         <div className="relative z-10 max-w-3xl py-20">
           <Reveal from="none">
             <p className="text-[11px] uppercase tracking-[0.3em] font-bold mb-6" style={{ color: GREY }}>
-              Vitrexi Technologies {lx("presenta", "presents")}
+              Grupo Aurora {lx("presenta", "presents")}
             </p>
           </Reveal>
 
@@ -508,7 +508,7 @@ export default function AuroraSummitDemo({ onBackToHome }: AuroraSummitDemoProps
                     <label htmlFor="aurora-company" className="block text-[10px] uppercase tracking-[0.2em] font-bold mb-2" style={{ color: GREY }}>
                       {lx("Empresa", "Company")}
                     </label>
-                    <input id="aurora-company" type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} placeholder="Vitrexi Technologies" className={field} style={fieldStyle} />
+                    <input id="aurora-company" type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} placeholder={lx("Nombre de tu empresa", "Your company name")} className={field} style={fieldStyle} />
                   </div>
                   <div>
                     <label htmlFor="aurora-role" className="block text-[10px] uppercase tracking-[0.2em] font-bold mb-2" style={{ color: GREY }}>

@@ -130,6 +130,48 @@ comunica ahora.
 
 ---
 
+### 3.5 Datos del negocio confirmados (2026-08-05)
+
+Tres respuestas del propietario que obligaron a corregir cosas ya publicadas.
+
+#### No hay entidad legal declarada — **empresa matriz retirada**
+
+El pie de página mostraba **«Un producto de Vitrexi Technologies»**. Esa empresa **no existe** y
+no tiene relación con este proyecto. Se retiró de [`config/index.ts`](../src/config/index.ts)
+y del pie.
+
+No se ha inventado ningún sustituto. Las políticas describen a Invifty como un estudio de
+diseño —lo que es— sin atribuirse una forma jurídica, un RNC ni una empresa matriz. Una prueba
+automática impide que vuelva a aparecer un RNC o una matriz.
+
+> Es el dato que un cliente comprueba antes de pagar **por adelantado y por transferencia**, que
+> es como se cobra aquí. Constituir la entidad es una decisión del negocio, no del código, pero
+> mientras no exista lo correcto es callar, no inventar.
+
+#### Pago: sólo transferencia bancaria en DOP
+
+La web anunciaba además **tarjetas de crédito/débito, Zelle y PayPal**. No están disponibles.
+Estaba en cuatro sitios, todos corregidos:
+
+| Dónde | Qué decía |
+|---|---|
+| Términos §2 | Transferencias + tarjetas + Zelle + PayPal |
+| FAQ nº 5 | Lo mismo, con tres bancos concretos |
+| Tabla de precios | «¿Pagas desde el exterior? También aceptamos USD, Zelle y PayPal» |
+| Página SEO de precios | Lo mismo, dentro de una FAQ |
+
+Prometer una forma de pago que no existe rompe la venta **exactamente en el momento de cobrar**,
+que es el peor momento posible. Una prueba automática vigila las cuatro menciones.
+
+> Zelle sigue apareciendo en `BodaDemo` y `CumpleDemo`: ahí es la **mesa de regalos de los novios
+> ficticios**, no un medio de pago de Invifty. Es correcto y debe quedarse.
+
+#### Plazo de respuesta a solicitudes de datos: 30 días — **confirmado**
+
+Lo que ya decía la política de privacidad §5 se mantiene tal cual.
+
+---
+
 ## 4. Decisiones comerciales PENDIENTES
 
 > Estas requieren tu confirmación. No se han implementado.
@@ -164,13 +206,19 @@ para varios puntos. Están sin definir y no se han inventado:
 **Recomendación:** definir estos cuatro puntos y añadirlos como campos del plan en
 `pricingData.ts`, para que se muestren en la tarjeta y en los términos.
 
-### 4.3 ⏳ Qué ocurre al vencer la vigencia de cualquier plan
+### 4.3 ⚠️ Qué ocurre al vencer la vigencia — respondido, pero escondido
 
-Los planes anuncian vigencias de 3, 6, 9 y 12 meses, pero no se dice qué pasa después:
-¿deja de funcionar el enlace?, ¿hay renovación?, ¿a qué precio?
+**Los términos ya lo responden.** [`TermsPage`](../src/pages/TermsPage.tsx) §5 dice: al vencer,
+la invitación **se retira**, y el cliente puede pedir una extensión con costo adicional.
 
-Los invitados guardan ese enlace. Que caduque sin aviso es una mala experiencia y una fuente
-segura de reclamaciones.
+El problema no es que falte la decisión, sino **dónde está**: en los términos, que casi nadie
+lee, y no en las tarjetas de precio ni en las preguntas frecuentes, que es donde el cliente lo
+busca. Los invitados guardan ese enlace; que deje de funcionar sin aviso previo sigue siendo
+una fuente segura de reclamaciones.
+
+**Lo que falta por decidir:** a qué precio es la extensión, y si se avisa antes de retirar la
+invitación (y con cuánta antelación). Con eso, la condición puede subir a la tarjeta del plan y
+a la FAQ.
 
 ### 4.4 ~~Extra «Dominio Web Propio» vs. dominio incluido en A medida~~ — resuelto
 

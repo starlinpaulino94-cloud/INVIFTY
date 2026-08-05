@@ -31,9 +31,10 @@ export default function TermsPage({ onBackToHome }: PageProps) {
           <section>
             <h2>2. Contratación y pago</h2>
             <p>
-              Los pedidos se coordinan por WhatsApp. Aceptamos transferencias bancarias en pesos
-              dominicanos, tarjetas de crédito/débito y pagos internacionales vía Zelle o PayPal.
-              El trabajo de diseño inicia una vez confirmado el pago y recibidos los datos del evento.
+              Los pedidos se coordinan por WhatsApp. El pago se realiza por{" "}
+              <strong>transferencia bancaria en pesos dominicanos</strong>, que es el único medio
+              que aceptamos por ahora. El trabajo de diseño inicia una vez confirmado el pago y
+              recibidos los datos del evento.
             </p>
           </section>
 
@@ -107,9 +108,10 @@ export default function TermsPage({ onBackToHome }: PageProps) {
           <section>
             <h2>2. Ordering and payment</h2>
             <p>
-              Orders are coordinated via WhatsApp. We accept bank transfers in Dominican pesos,
-              credit/debit cards, and international payments via Zelle or PayPal. Design work begins
-              once payment is confirmed and the event details are received.
+              Orders are coordinated via WhatsApp. Payment is made by{" "}
+              <strong>bank transfer in Dominican pesos</strong>, which is the only method we accept
+              at the moment. Design work begins once payment is confirmed and the event details are
+              received.
             </p>
           </section>
 

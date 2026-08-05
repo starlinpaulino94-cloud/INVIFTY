@@ -274,7 +274,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
     id: "muestra-summit-aurora",
     slug: "summit-aurora-vitrexi",
-    title: "Aurora Summit 2027 — Vitrexi",
+    title: "Aurora Summit 2027 — Grupo Aurora",
     eventType: "Corporativo & Galas",
     category: "corporativo",
     style: { es: "Minimal corporativo · Violeta y gris", en: "Corporate minimal · Violet & grey" },

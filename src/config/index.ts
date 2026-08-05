@@ -30,8 +30,19 @@ export const CONFIG = {
   instagramUser: "@invifty.official",
   instagramUrl: "https://instagram.com/invifty.official",
   supportEmail: "hola@invifty.com",
-  parentCompany: "Vitrexi Technologies",
-  parentCompanyUrl: "#",
+
+  /*
+   * NO HAY EMPRESA MATRIZ NI ENTIDAD LEGAL DECLARADA.
+   *
+   * Aquí vivían `parentCompany: "Vitrexi Technologies"` y `parentCompanyUrl`,
+   * que el pie de página mostraba como «Un producto de…». Se retiraron el
+   * 2026-08-05: esa empresa no existe y no tiene relación con este proyecto.
+   *
+   * No vuelvas a poner un nombre de empresa aquí —ni en las políticas, ni en
+   * los términos, ni en el JSON-LD— hasta que exista una entidad registrada.
+   * Es la clase de dato que un cliente comprueba antes de pagar por
+   * adelantado, y sostiene todo lo demás que promete la web.
+   */
 
   /** URL pública del sitio, sin barra final. */
   siteUrl: ENV.siteUrl,

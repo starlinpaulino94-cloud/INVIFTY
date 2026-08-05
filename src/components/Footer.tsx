@@ -147,10 +147,15 @@ export default function Footer({ onNavigate }: FooterProps) {
             <button onClick={() => goTo("/terminos")} className="hover:text-gold transition-colors underline-offset-2">
               {isEs ? "Términos" : "Terms"}
             </button>
-            <div className="flex items-center gap-1.5 text-white/60">
-              <span>{isEs ? "Un producto de" : "A product of"}</span>
-              <span className="text-gold font-semibold">{CONFIG.parentCompany}</span>
-            </div>
+            {/*
+              Aquí se declaraba «Un producto de Vitrexi Technologies». Se retiró
+              el 2026-08-05: esa empresa no existe y no tiene relación con este
+              proyecto. Atribuir el producto a una matriz inexistente es una
+              afirmación falsa sobre quién responde por el servicio, que es
+              justo lo que un cliente mira antes de pagar por adelantado.
+
+              Cuando haya una entidad legal declarada, este es el sitio.
+            */}
           </div>
         </div>
 
