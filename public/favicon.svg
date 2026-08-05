@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="55 96 132 106">
+  <defs>
+    <linearGradient id="oroFav" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F2D98C"/>
+      <stop offset="0.5" stop-color="#D9B54A"/>
+      <stop offset="1" stop-color="#A67C1E"/>
+    </linearGradient>
+  </defs>
+  <path d="M67 105 H97 V111 L86 113 V187 L97 189 V195 H67 V189 L78 187 V113 L67 111 Z" fill="url(#oroFav)"/>
+  <path d="M101 105 H133 V111 L125 113 L143 172 L159 113 L151 111 V105 H177 V111 L169 113 L146 195 H138 L109 113 L101 111 Z" fill="url(#oroFav)"/>
+</svg>
