@@ -5,6 +5,8 @@ import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/
 import { RsvpFormData } from "../types";
 import { ArrowLeft, Clock, Navigation, Send, CheckCircle2, Sparkles, Music2, GlassWater, PartyPopper } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { useSectionReveal } from "../hooks/useSectionReveal";
+import { DemoGallery } from "../components/demo/DemoKit";
 
 /**
  * MUESTRA — QUINCE AÑOS CELESTIAL "AMARA"
@@ -73,6 +75,7 @@ interface DemoProps {
 
 export default function QuinceCelestialDemo({ onBackToHome }: DemoProps) {
   const { language } = useLanguage();
+  useSectionReveal();
   useDemoFonts();
   const isEs = language === "es";
 
@@ -272,6 +275,29 @@ export default function QuinceCelestialDemo({ onBackToHome }: DemoProps) {
           </section>
         </Revelar>
 
+        {/* GALERÍA */}
+        <Revelar>
+          <section id="galeria" className="mb-20">
+            <h2 className="font-cormorant text-center text-3xl italic text-white mb-3">
+              {isEs ? "Sus quince años en fotos" : "Her fifteen years in photos"}
+            </h2>
+            <p className="text-center text-sm font-cormorant italic opacity-70 mb-8">
+              {isEs ? "Un vistazo al camino hasta esta noche." : "A glimpse of the road to tonight."}
+            </p>
+            <DemoGallery
+              images={[
+                "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=900",
+                "https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&q=80&w=900",
+                "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=900",
+              ]}
+              accent={PLATA}
+              isEs={isEs}
+              columnsClassName="grid-cols-1 sm:grid-cols-3"
+              heightClassName="h-52"
+            />
+          </section>
+        </Revelar>
+
         {/* RSVP */}
         <Revelar>
           <section className="mb-16">
@@ -311,6 +337,54 @@ export default function QuinceCelestialDemo({ onBackToHome }: DemoProps) {
                     style={{ borderColor: `${PLATA_TENUE}66`, background: `${NOCHE_SUAVE}99` }}
                   />
                 </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="qc-menu" className="block text-[11px] uppercase tracking-[0.2em] font-semibold mb-1.5">
+                      {isEs ? "Preferencia de menú" : "Menu preference"}
+                    </label>
+                    <select
+                      id="qc-menu"
+                      value={rsvp.menuPreference}
+                      onChange={(e) => setRsvp({ ...rsvp, menuPreference: e.target.value })}
+                      className="w-full border rounded-lg px-4 py-3 text-sm text-white focus:outline-none min-h-[48px]"
+                      style={{ borderColor: `${PLATA_TENUE}66`, background: NOCHE_SUAVE }}
+                    >
+                      <option>{isEs ? "Cena de gala" : "Gala dinner"}</option>
+                      <option>{isEs ? "Opción vegetariana" : "Vegetarian option"}</option>
+                      <option>{isEs ? "Menú infantil" : "Children's menu"}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="qc-notas" className="block text-[11px] uppercase tracking-[0.2em] font-semibold mb-1.5">
+                      {isEs ? "Alergias o notas" : "Allergies or notes"}
+                    </label>
+                    <input
+                      id="qc-notas"
+                      type="text"
+                      value={rsvp.dietaryNotes || ""}
+                      onChange={(e) => setRsvp({ ...rsvp, dietaryNotes: e.target.value })}
+                      placeholder={isEs ? "Ej. Sin lactosa" : "E.g. Lactose free"}
+                      className="w-full border rounded-lg px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none min-h-[48px]"
+                      style={{ borderColor: `${PLATA_TENUE}66`, background: `${NOCHE_SUAVE}99` }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="qc-cancion" className="block text-[11px] uppercase tracking-[0.2em] font-semibold mb-1.5">
+                    {isEs ? "¿Qué canción te hará bailar?" : "Which song will get you dancing?"}
+                  </label>
+                  <input
+                    id="qc-cancion"
+                    type="text"
+                    value={rsvp.songRequest || ""}
+                    onChange={(e) => setRsvp({ ...rsvp, songRequest: e.target.value })}
+                    placeholder={isEs ? "Ej. Aventura — Obsesión" : "E.g. Aventura — Obsesión"}
+                    className="w-full border rounded-lg px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none min-h-[48px]"
+                    style={{ borderColor: `${PLATA_TENUE}66`, background: `${NOCHE_SUAVE}99` }}
+                  />
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="qc-asistencia" className="block text-[11px] uppercase tracking-[0.2em] font-semibold mb-1.5">

@@ -221,11 +221,11 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     image: posterEditorial,
     features: [
       { es: "Apertura de sobre lacrado con sello dorado", en: "Sealed-envelope opening with gold wax seal" },
-      { es: "Estética editorial en papel marfil y oro", en: "Editorial aesthetic in ivory paper & gold" },
-      { es: "Revelado suave de secciones al desplazarse", en: "Soft scroll-reveal of sections" },
-      { es: "Ceremonia y recepción con mapas directos", en: "Ceremony & reception with direct maps" },
+      { es: "Estética editorial en papel marfil y oro", en: "Editorial aesthetic in ivory paper and gold" },
+      { es: "Ceremonia y recepción con mapas directos", en: "Ceremony and reception with direct maps" },
       { es: "Paleta de vestimenta sugerida", en: "Suggested attire palette" },
-      { es: "Confirmación RSVP integrada por WhatsApp", en: "Integrated WhatsApp RSVP" }
+      { es: "Galería fotográfica con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "RSVP con pases, menú, alergias y canción", en: "RSVP with passes, menu, allergies and song" }
     ],
     demoPath: "/muestra/boda-editorial-elena-gabriel"
   },
@@ -243,8 +243,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       { es: "Cielo nocturno con estrellas animadas", en: "Night sky with animated stars" },
       { es: "Tipografía imperial plateada", en: "Imperial silver typography" },
       { es: "Itinerario de la noche paso a paso", en: "Step-by-step night itinerary" },
-      { es: "Dress code con paleta azul noche y plata", en: "Midnight blue & silver dress code palette" },
-      { es: "Confirmación RSVP integrada por WhatsApp", en: "Integrated WhatsApp RSVP" }
+      { es: "Dress code con paleta azul noche y plata", en: "Midnight blue and silver dress code" },
+      { es: "Galería de fotos con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "RSVP con pases, menú, alergias y canción", en: "RSVP with passes, menu, allergies and song" }
     ],
     demoPath: "/muestra/quince-celestial-amara"
   },
@@ -259,11 +260,14 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Sky Lounge 27, Naco · Estilo Neón Eléctrico",
     image: posterNeon,
     features: [
-      { es: "Números gigantes con brillo neón magenta y cian", en: "Giant numerals with magenta & cyan neon glow" },
-      { es: "Line-up de la noche: open bar, DJ y karaoke", en: "Night line-up: open bar, DJ & karaoke" },
-      { es: "Dress code 'negro total + un toque neón'", en: "'All black + a neon touch' dress code" },
-      { es: "Cuenta regresiva bicolor animada", en: "Animated two-tone countdown" },
-      { es: "Confirmación en un toque por WhatsApp", en: "One-tap WhatsApp confirmation" }
+      { es: "Portada neón con cuenta regresiva animada", en: "Neon cover with animated countdown" },
+      { es: "Line-up de la noche: open bar, DJ y karaoke", en: "Night line-up: open bar, DJ and karaoke" },
+      { es: "Dress code negro total con paleta neón", en: "All-black dress code with neon palette" },
+      { es: "Ubicación con mapa, Google Maps y Waze", en: "Venue with map, Google Maps and Waze" },
+      { es: "Galería de ediciones anteriores", en: "Gallery of previous editions" },
+      { es: "Muro de mensajes para el anfitrión", en: "Message wall for the host" },
+      { es: "RSVP con acompañantes, barra y canción", en: "RSVP with guests, bar and song request" },
+      { es: "Música de fondo y guardar la fecha", en: "Background music and save-the-date" }
     ],
     demoPath: "/muestra/neon-party-marcos-40"
   },
@@ -278,12 +282,14 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Centro de Convenciones · Estilo Minimal Corporativo",
     image: posterAurora,
     features: [
-      { es: "Diseño minimal claro con acento de marca", en: "Clean minimal design with brand accent" },
-      { es: "Agenda cronológica del evento", en: "Chronological event agenda" },
-      { es: "Tarjetas de ponentes destacados", en: "Featured speaker cards" },
-      { es: "Acceso con pase QR personal explicado", en: "Personal QR pass access explained" },
-      { es: "Botón 'Agendar' a Google Calendar", en: "'Add to calendar' Google Calendar button" },
-      { es: "Registro de asistentes por WhatsApp", en: "Attendee registration via WhatsApp" }
+      { es: "Portada corporativa con cuenta regresiva", en: "Corporate cover with countdown" },
+      { es: "Agenda del día hora por hora", en: "Hour-by-hour day agenda" },
+      { es: "Ponentes destacados con su tema", en: "Featured speakers with their topic" },
+      { es: "Pase QR con track asignado", en: "QR pass with assigned track" },
+      { es: "Sede con mapa, Waze, dress code y parqueo", en: "Venue with map, Waze, dress code and parking" },
+      { es: "Galería de ediciones anteriores", en: "Gallery of past editions" },
+      { es: "Registro con empresa, cargo y track de interés", en: "Registration with company, role and track" },
+      { es: "Invitación bilingüe español / inglés", en: "Bilingual Spanish / English invitation" }
     ],
     demoPath: "/muestra/summit-aurora-vitrexi"
   }

@@ -496,6 +496,17 @@ export default function GrandOpeningDemo({ onBackToHome }: GrandOpeningDemoProps
                 </div>
 
                 <div>
+                  <label htmlFor="opening-menu" className="block text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 mb-2">
+                    {lx("Preferencia de barra", "Bar preference")}
+                  </label>
+                  <select id="opening-menu" value={rsvpData.menuPreference} onChange={(e) => setRsvpData({ ...rsvpData, menuPreference: e.target.value })} className={field} style={fieldStyle}>
+                    <option>{lx("Cóctel VIP de bienvenida", "VIP welcome cocktail")}</option>
+                    <option>{lx("Sin alcohol", "Alcohol-free")}</option>
+                    <option>{lx("Opción vegetariana", "Vegetarian option")}</option>
+                  </select>
+                </div>
+
+                <div>
                   <label htmlFor="opening-notes" className="block text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 mb-2">
                     {lx("Requerimientos (opcional)", "Requirements (optional)")}
                   </label>
