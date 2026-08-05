@@ -43,8 +43,14 @@ export default function TermsPage({ onBackToHome }: PageProps) {
             <p>
               El plazo estándar de entrega es de 3 a 5 días hábiles a partir de que recibimos los
               datos completos y las fotografías del evento. Los pedidos del plan A medida, por ser
-              diseños 100% desde cero, toman de 5 a 7 días hábiles. Cualquier entrega en un plazo
-              menor se coordina caso a caso por WhatsApp.
+              diseños 100% desde cero, toman de 5 a 7 días hábiles.
+            </p>
+            <p>
+              Existe un servicio de <strong>Entrega Express</strong> que reduce el plazo a 1 o 2
+              días hábiles, disponible como extra de pago en todos los planes. El plazo empieza a
+              contar cuando hemos recibido <strong>todos</strong> los datos y las fotografías del
+              evento, no cuando se confirma el pago: si falta material, el plazo empieza cuando
+              llegue.
             </p>
           </section>
 
@@ -120,7 +126,13 @@ export default function TermsPage({ onBackToHome }: PageProps) {
             <p>
               Standard delivery is 3 to 5 business days from the moment we receive the complete event
               details and photos. Custom plan orders, being fully bespoke designs, take 5 to 7
-              business days. Any shorter delivery is coordinated case by case via WhatsApp.
+              business days.
+            </p>
+            <p>
+              An <strong>Express Delivery</strong> service shortens this to 1 or 2 business days,
+              available as a paid add-on on every plan. The clock starts once we have received{" "}
+              <strong>all</strong> your event details and photos, not when payment is confirmed: if
+              anything is missing, the countdown begins when it arrives.
             </p>
           </section>
 

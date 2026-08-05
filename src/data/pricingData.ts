@@ -207,6 +207,30 @@ export const PLAN_COMPARISON: PlanComparisonRow[] = [
 
 export const PRICING_EXTRAS: PricingExtra[] = [
   {
+    /**
+     * ENTREGA EXPRESS
+     * ===============
+     * Confirmado el 2026-08-05: 1–2 días hábiles, RD$1 500, en todos los planes.
+     *
+     * ⚠️ Esto NO es el antiguo «servicio urgente 24h». Aquel se retiró porque la
+     * web lo prometía sin ser real, junto con la entrega estándar en «48 horas».
+     * Este es un extra de pago con un plazo que sí se sostiene, y por eso el
+     * plazo se expresa como rango: una cifra exacta se incumple el día que el
+     * cliente tarda en mandar las fotos.
+     *
+     * El reloj arranca cuando llegan los datos COMPLETOS, no cuando se paga.
+     * Esa distinción es la que evita la discusión.
+     */
+    id: "entrega-express",
+    title: { es: "Entrega Express", en: "Express Delivery" },
+    priceUSD: 25,
+    priceDOP: 1500,
+    description: {
+      es: "Tu invitación lista en 1–2 días hábiles en lugar del plazo estándar. El plazo empieza cuando recibimos todos los datos y las fotos del evento.",
+      en: "Your invitation ready in 1–2 business days instead of the standard time. The clock starts once we receive all your event details and photos."
+    }
+  },
+  {
     id: "bilingue",
     title: { es: "Versión Bilingüe / Inglés", en: "Bilingual / English Version" },
     priceUSD: 15,

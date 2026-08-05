@@ -17,8 +17,8 @@ export const FAQ_ITEMS: FAQItem[] = [
       en: "2. How long does it take for my invitation to be ready?"
     },
     answer: {
-      es: "El tiempo estándar de entrega es de 3 a 5 días hábiles una vez que nos envías los datos y fotografías de tu evento. El plan A medida, por ser un diseño 100% desde cero, toma de 5 a 7 días hábiles.",
-      en: "Standard delivery is 3 to 5 business days once you send us your event details and photos. The Custom plan, being a fully bespoke design, takes 5 to 7 business days."
+      es: "El tiempo estándar de entrega es de 3 a 5 días hábiles una vez que nos envías los datos y fotografías de tu evento. El plan A medida, por ser un diseño 100% desde cero, toma de 5 a 7 días hábiles. ¿Lo necesitas antes? Con el extra de Entrega Express lo tienes en 1 o 2 días hábiles.",
+      en: "Standard delivery is 3 to 5 business days once you send us your event details and photos. The Custom plan, being a fully bespoke design, takes 5 to 7 business days. Need it sooner? With the Express Delivery add-on you get it in 1 to 2 business days."
     }
   },
   {

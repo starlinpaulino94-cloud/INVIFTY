@@ -166,6 +166,34 @@ que es el peor momento posible. Una prueba automática vigila las cuatro mencion
 > Zelle sigue apareciendo en `BodaDemo` y `CumpleDemo`: ahí es la **mesa de regalos de los novios
 > ficticios**, no un medio de pago de Invifty. Es correcto y debe quedarse.
 
+#### Entrega Express — **nuevo extra** (2026-08-05)
+
+| Dato | Valor |
+|---|---|
+| `id` | `entrega-express` |
+| Plazo | **1–2 días hábiles** |
+| Precio | RD$1 500 · US$25 |
+| Alcance | Todos los planes |
+
+**No confundir con el antiguo «servicio urgente 24h»**, que se retiró junto con la entrega
+estándar en «48 horas» porque la web lo prometía sin ser real. La diferencia es que este tiene
+un plazo que se sostiene y un precio definido.
+
+Dos decisiones deliberadas en la redacción:
+
+- **Se expresa como rango, no como cifra exacta.** «1–2 días hábiles» se cumple; «24 horas» se
+  incumple el primer día que el cliente tarda en mandar las fotos.
+- **El reloj arranca con los datos completos, no con el pago.** Está escrito así en los
+  términos §3 y es lo que evita la discusión cuando falta material.
+
+> La prueba que bloquea «48 horas» ([`translations.test.ts`](../src/context/translations.test.ts))
+> **no se tocó**: sigue protegiendo el plazo estándar, y el extra no la activa porque no usa esa
+> cifra. Si algún día el express pasa a anunciarse en horas, hay que revisarla.
+
+**Riesgo señalado y aceptado:** el extra aplica también al plan «A medida», cuyo plazo estándar
+es de 5–7 días hábiles por ser un diseño desde cero. Pasar de 5–7 a 1–2 días en ese plan es un
+salto grande; conviene confirmar disponibilidad caso a caso antes de aceptarlo.
+
 #### Plazo de respuesta a solicitudes de datos: 30 días — **confirmado**
 
 Lo que ya decía la política de privacidad §5 se mantiene tal cual.
