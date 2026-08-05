@@ -4,6 +4,35 @@
 
 ---
 
+## 0. Alcance: qué es y qué NO es este repositorio
+
+**Este repositorio es el escaparate comercial de Invifty. Nada más.**
+
+**Decisión confirmada (2026-08-04):** las invitaciones reales de clientes **se generan y
+publican desde Invifty Studio**, que es un proyecto independiente en otro repositorio.
+
+| Pieza | Dónde vive |
+|---|---|
+| Portada, planes, contenido SEO, formulario de captación | **Aquí** |
+| Las 12 **muestras** de invitación (ficticias, públicas) | **Aquí** |
+| Invitaciones **reales** de clientes | Studio |
+| Panel del anfitrión para ver confirmaciones | Studio |
+| Pedidos, pagos, producción y publicación | Studio |
+
+### Qué implica para este código
+
+1. **Las 12 demos son material de marketing, no plantillas de producción.** Viven aquí porque
+   su trabajo es convencer a un visitante, no atender a los invitados de un evento real.
+2. **Su RSVP seguirá abriendo WhatsApp.** No deben conectarse nunca al endpoint de
+   confirmaciones de Studio: son públicas y con datos ficticios, y ensuciarían los datos de
+   eventos reales. Ver [`integracion-futura-studio.md`](./integracion-futura-studio.md) §5.
+3. **Aquí no se construirá un panel de administración.** Si algún día se enlaza el de Studio,
+   sería sólo un enlace externo.
+4. **La ausencia de backend deja de ser deuda técnica.** Es la arquitectura decidida: este
+   sitio es estático a propósito, y lo único que sale de él son leads.
+
+---
+
 ## 1. Forma general
 
 SPA de React servida como estático desde Vercel. Sin servidor propio y sin backend: hoy la
@@ -105,23 +134,28 @@ traducir aparecería en pantalla como su identificador.
 
 ---
 
-## 5. Limitación conocida: metadatos sólo en cliente
+## 5. Metadatos por ruta — resuelto
 
-`App.tsx` actualiza `document.title` y la meta descripción **después** del montaje. Funciona
-para Google (ejecuta JavaScript), pero **no** para los generadores de vista previa de
-WhatsApp, Facebook y Twitter, que leen el HTML inicial y no ejecutan scripts.
+`App.tsx` actualiza el `<head>` **después** del montaje, lo que sirve para Google (ejecuta
+JavaScript) pero **no** para los generadores de vista previa de WhatsApp, Facebook y Twitter,
+que leen el HTML inicial.
 
-**Consecuencia real:** compartir por WhatsApp el enlace de una demo o de una página SEO
-muestra la tarjeta de la home, no la suya.
+Se resolvió con un plugin de build que genera **un `index.html` por ruta indexable** con sus
+metadatos ya escritos. No es renderizado en servidor: sólo se sustituyen las etiquetas del
+`<head>`; el HTML sigue siendo la misma cáscara y React monta igual. Sin cambiar de framework.
 
-Dentro de Vite no tiene solución completa. Las salidas posibles, en orden de coste:
+**Verificado en producción el 2026-08-04:**
 
-1. **Prerenderizado en el build** (`vite-plugin-ssg` o similar): genera un HTML por ruta con
-   sus metadatos. Resuelve el problema sin cambiar de framework. **Opción recomendada.**
-2. **Migración a Next.js**: resuelve además el SEO de contenido dinámico, pero es un cambio
-   de framework completo.
+```
+/                              canonical: https://invifty.com/
+/muestra/boda-camila-y-lucas   canonical: https://invifty.com/muestra/boda-camila-y-lucas
+/invitaciones-digitales/bodas  canonical: https://invifty.com/invitaciones-digitales/bodas
+```
 
-No se ha hecho ninguna de las dos en este trabajo: quedaba fuera del alcance acordado.
+Las 21 rutas sirven título, descripción, canonical y Open Graph propios. Compartir una demo
+por WhatsApp muestra su tarjeta, no la de la portada.
+
+Detalle en [`seo-tecnico.md`](./seo-tecnico.md).
 
 ---
 

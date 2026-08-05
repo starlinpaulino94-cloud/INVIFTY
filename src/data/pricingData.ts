@@ -86,7 +86,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       { es: "Todo lo incluido en el plan Premium", en: "Everything in the Premium plan" },
       { es: "Diseño 100% personalizado por un diseñador", en: "100% custom design by a dedicated designer" },
       { es: "Video de portada de alta definición en bucle", en: "HD looping cover video" },
-      { es: "Dominio web propio personalizado (ej: boda.com)", en: "Your own custom web domain (e.g. wedding.com)" },
       { es: "Galería de fotos post-evento para invitados", en: "Post-event photo gallery for guests" },
       { es: "Validez activa durante 1 año completo", en: "Active for a full year" }
     ],
@@ -196,15 +195,6 @@ export const PLAN_COMPARISON: PlanComparisonRow[] = [
     values: [false, false, false, true]
   },
   {
-    label: { es: "Dominio web propio", en: "Custom web domain" },
-    values: [
-      { es: "Extra", en: "Add-on" },
-      { es: "Extra", en: "Add-on" },
-      { es: "Extra", en: "Add-on" },
-      true
-    ]
-  },
-  {
     label: { es: "Galería post-evento", en: "Post-event gallery" },
     values: [
       { es: "Extra", en: "Add-on" },
@@ -224,16 +214,6 @@ export const PRICING_EXTRAS: PricingExtra[] = [
     description: {
       es: "Añade un selector de idioma para invitados internacionales (Español / English).",
       en: "Add a language selector for international guests (Spanish / English)."
-    }
-  },
-  {
-    id: "dominio-propio",
-    title: { es: "Dominio Web Propio", en: "Custom Web Domain" },
-    priceUSD: 25,
-    priceDOP: 1500,
-    description: {
-      es: "Dirección web única y personalizada para tu evento (ejemplo: miboda.com).",
-      en: "A unique, personalized web address for your event (e.g. mywedding.com)."
     }
   },
   {

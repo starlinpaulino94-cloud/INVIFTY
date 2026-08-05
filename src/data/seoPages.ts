@@ -480,8 +480,8 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         heading: { es: "Para clientes corporativos y bodas premium", en: "For corporate clients and premium weddings" },
         body: {
-          es: "El plan A medida crea un diseño único por cliente —ideal para clientes premium que esperan exclusividad— con dominio propio, video y galería post-evento. Tú presentas, nosotros producimos.",
-          en: "The Custom plan creates a unique design per client —ideal for premium clients expecting exclusivity— with its own domain, video and post-event gallery. You present, we produce.",
+          es: "El plan A medida crea un diseño único por cliente —ideal para clientes premium que esperan exclusividad— con video de portada y galería post-evento. Tú presentas, nosotros producimos.",
+          en: "The Custom plan creates a unique design per client —ideal for premium clients expecting exclusivity— with a cover video and post-event gallery. You present, we produce.",
         },
       },
     ],
@@ -489,8 +489,8 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         q: { es: "¿Puedo gestionar invitaciones de varios clientes a la vez?", en: "Can I manage invitations for several clients at once?" },
         a: {
-          es: "Sí. Coordinamos cada evento por separado por WhatsApp y cada invitación se publica con su propio enlace privado, dominio y QR cuando aplica.",
-          en: "Yes. We coordinate each event separately on WhatsApp and each invitation is published with its own private link, domain and QR when applicable.",
+          es: "Sí. Coordinamos cada evento por separado por WhatsApp y cada invitación se publica con su propio enlace privado y su QR cuando aplica.",
+          en: "Yes. We coordinate each event separately on WhatsApp and each invitation is published with its own private link and QR when applicable.",
         },
       },
       {
@@ -501,10 +501,10 @@ export const SEO_PAGES: SeoPageData[] = [
         },
       },
       {
-        q: { es: "¿Puedo usar un dominio propio para el cliente?", en: "Can I use a custom domain for the client?" },
+        q: { es: "¿Cómo se comparte la invitación con los invitados?", en: "How is the invitation shared with guests?" },
         a: {
-          es: "Sí. El plan A medida incluye dominio web propio personalizado. En otros planes el dominio propio está disponible como servicio adicional.",
-          en: "Yes. The Custom plan includes a personalized custom domain. On other plans, a custom domain is available as an add-on.",
+          es: "Cada evento recibe su propio enlace privado de Invifty, listo para reenviar por WhatsApp. Se abre al instante en cualquier teléfono, sin descargar aplicaciones.",
+          en: "Each event gets its own private Invifty link, ready to forward on WhatsApp. It opens instantly on any phone, with no app downloads.",
         },
       },
     ],
