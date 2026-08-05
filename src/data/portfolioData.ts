@@ -124,7 +124,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     style: { es: "Sacro sereno · Verde bosque y oro", en: "Serene sacred · Forest green & gold" },
     minimumPlan: "popular",
     subtitle: "Catedral Primada de América & Restaurante Pepperoni",
-    image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&q=80&w=800",
     features: [
       { es: "Portada sacra con cuenta regresiva", en: "Sacred cover with countdown" },
       { es: "Programa del día: misa, fotos y almuerzo", en: "Day programme: mass, photos and lunch" },
@@ -274,7 +274,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
     id: "muestra-summit-aurora",
     slug: "summit-aurora-vitrexi",
-    title: "Aurora Summit 2027 — Vitrexi",
+    title: "Aurora Summit 2027 — Grupo Aurora",
     eventType: "Corporativo & Galas",
     category: "corporativo",
     style: { es: "Minimal corporativo · Violeta y gris", en: "Corporate minimal · Violet & grey" },

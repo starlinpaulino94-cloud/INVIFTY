@@ -60,9 +60,10 @@ export default function PricingSection() {
               : "Unlimited guests and a single payment per event: no hidden costs, no monthly fees and no per-guest charges."}
           </p>
           <p className="text-white/60 text-[11px] mt-3 tracking-wide">
+            {/* Zelle y PayPal no están disponibles: se anunciaban sin serlo. */}
             {isEs
-              ? "Precios en pesos dominicanos (DOP). ¿Pagas desde el exterior? También aceptamos USD, Zelle y PayPal."
-              : "Prices shown in USD. Paying from the Dominican Republic? DOP pricing available — plus Zelle and PayPal."}
+              ? "Precios en pesos dominicanos (DOP). El pago se realiza por transferencia bancaria."
+              : "Prices shown in USD. Payment is made by bank transfer in Dominican pesos."}
           </p>
         </div>
 

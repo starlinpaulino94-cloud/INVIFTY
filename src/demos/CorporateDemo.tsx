@@ -232,7 +232,7 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
         </div>
 
         <a
-          href={createDemoWatermarkWhatsAppUrl("Gala Empresarial Vitrexi")}
+          href={createDemoWatermarkWhatsAppUrl("Gala Empresarial")}
           target="_blank"
           rel="noopener noreferrer"
           className="hidden sm:flex text-black font-semibold px-4 py-1.5 text-[10px] uppercase tracking-widest items-center gap-1.5 rounded-full"
@@ -663,7 +663,7 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
                       type="text"
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder={lx("Ej. Vitrexi Technologies", "E.g. Vitrexi Technologies")}
+                      placeholder={lx("Ej. Nombre de tu empresa", "E.g. Your company name")}
                       className={inputClass}
                       style={inputStyle}
                     />

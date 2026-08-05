@@ -17,6 +17,8 @@ interface RawEnv {
   readonly VITE_SITE_URL?: string;
   readonly VITE_WHATSAPP_NUMBER?: string;
   readonly VITE_GA_MEASUREMENT_ID?: string;
+  readonly VITE_ENABLE_VERCEL_ANALYTICS?: string;
+  readonly VITE_GOOGLE_SITE_VERIFICATION?: string;
   readonly VITE_STUDIO_API_URL?: string;
   readonly VITE_ENABLE_STUDIO_LEADS?: string;
 }
@@ -47,6 +49,24 @@ const siteUrl = readString(raw.VITE_SITE_URL, "https://invifty.com").replace(/\/
 const whatsappNumber = normalizePhone(readString(raw.VITE_WHATSAPP_NUMBER, "18092693214"));
 
 const gaMeasurementId = readString(raw.VITE_GA_MEASUREMENT_ID, "");
+
+/**
+ * Analítica de Vercel. Activada por defecto porque el sitio se despliega en
+ * Vercel, no instala cookies y no requiere banner de consentimiento.
+ *
+ * Si la función no está habilitada en el panel del proyecto, el script que
+ * inyecta simplemente no existe y la petición falla sin efectos: no rompe nada.
+ */
+const vercelAnalyticsEnabled = readBoolean(raw.VITE_ENABLE_VERCEL_ANALYTICS, true);
+
+/**
+ * Token de verificación de Google Search Console.
+ *
+ * Es el valor del atributo `content` de la etiqueta que da Google, NO la
+ * etiqueta entera. No es un secreto: sirve para demostrar que controlas el
+ * dominio y es público por definición.
+ */
+const googleSiteVerification = readString(raw.VITE_GOOGLE_SITE_VERIFICATION, "");
 
 const studioApiUrl = readString(raw.VITE_STUDIO_API_URL, "").replace(/\/+$/, "");
 
@@ -101,6 +121,10 @@ export const ENV = {
   gaMeasurementId,
   /** true sólo si el ID de GA4 tiene formato válido. */
   gaEnabled,
+  /** true si debe cargarse la analítica sin cookies de Vercel. */
+  vercelAnalyticsEnabled,
+  /** Token de Google Search Console. Cadena vacía = no verificado por etiqueta. */
+  googleSiteVerification,
   /** URL base de la API pública de Invifty Studio. Vacío = no configurada. */
   studioApiUrl,
   /** true sólo si el flag está activo Y hay URL. Ver docs/integracion-futura-studio.md. */

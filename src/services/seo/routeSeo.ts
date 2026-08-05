@@ -20,8 +20,44 @@ export interface RouteSeo {
   language: Language;
 }
 
-/** Imagen social por defecto. Debe existir en `public/`. */
-const DEFAULT_OG_IMAGE = "/og-image.jpg";
+/**
+ * Imagen social por defecto. Debe existir en `public/`.
+ *
+ * Las tarjetas de `public/og/` las genera `npm run og:images` y se versionan en
+ * el repositorio: llevan la marca Invifty y el tipo de evento. Antes las 21
+ * rutas compartían una única foto de boda sin logo, así que compartir la
+ * muestra corporativa por WhatsApp enseñaba una novia.
+ */
+const DEFAULT_OG_IMAGE = "/og/default.jpg";
+
+/** Tarjeta social por categoría de evento. Debe existir `public/og/<id>.jpg`. */
+const OG_BY_CATEGORY: Record<string, string> = {
+  boda: "/og/boda.jpg",
+  quinceanera: "/og/quinceanera.jpg",
+  cumpleanos: "/og/cumpleanos.jpg",
+  "baby-shower": "/og/baby-shower.jpg",
+  bautizo: "/og/bautizo.jpg",
+  "bridal-shower": "/og/bridal-shower.jpg",
+  corporativo: "/og/corporativo.jpg",
+  apertura: "/og/apertura.jpg",
+};
+
+/**
+ * Tarjeta de cada página SEO, por ruta.
+ *
+ * Se mapea a mano y no por el último segmento de la URL porque la ruta usa el
+ * plural comercial (`/bodas`) y la categoría el singular (`boda`): derivarlo
+ * fallaría en silencio y la página volvería a la tarjeta genérica.
+ *
+ * El hub y `/para-planners` no aparecen: cubren todos los tipos de evento, así
+ * que les corresponde la tarjeta general.
+ */
+const OG_BY_SEO_PATH: Record<string, string> = {
+  "/invitaciones-digitales/bodas": "/og/boda.jpg",
+  "/invitaciones-digitales/quinceaneras": "/og/quinceanera.jpg",
+  "/invitaciones-digitales/cumpleanos": "/og/cumpleanos.jpg",
+  "/invitaciones-digitales/corporativos": "/og/corporativo.jpg",
+};
 
 function absolute(path: string): string {
   return `${CONFIG.siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
@@ -107,6 +143,7 @@ export function getRouteSeo(rawPath: string, language: Language = "es"): RouteSe
       ...base,
       title: isEs ? seoPage.seoTitle.es : seoPage.seoTitle.en,
       description: isEs ? seoPage.seoDescription.es : seoPage.seoDescription.en,
+      ogImage: absolute(OG_BY_SEO_PATH[path] ?? DEFAULT_OG_IMAGE),
       ogType: "article",
       noindex: false,
     };
@@ -117,6 +154,7 @@ export function getRouteSeo(rawPath: string, language: Language = "es"): RouteSe
     const style = isEs ? demo.style.es : demo.style.en;
     return {
       ...base,
+      ogImage: absolute(OG_BY_CATEGORY[demo.category] ?? DEFAULT_OG_IMAGE),
       title: `${demo.title} — ${isEs ? "Muestra Interactiva" : "Interactive Sample"} · Invifty`,
       description: isEs
         ? `Muestra interactiva de invitación digital: ${demo.title}. ${style}. Explora el diseño, la ubicación, la galería y la confirmación de asistencia.`

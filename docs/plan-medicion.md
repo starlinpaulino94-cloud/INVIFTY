@@ -112,18 +112,45 @@ transición.
 
 ---
 
-## 6. Activación
+## 6. Qué mide hoy la web
 
-1. Crear una propiedad GA4 en analytics.google.com.
-2. Copiar el ID de medición (`G-XXXXXXXXXX`).
-3. Ponerlo en `VITE_GA_MEASUREMENT_ID` en las variables de entorno de Vercel.
-4. Volver a desplegar.
+**Decisión (2026-08-05): se mide con Vercel Web Analytics, no con GA4.**
 
-Sin ese paso la web **no mide nada**, que es el estado actual.
+Se descartó Google Analytics de momento por una razón concreta: instala cookies e identifica
+al visitante, lo que obliga a un banner de consentimiento y a custodiar datos personales.
+Vercel Web Analytics **no pone cookies, no identifica a nadie y no sigue al visitante entre
+sitios**, así que no hay banner que poner ni consentimiento que gestionar. La política de
+privacidad lo declara de forma explícita.
 
-### Marcar conversiones en GA4
+### Lo que sí da, y lo que no
 
-Marcar como conversión: `submit_lead_form`, `select_plan` y `open_whatsapp`.
+| | Estado |
+|---|---|
+| Visitas, páginas más vistas, país, dispositivo | ✅ plan gratuito |
+| **Referente y parámetros UTM** — de qué anuncio o publicación vino cada visita | ✅ plan gratuito |
+| Eventos del embudo (`select_plan`, `open_whatsapp`, `submit_lead_form`…) | ⚠️ **requieren plan Pro** |
+
+Los eventos se envían igualmente; en el plan gratuito Vercel los descarta en silencio. Mientras
+tanto, **la fuente de verdad de las conversiones sigue siendo el propio WhatsApp**: cada lead
+llega ahí con el plan y la muestra que le interesaban escritos en el mensaje.
+
+### Activación
+
+1. En Vercel: Project → **Analytics** → *Enable Web Analytics*.
+2. Volver a desplegar.
+
+Si no se activa en el panel, el script no existe y no se mide nada. No rompe la web.
+Para apagarlo del todo: `VITE_ENABLE_VERCEL_ANALYTICS=false`.
+
+### Si algún día se quiere GA4 además
+
+`ga4Provider` sigue implementado y se registra siempre; se activa solo en cuanto
+`VITE_GA_MEASUREMENT_ID` tenga un ID válido. Los dos proveedores conviven sin tocar ningún
+componente — para eso existe la capa. Eso sí: **GA4 sí instala cookies**, así que activarlo
+obliga a revisar la política de privacidad y a plantearse el banner de consentimiento.
+
+Conversiones a marcar en GA4 si se llega a activar: `submit_lead_form`, `select_plan` y
+`open_whatsapp`.
 
 ---
 

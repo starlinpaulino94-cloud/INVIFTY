@@ -73,7 +73,7 @@ describe("muestra · Gala Anual de Innovación", () => {
     renderDemo();
 
     await user.type(screen.getByLabelText(/nombre completo/i), "Lic. Ana Reyes");
-    await user.type(screen.getByLabelText(/^empresa$/i), "Vitrexi Technologies");
+    await user.type(screen.getByLabelText(/^empresa$/i), "Corporación Meridiano");
     await user.type(screen.getByLabelText(/^cargo$/i), "Directora de Operaciones");
     await user.selectOptions(screen.getByLabelText(/acompañantes/i), "2");
     await user.selectOptions(screen.getByLabelText(/preferencia de menú/i), "Opción vegetariana");
@@ -83,7 +83,7 @@ describe("muestra · Gala Anual de Innovación", () => {
     expect(open).toHaveBeenCalledTimes(1);
     const message = decodeURIComponent(String(open.mock.calls[0][0]));
     expect(message).toContain("Lic. Ana Reyes");
-    expect(message).toContain("Vitrexi Technologies");
+    expect(message).toContain("Corporación Meridiano");
     expect(message).toContain("Directora de Operaciones");
     expect(message).toContain("Opción vegetariana");
     expect(message).toContain("2");

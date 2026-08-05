@@ -8,6 +8,7 @@ import BenefitsSection from "./components/BenefitsSection";
 import PortfolioSection from "./components/PortfolioSection";
 import PricingSection from "./components/PricingSection";
 import TrustSection from "./components/TrustSection";
+import ReviewsSection from "./components/ReviewsSection";
 import FaqSection from "./components/FaqSection";
 import InquiryForm from "./components/InquiryForm";
 import Footer from "./components/Footer";
@@ -169,6 +170,7 @@ export default function App() {
         <BenefitsSection />
         <PricingSection />
         <TrustSection />
+        <ReviewsSection />
         <FaqSection />
         <InquiryForm />
       </main>

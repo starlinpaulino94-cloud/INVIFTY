@@ -26,6 +26,29 @@ describe("canonical por ruta", () => {
     }
   });
 
+  it("da a cada muestra la tarjeta social de su tipo de evento", () => {
+    // Las 21 rutas compartían una foto de boda: compartir la muestra
+    // corporativa o la de baby shower por WhatsApp enseñaba una novia.
+    const cards = new Map<string, string>();
+    for (const demo of getPublicDemos()) {
+      const { ogImage } = getRouteSeo(demo.demoUrl);
+      expect(ogImage, `${demo.demoUrl} usa la tarjeta genérica`).not.toContain("/og/default.jpg");
+      cards.set(demo.category, ogImage);
+    }
+    // Dos categorías distintas nunca deben caer en la misma tarjeta.
+    expect(new Set(cards.values()).size).toBe(cards.size);
+  });
+
+  it("apunta a tarjetas sociales que existen en public/", async () => {
+    const { existsSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const routes = [...getIndexableRoutes()];
+    for (const route of routes) {
+      const file = getRouteSeo(route).ogImage.replace(SITE, "");
+      expect(existsSync(join(process.cwd(), "public", file)), `falta public${file}`).toBe(true);
+    }
+  });
+
   it("no repite canonical entre rutas", () => {
     const canonicals = getIndexableRoutes().map((route) => getRouteSeo(route).canonical);
     expect(new Set(canonicals).size).toBe(canonicals.length);

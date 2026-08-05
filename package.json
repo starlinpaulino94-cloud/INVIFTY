@@ -10,12 +10,14 @@
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
     "optimize:images": "node scripts/optimize-images.mjs",
+    "og:images": "node scripts/generate-og-images.mjs",
     "localize:images": "node scripts/localize-images.mjs",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
+    "@vercel/analytics": "^2.0.1",
     "@vitejs/plugin-react": "^5.0.4",
     "lucide-react": "^0.546.0",
     "react": "^19.0.1",

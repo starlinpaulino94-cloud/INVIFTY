@@ -26,6 +26,11 @@ export type AnalyticsEventName =
   | "start_lead_form"
   | "lead_form_error"
   | "submit_lead_form"
+  // Reseñas de clientes
+  | "view_reviews"
+  | "start_review_form"
+  | "review_form_error"
+  | "submit_review"
   // Contacto
   | "open_whatsapp"
   | "view_faq"
@@ -64,6 +69,10 @@ export interface AnalyticsProps {
   error_reason?: string;
   filter_value?: string;
   link_text?: string;
+  /** Estrellas de una reseña (1–5). Nunca su texto ni quién la escribió. */
+  rating?: number;
+  /** Cuántas reseñas hay publicadas al mostrarse la sección. */
+  review_count?: number;
 }
 
 /** Destino concreto de los eventos (GA4, consola, un doble de pruebas…). */

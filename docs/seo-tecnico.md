@@ -164,21 +164,90 @@ a este build, así que no hay nada privado que excluir.
 
 ## 8. Lo que sigue pendiente
 
-### Imagen social por demo — **no hecho**
-
-Las 21 rutas comparten `og-image.jpg`. La tarjeta que se ve al compartir tiene ya el **texto**
-correcto de cada demo, pero la **imagen** es siempre la genérica.
-
-Para resolverlo habría que generar un JPEG de 1200×630 por muestra (se puede con `sharp`, que
-ya es dependencia, a partir de las portadas). No se hizo en esta fase: las portadas actuales
-son cuatro SVG y tres fotos verticales de 896×1200, así que recortarlas a 1200×630 sin criterio
-de diseño daría malos resultados. Es una tarea de diseño tanto como de código.
-
 ### Verificación en producción — **pendiente**
 
-- Confirmar que Vercel sirve los HTML por ruta (§4).
-- Pasar las URLs por el depurador de Facebook y por Google Search Console.
-- Enviar el sitemap en Search Console.
+- Pasar las URLs por el depurador de Facebook.
+
+---
+
+## 10. Google Search Console
+
+Aparecer en Google **no requiere Search Console**: el rastreador llega solo si el sitio es
+accesible, y ya lo es. Search Console sirve para otra cosa —ver qué se ha indexado, con qué
+búsquedas te encuentran y qué errores impiden indexar— y para acelerar el proceso enviando el
+sitemap en vez de esperar a que Google lo descubra.
+
+### Lo que ya está listo
+
+| Requisito | Estado |
+|---|---|
+| `robots.txt` permite rastrear todo y anuncia el sitemap | ✅ |
+| `sitemap.xml` con las 21 URLs, generado del mismo origen que las rutas | ✅ |
+| Un `<title>`, descripción y canonical propios por ruta, en el HTML inicial | ✅ |
+| JSON-LD `Organization`, `WebSite`, `Service`, `BreadcrumbList`, `FAQPage` | ✅ |
+| Etiqueta de verificación, si se quiere usar ese método | ✅ configurable |
+
+### Los pasos, en orden
+
+1. Entrar en [search.google.com/search-console](https://search.google.com/search-console) con
+   la cuenta de Google del negocio.
+2. Añadir una propiedad. **Elige «Dominio»** si puedes tocar el DNS: cubre `invifty.com`,
+   `www` y ambos protocolos de una vez. Si no, «Prefijo de URL» con la dirección exacta.
+3. Verificar la propiedad:
+   - **Por DNS** (propiedad de tipo Dominio): añadir el registro `TXT` que da Google donde
+     tengas el dominio. No toca el código.
+   - **Por etiqueta HTML** (propiedad de tipo Prefijo): copiar **sólo** el valor de `content=`
+     y ponerlo en `VITE_GOOGLE_SITE_VERIFICATION` en Vercel. **Hay que volver a desplegar**:
+     Vite incrusta las variables en el build, así que sin nuevo despliegue la etiqueta no
+     existe. Se inserta en las 21 rutas.
+4. En *Sitemaps*, enviar `sitemap.xml`.
+5. En *Inspección de URLs*, pedir la indexación de la portada.
+
+### Qué esperar
+
+La indexación tarda de días a semanas; no es instantáneo y no se puede forzar. Que una URL
+aparezca como «Detectada, actualmente sin indexar» es normal al principio.
+
+> **Importante:** la propiedad debe coincidir con el dominio que realmente sirve el sitio. Hoy
+> el canonical dice `invifty.com` y el sitio responde en `www.invifty.com`. Con una propiedad
+> de tipo **Dominio** da igual; con una de tipo Prefijo, hay que registrar la que corresponda o
+> los informes saldrán vacíos.
+
+---
+
+## 9. Tarjetas sociales por tipo de evento — resuelto
+
+Las 21 rutas compartían `og-image.jpg`: una foto de boda sin logo ni texto. El **texto** de la
+tarjeta sí era el correcto de cada ruta, pero la **imagen** era siempre la misma, así que
+compartir la muestra corporativa o la del baby shower por WhatsApp enseñaba una novia. Como
+WhatsApp es el canal de venta principal en RD, esa tarjeta es en la práctica el anuncio.
+
+`npm run og:images` ([`scripts/generate-og-images.mjs`](../scripts/generate-og-images.mjs))
+genera nueve JPEG de 1200×630 en `public/og/`: uno por tipo de evento más el general. Cada uno
+lleva la firma **INVIFTY**, el tipo de evento y tres capacidades reales del producto, sobre la
+foto oscurecida con un marco dorado.
+
+| Ruta | Tarjeta |
+|---|---|
+| Portada, hub SEO, planners, legales | `og/default.jpg` |
+| Las 12 muestras | `og/<categoría>.jpg`, según `category` del catálogo |
+| Páginas SEO de bodas, 15 años, cumpleaños y corporativos | la de su tipo |
+
+Dos decisiones que conviene no deshacer:
+
+- **Las imágenes se versionan en el repositorio.** El `build` no las regenera, así que un
+  despliegue nunca depende de que Unsplash responda.
+- **El mapeo de páginas SEO a tarjeta es a mano**, no derivado del último segmento de la URL:
+  la ruta usa el plural comercial (`/bodas`) y la categoría el singular (`boda`). Derivarlo
+  fallaría en silencio y la página volvería a la tarjeta genérica.
+
+Dos pruebas en [`seo.test.ts`](../src/services/seo/seo.test.ts) lo sostienen: que ninguna
+muestra caiga en la tarjeta genérica y que **todos** los ficheros referidos existan en
+`public/`. Sin la segunda, un renombrado dejaría a la ruta anunciando una imagen inexistente y
+WhatsApp mostraría la tarjeta sin foto.
+
+> `public/og-image.jpg` se conserva aunque ya no lo use ninguna ruta: los enlaces compartidos
+> antes de este cambio siguen apuntando a él en las cachés de WhatsApp y Facebook.
 
 ### Prerenderizado de contenido — **no necesario por ahora**
 
