@@ -68,11 +68,11 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
               sitio se cargan desde Google Fonts.
             </p>
             <p>
-              Para saber cuántas personas visitan el sitio usamos <strong>Vercel Web Analytics</strong>,
-              que registra datos agregados: página visitada, procedencia del enlace, país, tipo de
-              dispositivo y navegador. <strong>No instala cookies, no te identifica y no te sigue
-              entre sitios web</strong>, por eso no verás aquí ningún aviso de cookies. No usamos
-              Google Analytics ni ninguna herramienta publicitaria de seguimiento.
+              Para saber cuántas personas visitan el sitio medimos datos agregados: página
+              visitada, procedencia del enlace, país, tipo de dispositivo y navegador.{" "}
+              <strong>No instalamos cookies, no te identificamos y no te seguimos entre sitios
+              web</strong>, por eso no verás aquí ningún aviso de cookies. Tampoco usamos
+              herramientas publicitarias de seguimiento.
             </p>
           </section>
 
@@ -141,11 +141,11 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
               which have their own privacy policies. The site&rsquo;s fonts are loaded from Google Fonts.
             </p>
             <p>
-              To know how many people visit the site we use <strong>Vercel Web Analytics</strong>,
-              which records aggregate data: page visited, referrer, country, device type and browser.
-              <strong> It sets no cookies, does not identify you and does not track you across
+              To know how many people visit the site we measure aggregate data: page visited,
+              referrer, country, device type and browser.{" "}
+              <strong>We set no cookies, do not identify you and do not track you across
               websites</strong>, which is why you will not see a cookie banner here. We do not use
-              Google Analytics or any advertising tracking tool.
+              advertising tracking tools either.
             </p>
           </section>
 
