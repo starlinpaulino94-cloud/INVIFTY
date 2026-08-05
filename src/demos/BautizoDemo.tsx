@@ -46,14 +46,17 @@ const GOLD_LIGHT = "#D4B75C";
 
 const PALETTE: DemoPalette = { accent: GOLD, onAccent: FOREST_DEEP, bar: FOREST };
 
+// Cada URL de esta demo se ha comprobado abriéndola: las de Unsplash devuelven
+// HTTP 200 aunque la foto no tenga nada que ver, y aquí había un bote en una
+// laguna de portada y un cartel de «SALE 50%» en la galería de un bautizo.
 const HERO =
-  "https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?auto=format&fit=crop&q=80&w=1600";
+  "https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&q=80&w=1600";
 
 const GALLERY = [
-  "https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&q=80&w=900",
-  "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&q=80&w=900",
-  "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=900",
   "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&q=80&w=900",
 ];
 
 export default function BautizoDemo({ onBackToHome }: BautizoDemoProps) {

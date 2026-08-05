@@ -160,17 +160,40 @@ de las 12 demos, y exige que toda demo con RSVP explique que sólo se abre Whats
 | Imágenes optimizadas | ✅ WebP; galerías con `loading="lazy"` |
 | Etiqueta visible de demostración | ✅ barra superior en todas |
 | **Metadatos propios por demo** | ⚠️ sólo en cliente — ver abajo |
-| **Open Graph por demo** | ❌ no es posible dentro de Vite |
+| **Open Graph por demo** | ✅ resuelto con prerenderizado |
 
-### La limitación que queda
+### Open Graph por demo — resuelto
 
-`App.tsx` actualiza `document.title` y la descripción **después** del montaje. Google lo
-interpreta, pero los generadores de vista previa de WhatsApp, Facebook y Twitter leen el HTML
-inicial y no ejecutan JavaScript.
+Antes, `App.tsx` actualizaba el `<head>` **después** del montaje: Google lo interpretaba, pero
+los generadores de vista previa de WhatsApp, Facebook y Twitter leen el HTML inicial y no
+ejecutan JavaScript, así que compartir una demo enseñaba la tarjeta de la portada.
 
-**Consecuencia real:** compartir el enlace de una demo por WhatsApp muestra la tarjeta de la
-home, no la de esa demo. No tiene solución dentro de Vite sin prerenderizado. Ver
-[`arquitectura-web.md`](./arquitectura-web.md) §5.
+Un plugin de build genera un `index.html` por ruta con sus metadatos ya escritos, y cada
+muestra usa además la tarjeta de su tipo de evento. Ver
+[`seo-tecnico.md`](./seo-tecnico.md) §9.
+
+---
+
+## 6.5 Auditoría visual de las fotografías (2026-08-05)
+
+Las 44 imágenes remotas se abrieron **una a una**. Cinco no tenían ninguna relación con su
+invitación, y estaban publicadas:
+
+| Dónde | Qué se veía | Sustituida por |
+|---|---|---|
+| `BautizoDemo` — **portada** | Un bote en una laguna turquesa | Arco floral con velo |
+| `BautizoDemo` — galería | Un cartel de **«SALE 50 %»** | Mesa larga con flores |
+| `BabyShowerDemo` — galería | Un **estetoscopio** sobre un escritorio | Mesa con flores |
+| `BabyShowerDemo` — galería | Una **pagoda japonesa** con cerezos | Sillas decoradas |
+| Catálogo — tarjeta del bautizo | Una mujer con una caja naranja | Arco floral con velo |
+
+**La lección, que es lo que importa:** comprobar que una URL responde `HTTP 200` **no verifica
+nada**. Unsplash devuelve 200 con la foto que sea; las 44 respondían correctamente mientras
+mostraban un estetoscopio en un baby shower. Un enlace vivo no es una imagen correcta.
+
+> Las sustitutas salen del mismo conjunto ya verificado, así que hay algo de repetición entre
+> muestras. La solución real es fotografía propia o de banco elegida con criterio: estas
+> muestras son el argumento de venta y hoy dependen de fotos genéricas de Unsplash.
 
 ---
 

@@ -49,10 +49,13 @@ const PALETTE: DemoPalette = { accent: TERRACOTTA, onAccent: "#FFFFFF", bar: COC
 const HERO =
   "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&q=80&w=1600";
 
+// Comprobadas una a una: aquí había un estetoscopio y una pagoda japonesa en
+// la galería de un baby shower. Unsplash devuelve HTTP 200 con la foto que sea,
+// así que un enlace «vivo» no garantiza que la imagen tenga sentido.
 const GALLERY = [
-  "https://images.unsplash.com/photo-1560582861-45078880e48e?auto=format&fit=crop&q=80&w=900",
-  "https://images.unsplash.com/photo-1522547902298-51566e4fb383?auto=format&fit=crop&q=80&w=900",
-  "https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=900",
 ];
 
 export default function BabyShowerDemo({ onBackToHome }: BabyShowerDemoProps) {
