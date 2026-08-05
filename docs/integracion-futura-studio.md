@@ -15,7 +15,7 @@
 > cliente HTTP, los tipos y los feature flags que la web necesitará el día que
 > Studio publique sus endpoints. Nada más.
 >
-> Las secciones §2, §3 y §4 son una **especificación dirigida al equipo de
+> Las secciones §2 a §5 son una **especificación dirigida al equipo de
 > Studio**: describen lo que la web espera consumir, no trabajo pendiente en
 > este repositorio.
 
@@ -214,17 +214,109 @@ confirmar la recepción.
 
 ---
 
-## 5. Lo que falta implementar en `invifty-studio`
+## 5. RSVP de invitaciones reales y panel del anfitrión
+
+> **Estado: especificado, nada implementado.** Ni aquí ni en Studio.
+
+Los planes **ya prometen esta capacidad** en la web publicada:
+
+- **Popular** — «Confirmación RSVP interactiva para invitados».
+- **Premium** — «Control de acceso y **gestión personalizada de tus invitados**» y
+  «Pase QR personal: cada invitado entra escaneando el suyo».
+
+Es decir: el cliente que compra Premium espera un sitio donde ver quién ha confirmado. Ese
+panel es lo que falta, y **no existe en ninguna parte todavía**.
+
+### Dónde vive cada pieza
+
+| Pieza | Dónde | Estado |
+|---|---|---|
+| Invitación **de muestra** (las 12 demos) | Este repositorio | ✅ Existe. Su RSVP abre WhatsApp y lo dice |
+| Invitación **real** de un cliente | Studio la publica | ❌ No definido |
+| Endpoint que recibe la confirmación | Studio | ❌ No existe |
+| **Panel del anfitrión** | Studio | ❌ No existe |
+
+> ⚠️ **Las demos de este repositorio no deben conectarse nunca a este endpoint.** Son
+> muestras públicas con datos ficticios; enviar confirmaciones reales desde ellas ensuciaría
+> los datos de eventos de clientes. Su RSVP seguirá abriendo WhatsApp.
+
+### `POST /api/public/events/{eventId}/rsvp`
+
+**Propósito:** registrar la confirmación de un invitado en una invitación real.
+
+```json
+{
+  "guestToken": "gst_01H...",
+  "fullName": "Familia Bermúdez",
+  "attendance": "Confirmado",
+  "guestCount": 3,
+  "menuPreference": "Opción vegetariana",
+  "dietaryNotes": "Sin mariscos",
+  "songRequest": "Bachata Rosa",
+  "message": "¡Ahí estaremos!"
+}
+```
+
+`attendance` usa los valores canónicos del tipo `RsvpAttendance` de este repositorio:
+`"Confirmado" | "Declina"`. Conviene que Studio use los mismos para no traducir estados.
+
+**Validaciones exigidas:**
+
+| Campo | Regla |
+|---|---|
+| `eventId` | Debe existir y estar publicado |
+| `guestToken` | Opcional. Si el evento es de lista cerrada, **obligatorio** y de un solo uso por invitado |
+| `fullName` | Obligatorio, 2–120 caracteres |
+| `attendance` | `Confirmado` \| `Declina` |
+| `guestCount` | Entero ≥ 1 y **≤ los pases asignados** a ese invitado |
+| `message` | Máximo 500 caracteres, se escapa antes de mostrarse en el panel |
+
+**Idempotencia:** clave `eventId:guestToken`. Un invitado que confirma dos veces
+**actualiza** su respuesta, no crea una segunda. Es el caso más frecuente: la gente cambia de
+opinión sobre el número de acompañantes.
+
+**Rate limiting:** por `eventId` y por IP. Una invitación de boda puede recibir cientos de
+confirmaciones legítimas en una hora tras enviarse, así que el límite debe ser generoso —
+sugerido: 300/hora por evento— o el propio éxito del envío parecerá un ataque.
+
+**Campos prohibidos en la respuesta:** la lista de invitados, sus datos o cualquier
+estadística del evento. El invitado sólo debe recibir la confirmación de su propia respuesta.
+
+### Panel del anfitrión
+
+Es **área privada**, no contenido público. Requisitos mínimos:
+
+- **Autenticación del anfitrión.** Cada evento pertenece a un cliente; nadie más ve sus
+  invitados. Un enlace no adivinable no es autenticación suficiente para datos personales.
+- **Lista de invitados** con estado, acompañantes, menú y notas.
+- **Totales**: confirmados, declinados y pendientes; suma real de asistentes.
+- **Exportar a CSV** — es lo primero que pide quien organiza el salón.
+- **Escaneo de QR en puerta** (Premium): marcar llegada y evitar el paso doble.
+- **Retención y borrado.** Son datos personales de terceros que no aceptaron nada con
+  Invifty: define cuánto se guardan tras el evento y cómo se eliminan.
+
+### Lo que faltará en esta web
+
+Nada, mientras el panel viva en Studio. Si algún día se decidiera enlazarlo desde aquí,
+bastaría con un enlace externo — **nunca replicar el panel en el sitio público**.
+
+---
+
+## 6. Lo que falta implementar en `invifty-studio`
 
 - [ ] `POST /api/public/leads` con validación, idempotencia y rate limiting
 - [ ] `GET /api/public/catalog`
 - [ ] `GET /api/public/demos`
+- [ ] `POST /api/public/events/{eventId}/rsvp` con idempotencia por invitado
+- [ ] **Panel del anfitrión**: autenticación, lista de invitados, totales y export CSV
+- [ ] Escaneo de QR en puerta para los planes Premium y A medida
+- [ ] Política de retención y borrado de los datos de invitados
 - [ ] Lista blanca de CORS para `https://invifty.com`
 - [ ] Almacenamiento de leads con el consentimiento y su fecha
 - [ ] Notificación al equipo cuando entra un lead (hoy lo hace WhatsApp por sí solo)
 - [ ] Política de retención y borrado de datos de leads
 
-## 6. Lo que faltará en la web cuando Studio esté listo
+## 7. Lo que faltará en la web cuando Studio esté listo
 
 - [ ] Adaptador que convierta la respuesta de `/catalog` al tipo `PricingPlan`
 - [ ] Adaptador que convierta `/demos` al tipo `PublicDemo`

@@ -44,8 +44,8 @@ entrega de un plan y olvidas la tabla, el test falla.
 - **Esencial → Popular:** RSVP, música, galería (15 fotos) e historia del evento.
 - **Popular → Premium:** pases QR individuales, galería ilimitada, cronograma, mesa de
   regalos y recordatorios por WhatsApp.
-- **Premium → A medida:** diseño 100 % desde cero, vídeo de portada, dominio propio, galería
-  post-evento y soporte dedicado.
+- **Premium → A medida:** diseño 100 % desde cero, vídeo de portada, galería post-evento y
+  soporte dedicado.
 
 ---
 
@@ -79,6 +79,27 @@ persona quiera aparecer, el tipo de evento y **permiso escrito de publicación**
 
 ---
 
+### 3.4 Dominio propio retirado de la oferta
+
+**Confirmada.** El dominio web propio se ha eliminado por completo:
+
+| Dónde estaba | Qué decía | Estado |
+|---|---|---|
+| Plan A medida | «Dominio web propio personalizado (ej: boda.com)» | ❌ Retirado |
+| Tabla comparativa | Fila «Dominio web propio» (Extra / Extra / Extra / ✓) | ❌ Retirada |
+| Extras de pago | «Dominio Web Propio» — RD$1 500 | ❌ Retirado |
+| Página SEO para planners | Sección y una FAQ dedicada | ❌ Reescritas |
+
+**Por qué importa:** era la promesa con más riesgo de conflicto. «Dominio web propio
+personalizado» sin letra pequeña se lee como *incluido para siempre*, y nadie había definido
+quién paga la renovación a partir del segundo año, cuánto dura el registro inicial ni qué
+pasa si el cliente deja de pagarlo. Además se contradecía con el extra de RD$1 500.
+
+Cada invitación se comparte con **su propio enlace privado de Invifty**, que es lo que la web
+comunica ahora.
+
+---
+
 ## 4. Decisiones comerciales PENDIENTES
 
 > Estas requieren tu confirmación. No se han implementado.
@@ -96,23 +117,21 @@ pedidos.
 
 ### 4.2 ⏳ Condiciones exactas del plan «A medida»
 
-El plan promete diseño a medida, vídeo y dominio propio, pero **no hay condiciones escritas**
+El plan promete diseño a medida y vídeo de portada, pero **no hay condiciones escritas**
 para varios puntos. Están sin definir y no se han inventado:
 
 | Punto | Estado |
 |---|---|
 | Qué incluye exactamente «diseño 100 % personalizado» (nº de propuestas iniciales) | ❓ Sin definir |
 | Duración máxima del vídeo de portada | ❓ Sin definir |
-| Quién paga el dominio (¿incluido en el precio o se factura aparte?) | ❓ Sin definir |
-| Duración inicial del dominio (¿1 año?) | ❓ Sin definir |
-| Quién renueva el dominio y a qué precio a partir del segundo año | ❓ Sin definir |
+| ~~Dominio propio~~ | ✅ **Retirado de la oferta** (ver §3.4) |
 | Alcance del «soporte dedicado» (horario, tiempo de respuesta) | ❓ Sin definir |
 | Qué pasa al vencer la vigencia de 12 meses (¿se apaga el enlace? ¿se puede renovar?) | ❓ Sin definir |
 
-**Riesgo:** «Dominio web propio personalizado» sin letra pequeña se interpreta como
-«incluido para siempre». Es la ambigüedad con más potencial de conflicto con un cliente.
+> El riesgo del dominio —«incluido para siempre» sin letra pequeña— quedó eliminado al
+> retirar la oferta. Ver §3.4.
 
-**Recomendación:** definir estos siete puntos y añadirlos como campos del plan en
+**Recomendación:** definir estos cuatro puntos y añadirlos como campos del plan en
 `pricingData.ts`, para que se muestren en la tarjeta y en los términos.
 
 ### 4.3 ⏳ Qué ocurre al vencer la vigencia de cualquier plan
@@ -123,11 +142,9 @@ Los planes anuncian vigencias de 3, 6, 9 y 12 meses, pero no se dice qué pasa d
 Los invitados guardan ese enlace. Que caduque sin aviso es una mala experiencia y una fuente
 segura de reclamaciones.
 
-### 4.4 ⏳ Extra «Dominio Web Propio» vs. dominio incluido en A medida
+### 4.4 ~~Extra «Dominio Web Propio» vs. dominio incluido en A medida~~ — resuelto
 
-`PRICING_EXTRAS` vende «Dominio Web Propio» por RD$1 500, y el plan A medida dice incluir
-«Dominio web propio personalizado». Hay que aclarar si el extra sólo aplica a los otros tres
-planes, y decirlo en la web.
+La contradicción desapareció al retirar el dominio de la oferta. Ver §3.4.
 
 ---
 

@@ -14,7 +14,7 @@ export default function WhatsAppChangeNotice() {
         <div className="flex items-center gap-2">
           <AlertCircle className="w-4 h-4 text-gold shrink-0 animate-pulse" />
           <span>
-            <strong className="font-semibold text-white">Aviso para Administrador:</strong> El número de WhatsApp está en modo borrador (<code>NUMERO_PENDIENTE</code>). Edita el archivo <code className="bg-black/40 px-1.5 py-0.5 rounded text-gold font-mono">src/config.ts</code> para colocar tu número real de WhatsApp.
+            <strong className="font-semibold text-white">Aviso para Administrador:</strong> El número de WhatsApp está en modo borrador (<code>NUMERO_PENDIENTE</code>). Configura <code className="bg-black/40 px-1.5 py-0.5 rounded text-gold font-mono">VITE_WHATSAPP_NUMBER</code> en las variables de entorno de Vercel.
           </span>
         </div>
         <button
