@@ -166,8 +166,52 @@ a este build, así que no hay nada privado que excluir.
 
 ### Verificación en producción — **pendiente**
 
-- Pasar las URLs por el depurador de Facebook y por Google Search Console.
-- Enviar el sitemap en Search Console.
+- Pasar las URLs por el depurador de Facebook.
+
+---
+
+## 10. Google Search Console
+
+Aparecer en Google **no requiere Search Console**: el rastreador llega solo si el sitio es
+accesible, y ya lo es. Search Console sirve para otra cosa —ver qué se ha indexado, con qué
+búsquedas te encuentran y qué errores impiden indexar— y para acelerar el proceso enviando el
+sitemap en vez de esperar a que Google lo descubra.
+
+### Lo que ya está listo
+
+| Requisito | Estado |
+|---|---|
+| `robots.txt` permite rastrear todo y anuncia el sitemap | ✅ |
+| `sitemap.xml` con las 21 URLs, generado del mismo origen que las rutas | ✅ |
+| Un `<title>`, descripción y canonical propios por ruta, en el HTML inicial | ✅ |
+| JSON-LD `Organization`, `WebSite`, `Service`, `BreadcrumbList`, `FAQPage` | ✅ |
+| Etiqueta de verificación, si se quiere usar ese método | ✅ configurable |
+
+### Los pasos, en orden
+
+1. Entrar en [search.google.com/search-console](https://search.google.com/search-console) con
+   la cuenta de Google del negocio.
+2. Añadir una propiedad. **Elige «Dominio»** si puedes tocar el DNS: cubre `invifty.com`,
+   `www` y ambos protocolos de una vez. Si no, «Prefijo de URL» con la dirección exacta.
+3. Verificar la propiedad:
+   - **Por DNS** (propiedad de tipo Dominio): añadir el registro `TXT` que da Google donde
+     tengas el dominio. No toca el código.
+   - **Por etiqueta HTML** (propiedad de tipo Prefijo): copiar **sólo** el valor de `content=`
+     y ponerlo en `VITE_GOOGLE_SITE_VERIFICATION` en Vercel. **Hay que volver a desplegar**:
+     Vite incrusta las variables en el build, así que sin nuevo despliegue la etiqueta no
+     existe. Se inserta en las 21 rutas.
+4. En *Sitemaps*, enviar `sitemap.xml`.
+5. En *Inspección de URLs*, pedir la indexación de la portada.
+
+### Qué esperar
+
+La indexación tarda de días a semanas; no es instantáneo y no se puede forzar. Que una URL
+aparezca como «Detectada, actualmente sin indexar» es normal al principio.
+
+> **Importante:** la propiedad debe coincidir con el dominio que realmente sirve el sitio. Hoy
+> el canonical dice `invifty.com` y el sitio responde en `www.invifty.com`. Con una propiedad
+> de tipo **Dominio** da igual; con una de tipo Prefijo, hay que registrar la que corresponda o
+> los informes saldrán vacíos.
 
 ---
 

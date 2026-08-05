@@ -93,11 +93,15 @@ export default function TrustSection() {
           ))}
         </ul>
 
-        {/* Declaración explícita: todavía no publicamos reseñas de clientes. */}
+        {/* Las reseñas viven ahora en su propia sección, con su formulario. */}
         <p className="text-center text-xs text-white/60 mt-12 max-w-2xl mx-auto leading-relaxed">
+          {isEs ? "¿Ya celebraste con Invifty? " : "Already celebrated with Invifty? "}
+          <a href="#resenas" className="text-gold hover:text-gold-hover underline underline-offset-4">
+            {isEs ? "Deja tu reseña" : "Leave your review"}
+          </a>
           {isEs
-            ? "Aún no publicamos reseñas de clientes. Cuando tengamos opiniones reales, con permiso de quienes las escriban, aparecerán aquí con su nombre y su evento."
-            : "We don't publish client reviews yet. Once we have real feedback, shared with the permission of those who write it, it will appear here with their name and event."}
+            ? " — publicamos sólo opiniones reales, con permiso de quien las escribe."
+            : " — we publish only real feedback, with the permission of whoever wrote it."}
         </p>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { CONFIG } from "../config";
 
 interface LegalLayoutProps {
   titleEs: string;
@@ -42,9 +43,10 @@ export default function LegalLayout({ titleEs, titleEn, updatedEs, updatedEn, on
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/10 text-xs text-white/60 font-light italic">
+          {/* Correo desde CONFIG: escrito a mano se quedaría obsoleto en silencio. */}
           {isEs
-            ? "¿Preguntas sobre este documento? Escríbenos a hola@invifty.com o por WhatsApp."
-            : "Questions about this document? Write to hola@invifty.com or reach us on WhatsApp."}
+            ? `¿Preguntas sobre este documento? Escríbenos a ${CONFIG.supportEmail} o por WhatsApp.`
+            : `Questions about this document? Write to ${CONFIG.supportEmail} or reach us on WhatsApp.`}
         </div>
       </div>
     </div>

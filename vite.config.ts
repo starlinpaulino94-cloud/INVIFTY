@@ -60,11 +60,45 @@ function preloadLcpImage(): Plugin {
   };
 }
 
+/**
+ * Inserta la etiqueta de verificación de Google Search Console.
+ *
+ * Se inyecta y no se escribe a mano en index.html por dos razones: el token
+ * cambia entre entornos (producción y previsualizaciones son propiedades
+ * distintas en Search Console) y, sobre todo, se aplica sobre el index.html ya
+ * construido, que es la plantilla de la que el prerenderizado saca las 21
+ * rutas. Escrito aquí, la verificación vale para todas.
+ *
+ * Si la variable está vacía no se inserta nada: una etiqueta con `content=""`
+ * hace fallar la verificación en vez de dejarla pendiente, que es peor.
+ */
+function googleSiteVerification(): Plugin {
+  const token = (process.env.VITE_GOOGLE_SITE_VERIFICATION || '').trim();
+
+  return {
+    name: 'invifty-google-site-verification',
+    transformIndexHtml(html) {
+      if (!token) return html;
+      return {
+        html,
+        tags: [
+          {
+            tag: 'meta',
+            attrs: {name: 'google-site-verification', content: token},
+            injectTo: 'head-prepend',
+          },
+        ],
+      };
+    },
+  };
+}
+
 export default defineConfig(() => {
   return {
     plugins: [
       react(),
       tailwindcss(),
+      googleSiteVerification(),
       preloadLcpImage(),
       // Genera un index.html por ruta con sus propios metadatos, para que las
       // vistas previas de WhatsApp y los rastreadores sin JS los vean.

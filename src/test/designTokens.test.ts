@@ -120,13 +120,27 @@ describe("contraste de texto", () => {
         // (número de paso y icono "no incluido"), ambos con umbral 3:1.
         if (alpha === 40) continue;
 
-        // Se revisa línea a línea para poder excluir lo decorativo: un elemento
-        // marcado con `aria-hidden` no transmite información, así que no le
-        // aplica el contraste mínimo de texto (WCAG 1.4.3).
-        for (const line of source.split("\n")) {
-          if (!new RegExp(`text-white/${alpha}\\b`).test(line)) continue;
-          if (line.includes("aria-hidden")) continue;
-          offenders.push(`${file}: text-white/${alpha}`);
+        // Se excluye lo decorativo: un elemento marcado con `aria-hidden` no
+        // transmite información, así que no le aplica el contraste mínimo de
+        // texto (WCAG 1.4.3).
+        //
+        // No basta con mirar la línea del match: cuando la clase vive dentro de
+        // un ternario, `aria-hidden` queda varias líneas más abajo en la MISMA
+        // etiqueta. Por eso se reconstruye la etiqueta JSX completa antes de
+        // decidir — si no, un icono decorativo se marcaría como infractor.
+        const lines = source.split("\n");
+        const pattern = new RegExp(`text-white/${alpha}\\b`);
+
+        for (let i = 0; i < lines.length; i++) {
+          if (!pattern.test(lines[i])) continue;
+
+          let start = i;
+          while (start > 0 && !/<[A-Za-z]/.test(lines[start])) start--;
+          let end = i;
+          while (end < lines.length - 1 && !/\/?>\s*$/.test(lines[end])) end++;
+
+          if (lines.slice(start, end + 1).join(" ").includes("aria-hidden")) continue;
+          offenders.push(`${file}:${i + 1}: text-white/${alpha}`);
         }
       }
     }

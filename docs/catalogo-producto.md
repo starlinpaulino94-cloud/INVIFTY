@@ -77,6 +77,36 @@ todavía no se publican reseñas de clientes.
 **Para publicar testimonios reales en el futuro** hacen falta: el texto, el nombre tal como la
 persona quiera aparecer, el tipo de evento y **permiso escrito de publicación**.
 
+### 3.3.1 Espacio de reseñas (2026-08-05)
+
+Ya existe el mecanismo completo para recogerlas y publicarlas.
+
+| Pieza | Dónde |
+|---|---|
+| Catálogo de reseñas publicadas | [`src/data/reviewsData.ts`](../src/data/reviewsData.ts) |
+| Validación y mensaje de WhatsApp | [`src/services/reviews/`](../src/services/reviews/) |
+| Sección y formulario | [`ReviewsSection.tsx`](../src/components/ReviewsSection.tsx) |
+
+**Cómo funciona.** El cliente escribe su reseña en la web, marca la casilla de autorización y
+pulsa enviar: se abre WhatsApp con el texto ya redactado, **incluida la frase de autorización**,
+que queda así registrada en la conversación. No se guarda nada en la web —no hay backend— y la
+interfaz lo dice: *«Tu reseña aún no está publicada»*.
+
+**Cómo publicar una que te llegue:**
+
+1. Comprueba en la conversación que la autorización está.
+2. Añade la reseña a `CLIENT_REVIEWS` en `reviewsData.ts` (texto en los dos idiomas).
+3. `npm test && npm run build`.
+
+Al añadir la primera, la sección deja sola de mostrar el aviso de «todavía no hay reseñas»,
+calcula la media y **emite el marcado `AggregateRating` para Google**. Ese marcado no existe
+mientras el catálogo esté vacío, a propósito: `AggregateRating` sobre opiniones inventadas es
+justo lo que Google penaliza.
+
+> Una prueba automática exige que `CLIENT_REVIEWS` esté vacío mientras no haya reseñas reales.
+> **Al añadir la primera hay que actualizar esa prueba** — la barrera es deliberada: obliga a
+> pasar por una revisión consciente antes de publicar una opinión atribuida a una persona.
+
 ---
 
 ### 3.4 Dominio propio retirado de la oferta

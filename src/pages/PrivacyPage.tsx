@@ -1,5 +1,6 @@
 import LegalLayout from "./LegalLayout";
 import { useLanguage } from "../context/LanguageContext";
+import { CONFIG } from "../config";
 
 interface PageProps {
   onBackToHome: () => void;
@@ -13,8 +14,10 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
     <LegalLayout
       titleEs="Política de Privacidad"
       titleEn="Privacy Policy"
-      updatedEs="Última actualización: Julio 2026"
-      updatedEn="Last updated: July 2026"
+      // Subir esta fecha cada vez que cambie el texto: es lo que declara ante
+      // el visitante desde cuándo rige lo que está leyendo.
+      updatedEs="Última actualización: Agosto 2026"
+      updatedEn="Last updated: August 2026"
       onBackToHome={onBackToHome}
     >
       {isEs ? (
@@ -23,8 +26,8 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
             <h2>1. Quiénes somos</h2>
             <p>
               Invifty es un estudio de diseño de invitaciones digitales para bodas, 15 años,
-              cumpleaños y eventos corporativos. Puedes contactarnos en hola@invifty.com
-              o por WhatsApp al +1 (809) 269-3214.
+              cumpleaños y eventos corporativos. Puedes contactarnos en {CONFIG.supportEmail} o por WhatsApp al{" "}
+              {CONFIG.displayPhone}.
             </p>
           </section>
 
@@ -81,7 +84,7 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
             <p>
               Las invitaciones publicadas permanecen activas durante el período de validez del plan
               contratado. Puedes solicitar la eliminación anticipada de tu invitación, de tus fotos o
-              de cualquier dato que nos hayas compartido escribiéndonos a hola@invifty.com.
+              de cualquier dato que nos hayas compartido escribiéndonos a {CONFIG.supportEmail}.
             </p>
           </section>
 
@@ -99,8 +102,8 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
             <h2>1. Who we are</h2>
             <p>
               Invifty is a digital invitation design studio for weddings, quinceañeras, birthdays and
-              corporate events. You can reach us at hola@invifty.com or on WhatsApp at
-              +1 (809) 269-3214.
+              corporate events. You can reach us at {CONFIG.supportEmail} or on WhatsApp at{" "}
+              {CONFIG.displayPhone}.
             </p>
           </section>
 
@@ -154,7 +157,7 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
             <p>
               Published invitations remain active for the validity period of the plan you purchased.
               You can request early removal of your invitation, your photos, or any data you shared
-              with us by writing to hola@invifty.com.
+              with us by writing to {CONFIG.supportEmail}.
             </p>
           </section>
 
