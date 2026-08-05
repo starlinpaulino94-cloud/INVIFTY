@@ -1,456 +1,655 @@
+import { useState, FormEvent } from "react";
+import {
+  ArrowRight,
+  Baby,
+  Calendar,
+  Check,
+  Copy,
+  Gift,
+  Heart,
+  MapPin,
+  Music,
+  Navigation,
+  Quote,
+  Send,
+  Sparkles,
+  Utensils,
+} from "lucide-react";
+import DemoMusicToggle from "../components/common/DemoMusicToggle";
 import DemoRsvpNotice from "../components/common/DemoRsvpNotice";
-import { parseAttendance } from "../utils/rsvp";
-import { useState, useEffect, FormEvent } from "react";
-import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/whatsapp";
-import { RsvpFormData } from "../types";
-import { Sparkles, MapPin, Gift, Volume2, VolumeX, ArrowLeft, Send, ExternalLink, Copy, Check, Navigation, Globe, Baby } from "lucide-react";
+import Reveal from "../components/common/Reveal";
+import {
+  DemoCountdown,
+  DemoDivider,
+  DemoGallery,
+  DemoPalette,
+  DemoSectionTitle,
+  DemoSubNav,
+  DemoTopBar,
+} from "../components/demo/DemoKit";
 import { useLanguage } from "../context/LanguageContext";
+import { useSectionReveal } from "../hooks/useSectionReveal";
+import { RsvpFormData } from "../types";
+import { parseAttendance } from "../utils/rsvp";
+import { createRsvpWhatsAppUrl } from "../utils/whatsapp";
 
 interface BabyShowerDemoProps {
   onBackToHome: () => void;
 }
 
-export default function BabyShowerDemo({ onBackToHome }: BabyShowerDemoProps) {
-  const { language, setLanguage, t } = useLanguage();
+/* Terracota suave: nude, cacao y arena. */
+const COCOA = "#3D302F";
+const CREAM = "#FDFAF6";
+const CREAM_SOFT = "#F5EDE4";
+const TERRACOTTA = "#C88A72";
+const TERRACOTTA_LIGHT = "#E8C5B0";
 
-  // Target date: October 10, 2026 16:00:00 AST
+const PALETTE: DemoPalette = { accent: TERRACOTTA, onAccent: "#FFFFFF", bar: COCOA };
+
+const HERO =
+  "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&q=80&w=1600";
+
+const GALLERY = [
+  "https://images.unsplash.com/photo-1560582861-45078880e48e?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1522547902298-51566e4fb383?auto=format&fit=crop&q=80&w=900",
+  "https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&q=80&w=900",
+];
+
+export default function BabyShowerDemo({ onBackToHome }: BabyShowerDemoProps) {
+  const { language, setLanguage } = useLanguage();
+  const isEs = language === "es";
+  const lx = (es: string, en: string) => (isEs ? es : en);
+  useSectionReveal();
+
   const targetDate = new Date("2026-10-10T16:00:00").getTime();
 
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
-  const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
+  const [copiedGift, setCopiedGift] = useState(false);
+  const [predictions, setPredictions] = useState({ weight: "", date: "", name: "" });
+  const [predictionSent, setPredictionSent] = useState(false);
 
-  // Wishes Wall state
-  const [wishes, setWishes] = useState<Array<{ id: string; name: string; text: string; date: string }>>([
-    { id: "1", name: "Abuela Beatriz", text: "Esperando con los brazos abiertos a nuestro amado Mateo. ¡Dios te bendiga siempre!", date: "Hace 1 hora" },
-    { id: "2", name: "Tía Laura & Tío Daniel", text: "¡Súper emocionado por la llegada del nuevo integrante! Ya tenemos listos los regalos.", date: "Hace 3 horas" }
+  const [wishes, setWishes] = useState([
+    { id: "1", name: "Abuela Beatriz", text: "Esperando con los brazos abiertos a nuestro amado Mateo. ¡Dios te bendiga siempre!", date: lx("Hace 1 hora", "1 hour ago") },
+    { id: "2", name: "Tía Claudia", text: "Ya tengo listo el cuento que le leeré cada noche. No puedo esperar a conocerte.", date: lx("Ayer", "Yesterday") },
+    { id: "3", name: "Los vecinos Fernández", text: "Que llegue con salud y llene esa casa de risas. ¡Enhorabuena!", date: lx("Hace 2 días", "2 days ago") },
   ]);
-  const [newWishName, setNewWishName] = useState("");
-  const [newWishText, setNewWishText] = useState("");
+  const [wishName, setWishName] = useState("");
+  const [wishText, setWishText] = useState("");
   const [wishPublished, setWishPublished] = useState(false);
 
-  // RSVP Form State
   const [rsvpData, setRsvpData] = useState<RsvpFormData>({
     fullName: "",
     attendance: "Confirmado",
     guestCount: 1,
-    menuPreference: "Merienda & Dulces",
+    menuPreference: lx("Merienda dulce y salada", "Sweet and savoury tea"),
     dietaryNotes: "",
-    songRequest: ""
+    songRequest: "",
   });
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
 
-  useEffect(() => {
-    const updateTimer = () => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000)
-        });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      }
-    };
-
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-    return () => clearInterval(interval);
-  }, [targetDate]);
-
   const toggleMusic = () => {
     if (isPlayingMusic) {
-      if (audioCtx) {
-        audioCtx.close();
-        setAudioCtx(null);
-      }
+      audioCtx?.close();
+      setAudioCtx(null);
       setIsPlayingMusic(false);
-    } else {
-      try {
-        const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(329.63, ctx.currentTime); // E4 lullaby tone
-        gain.gain.setValueAtTime(0.04, ctx.currentTime);
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-
-        setAudioCtx(ctx);
-        setIsPlayingMusic(true);
-      } catch (err) {
-        console.error("Audio error", err);
-      }
+      return;
     }
-  };
-
-  const handleCopy = (text: string, id: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedAccount(id);
-    setTimeout(() => setCopiedAccount(null), 2500);
-  };
-
-  const handleAddWish = (e: FormEvent) => {
-    e.preventDefault();
-    if (!newWishName.trim() || !newWishText.trim()) return;
-
-    setWishes([
-      {
-        id: Date.now().toString(),
-        name: newWishName.trim(),
-        text: newWishText.trim(),
-        date: "Justo ahora"
-      },
-      ...wishes
-    ]);
-
-    setNewWishName("");
-    setNewWishText("");
-    setWishPublished(true);
-    setTimeout(() => setWishPublished(false), 4000);
+    try {
+      const ctx = new (window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(392, ctx.currentTime);
+      gain.gain.setValueAtTime(0.012, ctx.currentTime);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      setAudioCtx(ctx);
+      setIsPlayingMusic(true);
+    } catch (err) {
+      console.error("Audio error", err);
+    }
   };
 
   const handleRsvpSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!rsvpData.fullName.trim()) return;
-
-    const whatsappUrl = createRsvpWhatsAppUrl("Baby Shower Mateo", rsvpData);
+    window.open(createRsvpWhatsAppUrl("Baby Shower Mateo", rsvpData), "_blank", "noopener,noreferrer");
     setRsvpSubmitted(true);
-    window.open(whatsappUrl, "_blank");
   };
 
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+  const handleAddWish = (e: FormEvent) => {
+    e.preventDefault();
+    if (!wishName.trim() || !wishText.trim()) return;
+    setWishes([{ id: String(Date.now()), name: wishName.trim(), text: wishText.trim(), date: lx("Justo ahora", "Just now") }, ...wishes]);
+    setWishName("");
+    setWishText("");
+    setWishPublished(true);
+    setTimeout(() => setWishPublished(false), 4000);
   };
+
+  const handlePrediction = (e: FormEvent) => {
+    e.preventDefault();
+    if (!predictions.weight.trim() && !predictions.date.trim()) return;
+    setPredictionSent(true);
+    setTimeout(() => setPredictionSent(false), 5000);
+  };
+
+  const copyGift = () => {
+    navigator.clipboard?.writeText("Banco Popular · 655-73218-1 · Familia Guzmán Peña");
+    setCopiedGift(true);
+    setTimeout(() => setCopiedGift(false), 2500);
+  };
+
+  const scrollToSection = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  const addToCalendar = () => {
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "BEGIN:VEVENT",
+      "DTSTART:20261010T200000Z",
+      "DTEND:20261010T230000Z",
+      "SUMMARY:Baby Shower de Mateo",
+      "LOCATION:Terraza Las Verandas, Casa de Campo",
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\n");
+    const blob = new Blob([ics], { type: "text/calendar" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "baby-shower-mateo.ics";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
+
+  const programme = [
+    { time: "4:00 PM", icon: Heart, es: "Recepción y merienda", en: "Reception & tea", d_es: "Bienvenida en la terraza, entre flores y globos.", d_en: "Welcome on the terrace, among flowers and balloons." },
+    { time: "4:45 PM", icon: Sparkles, es: "Juegos para invitados", en: "Guest games", d_es: "«Adivina el biberón» y el clásico de los pañales.", d_en: "'Guess the bottle' and the classic diaper game." },
+    { time: "5:30 PM", icon: Gift, es: "Apertura de regalos", en: "Gift opening", d_es: "Con la mamá en el sillón de honor.", d_en: "With mum in the seat of honour." },
+    { time: "6:15 PM", icon: Utensils, es: "Corte del pastel", en: "Cake cutting", d_es: "Pastel de dos pisos en tonos nude.", d_en: "Two-tier cake in nude tones." },
+    { time: "7:00 PM", icon: Music, es: "Brindis de despedida", en: "Farewell toast", d_es: "Con mocktails para todos.", d_en: "With mocktails for everyone." },
+  ];
+
+  const field = "w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus-visible:ring-2 transition-colors min-h-[48px]";
+  const fieldStyle = { background: CREAM, border: `1px solid ${TERRACOTTA}55`, color: COCOA };
+
+  const navItems = [
+    { id: "llegada", label: lx("Bienvenida", "Welcome") },
+    { id: "programa", label: lx("Programa", "Programme") },
+    { id: "detalles", label: lx("Ubicación", "Venue") },
+    { id: "prediccion", label: lx("Adivina", "Guess") },
+    { id: "galeria", label: lx("Galería", "Gallery") },
+    { id: "regalos", label: lx("Mesa de Regalos", "Registry") },
+    { id: "muro", label: lx("Muro de Amor", "Love Wall") },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#FAF6F0] text-[#4A3E3D] font-sans selection:bg-[#E8C5B0]/30 relative">
-      {/* Top Fixed Demo Bar */}
-      <div className="bg-[#3D302F] text-white py-2 px-4 flex items-center justify-between text-xs font-medium sticky top-0 z-50 shadow-md">
-        <button
-          onClick={onBackToHome}
-          className="flex items-center gap-1.5 text-gray-300 hover:text-[#E8C5B0] transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" /> {t("boda.back")}
-        </button>
-
-        {/* Language selector */}
-        <div className="flex items-center gap-1 bg-white/10 border border-[#E8C5B0]/40 rounded-full p-1 text-[10px] font-semibold">
-          <Globe className="w-3.5 h-3.5 text-[#E8C5B0] ml-1 mr-0.5" />
-          <button
-            onClick={() => setLanguage("es")}
-            className={`px-2 py-0.5 rounded-full transition-all ${
-              language === "es" ? "bg-[#E8C5B0] text-[#3D302F] font-bold" : "text-gray-300 hover:text-white"
-            }`}
-          >
-            ES
-          </button>
-          <span className="text-gray-500 text-[9px]">|</span>
-          <button
-            onClick={() => setLanguage("en")}
-            className={`px-2 py-0.5 rounded-full transition-all ${
-              language === "en" ? "bg-[#E8C5B0] text-[#3D302F] font-bold" : "text-gray-300 hover:text-white"
-            }`}
-          >
-            EN
-          </button>
-        </div>
-
-        <a
-          href={createDemoWatermarkWhatsAppUrl("Baby Shower Mateo")}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden sm:flex bg-[#E8C5B0] text-[#3D302F] font-semibold px-4 py-1.5 text-[10px] uppercase tracking-widest items-center gap-1.5 hover:bg-[#F2D06B] transition-colors rounded-full"
-        >
-          {t("boda.watermark")}
-        </a>
-      </div>
-
-      {/* Subnav */}
-      <div className="bg-white/90 backdrop-blur-md border-b border-[#E8C5B0] sticky top-10 z-40 py-2.5 px-4 overflow-x-auto shadow-sm">
-        <div className="max-w-4xl mx-auto flex items-center justify-center gap-4 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap text-[#5C4D4A]">
-          <button onClick={() => scrollToSection("llegada")} className="hover:text-[#C88A72] transition-colors">
-            {language === "es" ? "Bienvenida" : "Welcome"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("detalles")} className="hover:text-[#C88A72] transition-colors">
-            {language === "es" ? "Detalles" : "Details"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("regalos")} className="hover:text-[#C88A72] transition-colors">
-            {language === "es" ? "Mesa de Regalos" : "Wishlist"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("muro")} className="hover:text-[#C88A72] transition-colors">
-            {language === "es" ? "Muro de Amor" : "Wishes"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("rsvp")} className="bg-[#C88A72] text-white px-3.5 py-1 rounded-full text-[10px] font-bold shadow-sm">
-            RSVP
-          </button>
-        </div>
-      </div>
-
-      {/* Music Toggle Floating Widget */}
-      <div className="fixed bottom-6 left-6 z-40">
-        <button
-          onClick={toggleMusic}
+    <div className="min-h-screen font-sans relative" style={{ background: CREAM, color: COCOA }}>
+      <div className="fixed bottom-6 left-6 z-40" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+        <DemoMusicToggle
+          isPlaying={isPlayingMusic}
+          onToggle={toggleMusic}
+          isEs={isEs}
+          labelOn={lx("Nana sonando", "Lullaby playing")}
+          labelOff={lx("Reproducir nana", "Play lullaby")}
           className={`p-3.5 rounded-full shadow-2xl flex items-center gap-2 text-xs font-semibold tracking-wider uppercase transition-all duration-300 border ${
-            isPlayingMusic 
-              ? "bg-[#C88A72] text-white border-[#C88A72] scale-105 animate-pulse" 
-              : "bg-white text-[#5C4D4A] border-[#E8C5B0] hover:bg-[#FAF6F0]"
+            isPlayingMusic ? "text-white" : "hover:opacity-80"
           }`}
-        >
-          {isPlayingMusic ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-          <span className="hidden md:inline">{isPlayingMusic ? (language === "es" ? "Música Suave" : "Soft Music") : (language === "es" ? "Reproducir Nana" : "Play Music")}</span>
-        </button>
+        />
       </div>
 
-      {/* HERO SECTION */}
-      <section id="llegada" className="pt-16 pb-20 px-4 text-center max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-[#E8C5B0]/30 text-[#8C5A48] px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase mb-6 border border-[#E8C5B0]/50">
-          <Baby className="w-4 h-4" />
-          {language === "es" ? "Baby Shower Especial" : "Special Baby Shower"}
+      <DemoTopBar onBackToHome={onBackToHome} sampleName="Baby Shower Mateo" isEs={isEs} setLanguage={setLanguage} palette={PALETTE} />
+      <DemoSubNav
+        items={navItems}
+        ctaId="rsvp"
+        ctaLabel="RSVP"
+        onNavigate={scrollToSection}
+        palette={PALETTE}
+        background={`${CREAM}F2`}
+        ariaLabel={lx("Secciones de la invitación", "Invitation sections")}
+      />
+
+      {/* ---------------------------------------------------------------- HERO */}
+      <header id="llegada" className="relative min-h-[92vh] flex items-center justify-center text-center px-5 overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={HERO}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-center scale-105"
+            style={{ opacity: 0.3 }}
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${CREAM}E6, ${CREAM}D9 45%, ${CREAM})` }} />
         </div>
 
-        <h1 className="font-serif text-4xl sm:text-6xl font-light text-[#3D302F] mb-4 leading-tight">
-          {language === "es" ? "Bienvenido, Mateo" : "Welcome, Baby Mateo"}
-        </h1>
-
-        <p className="text-base sm:text-lg text-[#6E5A56] font-light max-w-xl mx-auto mb-8 leading-relaxed">
-          {language === "es" 
-            ? "Un pequeño gran milagro está en camino. Queremos celebrar la dulzura de su llegada junto a nuestros seres más queridos."
-            : "A sweet little miracle is on his way! We invite you to celebrate Mateo's upcoming arrival with us."}
-        </p>
-
-        {/* Hero Card */}
-        <div className="bg-white rounded-3xl p-8 border border-[#E8C5B0] shadow-xl max-w-lg mx-auto">
-          <div className="text-sm font-semibold uppercase tracking-widest text-[#8C5A48] mb-2">
-            {language === "es" ? "Sábado, 10 de Octubre de 2026" : "Saturday, October 10, 2026"}
-          </div>
-          <div className="text-2xl font-serif text-[#3D302F] mb-6">4:00 PM — Terraza Privada, Casa de Campo</div>
-
-          {/* Countdown */}
-          <div className="grid grid-cols-4 gap-2 pt-6 border-t border-[#E8C5B0]/50 text-center">
-            <div className="p-2 bg-[#FAF6F0] rounded-2xl">
-              <span className="text-2xl font-bold text-[#3D302F] block">{timeLeft.days}</span>
-              <span className="text-[10px] uppercase tracking-wider text-[#8C5A48]">{t("boda.days")}</span>
+        <div className="relative z-10 max-w-3xl py-20">
+          <Reveal from="none">
+            <div className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center" style={{ borderColor: `${TERRACOTTA}80`, background: "#FFFFFFAA" }}>
+              <Baby className="w-8 h-8" style={{ color: TERRACOTTA }} aria-hidden="true" />
             </div>
-            <div className="p-2 bg-[#FAF6F0] rounded-2xl">
-              <span className="text-2xl font-bold text-[#3D302F] block">{timeLeft.hours}</span>
-              <span className="text-[10px] uppercase tracking-wider text-[#8C5A48]">{t("boda.hours")}</span>
-            </div>
-            <div className="p-2 bg-[#FAF6F0] rounded-2xl">
-              <span className="text-2xl font-bold text-[#3D302F] block">{timeLeft.minutes}</span>
-              <span className="text-[10px] uppercase tracking-wider text-[#8C5A48]">{t("boda.minutes")}</span>
-            </div>
-            <div className="p-2 bg-[#FAF6F0] rounded-2xl">
-              <span className="text-2xl font-bold text-[#3D302F] block">{timeLeft.seconds}</span>
-              <span className="text-[10px] uppercase tracking-wider text-[#8C5A48]">{t("boda.seconds")}</span>
-            </div>
-          </div>
-        </div>
-      </section>
+          </Reveal>
 
-      {/* LOCATION & DETAILS */}
-      <section id="detalles" className="py-16 px-4 max-w-4xl mx-auto">
-        <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#E8C5B0] shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div>
-            <div className="flex items-center gap-2 text-[#C88A72] font-semibold text-xs uppercase tracking-widest mb-2">
-              <MapPin className="w-4 h-4" /> {language === "es" ? "Lugar de la Celebración" : "Event Venue"}
-            </div>
-            <h3 className="font-serif text-2xl text-[#3D302F] mb-2">Terraza Las Verandas</h3>
-            <p className="text-sm text-[#6E5A56] mb-6">
-              Casa de Campo Resort & Villas, La Romana.
-            </p>
-
-            <div className="flex flex-wrap gap-3">
-              <a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noreferrer"
-                className="px-4 py-2.5 bg-[#C88A72] text-white text-xs font-semibold rounded-xl flex items-center gap-2 hover:bg-[#B37862] transition-colors"
-              >
-                <Navigation className="w-4 h-4" /> Google Maps
-              </a>
-              <a
-                href="https://waze.com"
-                target="_blank"
-                rel="noreferrer"
-                className="px-4 py-2.5 bg-[#3D302F] text-white text-xs font-semibold rounded-xl flex items-center gap-2 hover:bg-black transition-colors"
-              >
-                <ExternalLink className="w-4 h-4" /> Waze GPS
-              </a>
-            </div>
-          </div>
-
-          <div className="bg-[#FAF6F0] p-6 rounded-2xl border border-[#E8C5B0]/60 space-y-4 text-sm text-[#5C4D4A]">
-            <div className="flex items-start gap-3">
-              <Sparkles className="w-5 h-5 text-[#C88A72] shrink-0 mt-0.5" />
-              <div>
-                <strong className="block text-[#3D302F] font-semibold">{language === "es" ? "Código de Vestimenta" : "Dress Code"}</strong>
-                {language === "es" ? "Casual Elegante / Tonos Pasteles & Crema" : "Smart Casual / Pastels & Neutral Tones"}
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Gift className="w-5 h-5 text-[#C88A72] shrink-0 mt-0.5" />
-              <div>
-                <strong className="block text-[#3D302F] font-semibold">{language === "es" ? "Rifa de Pañales" : "Diaper Raffle"}</strong>
-                {language === "es" ? "Trae un paquete de pañales (Talla 1, 2 o 3) y participa por una sorpresa." : "Bring a pack of diapers (Size 1, 2 or 3) to enter a fun raffle prize!"}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* WISHLIST & REGISTRY */}
-      <section id="regalos" className="py-16 px-4 max-w-4xl mx-auto">
-        <div className="text-center mb-10">
-          <h2 className="font-serif text-3xl text-[#3D302F] mb-2">{language === "es" ? "Mesa de Regalos & Obsequios" : "Gift Registry & Baby Wishlist"}</h2>
-          <p className="text-sm text-[#6E5A56] max-w-md mx-auto">
-            {language === "es" ? "Tu presencia es nuestro mayor regalo. Si deseas obsequiar algo a Mateo, te dejamos algunas opciones sugeridas:" : "Your presence is our best gift. If you wish to bless Mateo, here are our registry options:"}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-[#E8C5B0] shadow-sm">
-            <h4 className="font-semibold text-[#3D302F] mb-1">{language === "es" ? "Wishlist de Amazon / BB&B" : "Amazon / Store Wishlist"}</h4>
-            <p className="text-xs text-[#6E5A56] mb-4">{language === "es" ? "Selección de artículos preparados especialmente para el cuarto de Mateo." : "Selected items prepared for Mateo's nursery."}</p>
-            <a
-              href="https://amazon.com"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-bold text-[#C88A72] hover:underline"
+          <Reveal delay={100}>
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-semibold tracking-[0.3em] uppercase mb-7 border"
+              style={{ color: TERRACOTTA, borderColor: `${TERRACOTTA}66`, background: "#FFFFFFCC" }}
             >
-              {language === "es" ? "Ver Lista en Amazon Baby" : "View Amazon Baby Registry"} <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </div>
+              {lx("Baby Shower especial", "Special Baby Shower")}
+            </div>
+          </Reveal>
 
-          <div className="bg-white p-6 rounded-2xl border border-[#E8C5B0] shadow-sm">
-            <h4 className="font-semibold text-[#3D302F] mb-1">{language === "es" ? "Aporte Bancario Directo" : "Direct Bank Transfer"}</h4>
-            <p className="text-xs text-[#6E5A56] mb-3">Banco Popular Dominicano · Cta Ahorros</p>
-            <div className="flex items-center justify-between bg-[#FAF6F0] p-3 rounded-xl border border-[#E8C5B0]/50 text-xs font-mono">
-              <span>960-128475-2</span>
+          <Reveal delay={180}>
+            <h1 className="font-serif text-5xl sm:text-7xl font-light mb-4 leading-[1.05]" style={{ color: COCOA }}>
+              {lx("Bienvenido,", "Welcome,")}
+              <span className="block italic" style={{ color: TERRACOTTA }}>
+                Mateo
+              </span>
+            </h1>
+          </Reveal>
+
+          <Reveal delay={260}>
+            <DemoDivider accent={TERRACOTTA} />
+            <p className="text-[11px] sm:text-xs uppercase tracking-[0.35em] font-semibold my-6" style={{ color: TERRACOTTA }}>
+              {lx("Sábado 10 de Octubre, 2026 · 4:00 PM", "Saturday, October 10, 2026 · 4:00 PM")}
+              <span className="block mt-2 opacity-60 tracking-[0.2em]">Terraza Privada · Casa de Campo</span>
+            </p>
+          </Reveal>
+
+          <Reveal delay={340}>
+            <p className="font-serif text-lg sm:text-2xl font-light italic max-w-xl mx-auto mb-10 leading-relaxed opacity-80">
+              {lx(
+                "«Un pequeño gran milagro está en camino.»",
+                "«A sweet little miracle is on his way.»"
+              )}
+            </p>
+          </Reveal>
+
+          <Reveal delay={420}>
+            <DemoCountdown
+              target={targetDate}
+              accent={TERRACOTTA}
+              cell="#FFFFFFCC"
+              labels={{ days: lx("Días", "Days"), hours: lx("Horas", "Hours"), minutes: lx("Min", "Min"), seconds: lx("Seg", "Sec") }}
+            />
+          </Reveal>
+
+          <Reveal delay={500}>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
               <button
-                onClick={() => handleCopy("960-128475-2", "bank")}
-                className="text-[#C88A72] hover:text-[#3D302F] flex items-center gap-1 font-sans font-semibold"
+                onClick={() => scrollToSection("rsvp")}
+                className="px-8 py-4 text-white font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl shadow-lg transition-transform active:scale-95 min-h-[48px] inline-flex items-center justify-center gap-2"
+                style={{ background: TERRACOTTA }}
               >
-                {copiedAccount === "bank" ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
-                {copiedAccount === "bank" ? (language === "es" ? "¡Copiado!" : "Copied!") : (language === "es" ? "Copiar" : "Copy")}
+                {lx("Confirmar asistencia", "Confirm attendance")}
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </button>
+              <button
+                onClick={addToCalendar}
+                className="px-8 py-4 border font-semibold text-[11px] uppercase tracking-[0.2em] rounded-xl transition-colors min-h-[48px] inline-flex items-center justify-center gap-2 hover:bg-white"
+                style={{ borderColor: TERRACOTTA, color: TERRACOTTA }}
+              >
+                <Calendar className="w-4 h-4" aria-hidden="true" />
+                {lx("Guardar la fecha", "Save the date")}
               </button>
             </div>
+          </Reveal>
+        </div>
+      </header>
+
+      {/* ----------------------------------------------------------- PROGRAMA */}
+      <section id="programa" className="py-24 px-5" style={{ background: CREAM_SOFT }}>
+        <div className="max-w-3xl mx-auto">
+          <Reveal>
+            <DemoSectionTitle eyebrow={lx("La tarde", "The afternoon")} title={lx("Programa de la merienda", "Afternoon programme")} accent={TERRACOTTA} titleColor={COCOA} />
+          </Reveal>
+
+          <ol className="space-y-4">
+            {programme.map((item, idx) => (
+              <li key={item.time}>
+                <Reveal delay={idx * 70}>
+                  <div className="flex items-start gap-5 p-5 sm:p-6 rounded-2xl border bg-white" style={{ borderColor: `${TERRACOTTA}33` }}>
+                    <div className="w-12 h-12 shrink-0 rounded-full border flex items-center justify-center" style={{ borderColor: `${TERRACOTTA}66`, background: `${TERRACOTTA}0F` }}>
+                      <item.icon className="w-5 h-5" style={{ color: TERRACOTTA }} aria-hidden="true" />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-[10px] uppercase tracking-[0.25em] font-bold block mb-1" style={{ color: TERRACOTTA }}>
+                        {item.time}
+                      </span>
+                      <h3 className="font-serif text-xl mb-1" style={{ color: COCOA }}>
+                        {lx(item.es, item.en)}
+                      </h3>
+                      <p className="text-xs opacity-65 leading-relaxed">{lx(item.d_es, item.d_en)}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ DETALLES */}
+      <section id="detalles" className="py-24 px-5">
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <DemoSectionTitle eyebrow={lx("Dónde", "Where")} title={lx("Terraza Las Verandas", "Las Verandas Terrace")} accent={TERRACOTTA} titleColor={COCOA} />
+          </Reveal>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Reveal from="left">
+              <div className="rounded-3xl overflow-hidden border h-full min-h-[320px]" style={{ borderColor: `${TERRACOTTA}33` }}>
+                <iframe
+                  title={lx("Mapa de Casa de Campo", "Map of Casa de Campo")}
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3776.5!2d-68.91!3d18.42!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sCasa%20de%20Campo%20La%20Romana!5e0!3m2!1ses!2sdo!4v1700000000000"
+                  className="w-full h-full min-h-[320px] border-0"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
+            </Reveal>
+
+            <Reveal from="right" delay={100}>
+              <div className="space-y-5">
+                <div className="p-7 rounded-3xl border bg-white" style={{ borderColor: `${TERRACOTTA}33` }}>
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] font-semibold mb-3" style={{ color: TERRACOTTA }}>
+                    <MapPin className="w-4 h-4" aria-hidden="true" /> {lx("Lugar", "Venue")}
+                  </div>
+                  <h3 className="font-serif text-2xl mb-1.5" style={{ color: COCOA }}>
+                    Terraza Las Verandas
+                  </h3>
+                  <p className="text-sm opacity-65 mb-6">{lx("Casa de Campo · La Romana", "Casa de Campo · La Romana")}</p>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=Casa+de+Campo+La+Romana"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 px-5 py-3.5 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 min-h-[48px]"
+                      style={{ background: TERRACOTTA }}
+                    >
+                      <Navigation className="w-4 h-4" aria-hidden="true" /> Google Maps
+                    </a>
+                    <a
+                      href="https://waze.com/ul?q=Casa%20de%20Campo%20La%20Romana"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 px-5 py-3.5 border text-[11px] font-bold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 min-h-[48px] hover:bg-[#F5EDE4] transition-colors"
+                      style={{ borderColor: TERRACOTTA, color: TERRACOTTA }}
+                    >
+                      <Navigation className="w-4 h-4" aria-hidden="true" /> Waze
+                    </a>
+                  </div>
+                </div>
+
+                <div className="p-7 rounded-3xl border bg-white" style={{ borderColor: `${TERRACOTTA}33` }}>
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] font-semibold mb-3" style={{ color: TERRACOTTA }}>
+                    <Sparkles className="w-4 h-4" aria-hidden="true" /> {lx("Código de vestimenta", "Dress code")}
+                  </div>
+                  <h3 className="font-serif text-lg mb-3" style={{ color: COCOA }}>
+                    {lx("Tonos tierra y nude", "Earth and nude tones")}
+                  </h3>
+                  <div className="flex items-center gap-3">
+                    {[
+                      { n: lx("Nude", "Nude"), c: TERRACOTTA_LIGHT },
+                      { n: lx("Terracota", "Terracotta"), c: TERRACOTTA },
+                      { n: lx("Cacao", "Cocoa"), c: COCOA },
+                      { n: lx("Arena", "Sand"), c: "#E5D7C6" },
+                    ].map((c) => (
+                      <div key={c.n} className="text-center">
+                        <span className="block w-11 h-11 rounded-full border mb-1.5" style={{ background: c.c, borderColor: `${TERRACOTTA}55` }} aria-hidden="true" />
+                        <span className="text-[9px] opacity-60 uppercase tracking-wider">{c.n}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* WISHES WALL */}
-      <section id="muro" className="py-16 px-4 max-w-3xl mx-auto">
-        <div className="bg-white p-8 rounded-3xl border border-[#E8C5B0] shadow-lg">
-          <h3 className="font-serif text-2xl text-[#3D302F] mb-2 text-center">{language === "es" ? "Muro de Buenos Deseos" : "Wishes Wall for Mateo"}</h3>
-          <p className="text-xs text-center text-[#6E5A56] mb-6">{language === "es" ? "Escribe unas bendiciones para los futuros padres y el bebé." : "Leave your sweet blessings for baby Mateo and parents."}</p>
-
-          <form onSubmit={handleAddWish} className="space-y-4 mb-8">
-            <input
-              type="text"
-              placeholder={language === "es" ? "Tu Nombre o Familia" : "Your Name / Family"}
-              value={newWishName}
-              onChange={(e) => setNewWishName(e.target.value)}
-              className="w-full px-4 py-3 bg-[#FAF6F0] rounded-xl border border-[#E8C5B0] text-xs focus:outline-none focus:border-[#C88A72]"
-              required
+      {/* --------------------------------------------------------- PREDICCIÓN */}
+      <section id="prediccion" className="py-24 px-5" style={{ background: CREAM_SOFT }}>
+        <div className="max-w-2xl mx-auto">
+          <Reveal>
+            <DemoSectionTitle
+              eyebrow={lx("Juego", "Game")}
+              title={lx("Adivina y gana", "Guess and win")}
+              accent={TERRACOTTA}
+              titleColor={COCOA}
+              subtitle={lx(
+                "¿Cuánto pesará Mateo y qué día llegará? Quien más se acerque se lleva un detalle.",
+                "How much will Mateo weigh and what day will he arrive? Whoever gets closest wins a prize."
+              )}
             />
-            <textarea
-              placeholder={language === "es" ? "Escribe tu mensaje para Mateo..." : "Write your blessing for Mateo..."}
-              value={newWishText}
-              onChange={(e) => setNewWishText(e.target.value)}
-              rows={3}
-              className="w-full px-4 py-3 bg-[#FAF6F0] rounded-xl border border-[#E8C5B0] text-xs focus:outline-none focus:border-[#C88A72]"
-              required
-            ></textarea>
-            <button
-              type="submit"
-              className="w-full py-3 bg-[#C88A72] text-white font-semibold text-xs rounded-xl hover:bg-[#B37862] transition-colors flex items-center justify-center gap-2"
-            >
-              <Send className="w-4 h-4" /> {language === "es" ? "Publicar Bendición" : "Post Wish"}
-            </button>
-            {wishPublished && (
-              <p className="text-xs text-green-600 text-center font-medium">¡Mensaje publicado con éxito!</p>
-            )}
-          </form>
+          </Reveal>
 
-          <div className="space-y-4 max-h-72 overflow-y-auto pr-1">
-            {wishes.map((w) => (
-              <div key={w.id} className="bg-[#FAF6F0] p-4 rounded-2xl border border-[#E8C5B0]/50 text-xs">
-                <div className="flex justify-between items-center mb-1 font-semibold text-[#3D302F]">
-                  <span>{w.name}</span>
-                  <span className="text-[10px] text-gray-400 font-normal">{w.date}</span>
+          <Reveal delay={100}>
+            <form onSubmit={handlePrediction} className="p-7 rounded-3xl border bg-white space-y-5" style={{ borderColor: `${TERRACOTTA}33` }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="baby-peso" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                    {lx("Peso (libras)", "Weight (pounds)")}
+                  </label>
+                  <input id="baby-peso" type="text" value={predictions.weight} onChange={(e) => setPredictions({ ...predictions, weight: e.target.value })} placeholder="7.5" className={field} style={fieldStyle} />
                 </div>
-                <p className="text-[#5C4D4A] italic">"{w.text}"</p>
+                <div>
+                  <label htmlFor="baby-fecha" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                    {lx("Fecha de nacimiento", "Birth date")}
+                  </label>
+                  <input id="baby-fecha" type="date" value={predictions.date} onChange={(e) => setPredictions({ ...predictions, date: e.target.value })} className={field} style={fieldStyle} />
+                </div>
               </div>
+              <div>
+                <label htmlFor="baby-quien" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                  {lx("Tu nombre", "Your name")}
+                </label>
+                <input id="baby-quien" type="text" value={predictions.name} onChange={(e) => setPredictions({ ...predictions, name: e.target.value })} placeholder={lx("Ej. Tía Claudia", "E.g. Aunt Claudia")} className={field} style={fieldStyle} />
+              </div>
+              <button type="submit" className="w-full py-3.5 text-white font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl inline-flex items-center justify-center gap-2 min-h-[48px]" style={{ background: TERRACOTTA }}>
+                <Sparkles className="w-4 h-4" aria-hidden="true" /> {lx("Enviar mi predicción", "Send my guess")}
+              </button>
+              {predictionSent && (
+                <p role="status" aria-live="polite" className="text-xs text-center" style={{ color: TERRACOTTA }}>
+                  {lx(
+                    "¡Anotada! En una invitación real tu predicción quedaría guardada para el sorteo.",
+                    "Noted! In a real invitation your guess would be saved for the draw."
+                  )}
+                </p>
+              )}
+            </form>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ GALERÍA */}
+      <section id="galeria" className="py-24 px-5">
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <DemoSectionTitle eyebrow={lx("La espera", "The wait")} title={lx("Camino a conocerte", "On our way to meet you")} accent={TERRACOTTA} titleColor={COCOA} />
+          </Reveal>
+          <Reveal delay={80}>
+            <DemoGallery images={GALLERY} accent={TERRACOTTA} isEs={isEs} columnsClassName="grid-cols-1 sm:grid-cols-3" heightClassName="h-56" />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ REGALOS */}
+      <section id="regalos" className="py-24 px-5" style={{ background: CREAM_SOFT }}>
+        <div className="max-w-2xl mx-auto text-center">
+          <Reveal>
+            <DemoSectionTitle
+              eyebrow={lx("Para Mateo", "For Mateo")}
+              title={lx("Mesa de regalos", "Gift registry")}
+              accent={TERRACOTTA}
+              titleColor={COCOA}
+              subtitle={lx(
+                "Tu presencia es nuestro mayor regalo. Si deseas obsequiar algo, aquí tienes los datos.",
+                "Your presence is our best gift. If you'd like to give something, here are the details."
+              )}
+            />
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="p-8 rounded-3xl border bg-white" style={{ borderColor: `${TERRACOTTA}33` }}>
+              <Gift className="w-9 h-9 mx-auto mb-4" style={{ color: TERRACOTTA }} aria-hidden="true" />
+              <p className="text-sm opacity-70 mb-6">{lx("Artículos preparados para el cuarto de Mateo", "Items prepared for Mateo's nursery")}</p>
+              <button
+                onClick={copyGift}
+                className="px-7 py-3.5 border text-[11px] font-semibold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 min-h-[48px] transition-colors hover:bg-[#F5EDE4]"
+                style={{ borderColor: TERRACOTTA, color: copiedGift ? TERRACOTTA_LIGHT : TERRACOTTA }}
+              >
+                {copiedGift ? <Check className="w-4 h-4" aria-hidden="true" /> : <Copy className="w-4 h-4" aria-hidden="true" />}
+                {copiedGift ? lx("¡Copiado!", "Copied!") : lx("Copiar datos bancarios", "Copy bank details")}
+              </button>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------- MURO */}
+      <section id="muro" className="py-24 px-5">
+        <div className="max-w-3xl mx-auto">
+          <Reveal>
+            <DemoSectionTitle eyebrow={lx("Para Mateo", "For Mateo")} title={lx("Muro de amor", "Wall of love")} accent={TERRACOTTA} titleColor={COCOA} />
+          </Reveal>
+
+          <Reveal>
+            <form onSubmit={handleAddWish} className="p-6 sm:p-8 rounded-3xl border bg-white mb-8 space-y-4" style={{ borderColor: `${TERRACOTTA}33` }}>
+              <div>
+                <label htmlFor="baby-nombre" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                  {lx("Tu nombre", "Your name")}
+                </label>
+                <input id="baby-nombre" type="text" value={wishName} onChange={(e) => setWishName(e.target.value)} placeholder={lx("Ej. Abuela Beatriz", "E.g. Grandma Beatriz")} className={field} style={fieldStyle} />
+              </div>
+              <div>
+                <label htmlFor="baby-mensaje" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                  {lx("Tu mensaje", "Your message")}
+                </label>
+                <textarea id="baby-mensaje" rows={3} value={wishText} onChange={(e) => setWishText(e.target.value)} placeholder={lx("Escribe unas palabras para Mateo...", "Write a few words for Mateo...")} className={`${field} resize-none`} style={fieldStyle} />
+              </div>
+              <button type="submit" className="w-full py-3.5 text-white font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl inline-flex items-center justify-center gap-2 min-h-[48px]" style={{ background: TERRACOTTA }}>
+                <Send className="w-4 h-4" aria-hidden="true" /> {lx("Publicar mensaje", "Post message")}
+              </button>
+              {wishPublished && (
+                <p role="status" aria-live="polite" className="text-xs text-center" style={{ color: TERRACOTTA }}>
+                  {lx(
+                    "Tu mensaje aparece abajo. En una invitación real quedaría guardado para los papás.",
+                    "Your message appears below. In a real invitation it would be saved for the parents."
+                  )}
+                </p>
+              )}
+            </form>
+          </Reveal>
+
+          <div className="space-y-4">
+            {wishes.map((w, idx) => (
+              <Reveal key={w.id} delay={idx * 60}>
+                <article className="p-6 rounded-2xl border bg-white relative" style={{ borderColor: `${TERRACOTTA}26` }}>
+                  <Quote className="w-7 h-7 absolute top-5 right-5" style={{ color: `${TERRACOTTA}33` }} aria-hidden="true" />
+                  <p className="font-serif text-base sm:text-lg italic leading-relaxed mb-4 pr-8" style={{ color: COCOA }}>
+                    “{w.text}”
+                  </p>
+                  <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.2em]">
+                    <span className="font-semibold" style={{ color: TERRACOTTA }}>
+                      {w.name}
+                    </span>
+                    <span className="opacity-45">{w.date}</span>
+                  </div>
+                </article>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* RSVP FORM */}
-      <section id="rsvp" className="py-16 px-4 max-w-xl mx-auto pb-24">
-        <div className="bg-white p-8 sm:p-10 rounded-3xl border-2 border-[#C88A72] shadow-2xl text-center">
-          <h3 className="font-serif text-3xl text-[#3D302F] mb-2">{language === "es" ? "Confirmar Asistencia" : "Confirm RSVP"}</h3>
-          <p className="text-xs text-[#6E5A56] mb-6">{language === "es" ? "Por favor confirma antes del 25 de Septiembre" : "Please confirm by September 25"}</p>
+      {/* --------------------------------------------------------------- RSVP */}
+      <section id="rsvp" className="py-24 px-5 pb-32" style={{ background: CREAM_SOFT }}>
+        <div className="max-w-xl mx-auto">
+          <Reveal>
+            <DemoSectionTitle eyebrow={lx("Te esperamos", "We're expecting you")} title={lx("Confirma tu asistencia", "Confirm your attendance")} accent={TERRACOTTA} titleColor={COCOA} />
+          </Reveal>
 
-          <form onSubmit={handleRsvpSubmit} className="space-y-4 text-left">
-            <div>
-              <label className="block text-xs font-semibold text-[#3D302F] mb-1">{language === "es" ? "Nombre Completo *" : "Full Name *"}</label>
-              <input
-                type="text"
-                value={rsvpData.fullName}
-                onChange={(e) => setRsvpData({ ...rsvpData, fullName: e.target.value })}
-                placeholder="Ej. Carmen & Roberto"
-                required
-                className="w-full px-4 py-3 bg-[#FAF6F0] border border-[#E8C5B0] rounded-xl text-xs focus:outline-none focus:border-[#C88A72]"
-              />
+          <Reveal delay={100}>
+            <div className="p-7 sm:p-9 rounded-3xl border-2 shadow-xl bg-white" style={{ borderColor: TERRACOTTA }}>
+              <p className="text-xs opacity-60 text-center mb-7">
+                {lx("Agradecemos confirmar antes del 1 de octubre", "Please confirm before October 1")}
+              </p>
+
+              <form onSubmit={handleRsvpSubmit} className="space-y-5">
+                <div>
+                  <label htmlFor="baby-name" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                    {lx("Nombre completo *", "Full name *")}
+                  </label>
+                  <input id="baby-name" type="text" required value={rsvpData.fullName} onChange={(e) => setRsvpData({ ...rsvpData, fullName: e.target.value })} placeholder={lx("Ej. Claudia Peña", "E.g. Claudia Peña")} className={field} style={fieldStyle} />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="baby-attendance" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                      {lx("Asistencia", "Attendance")}
+                    </label>
+                    <select id="baby-attendance" value={rsvpData.attendance} onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })} className={field} style={fieldStyle}>
+                      <option value="Confirmado">{lx("¡Ahí estaré!", "I'll be there!")}</option>
+                      <option value="Declina">{lx("No podré asistir", "I can't make it")}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="baby-guests" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                      {lx("Nº de personas", "Number of guests")}
+                    </label>
+                    <select id="baby-guests" value={rsvpData.guestCount} onChange={(e) => setRsvpData({ ...rsvpData, guestCount: Number(e.target.value) })} className={field} style={fieldStyle}>
+                      {[1, 2, 3].map((n) => (
+                        <option key={n} value={n}>
+                          {n}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="baby-menu" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                    {lx("Preferencia de merienda", "Tea preference")}
+                  </label>
+                  <select id="baby-menu" value={rsvpData.menuPreference} onChange={(e) => setRsvpData({ ...rsvpData, menuPreference: e.target.value })} className={field} style={fieldStyle}>
+                    <option>{lx("Merienda dulce y salada", "Sweet and savoury tea")}</option>
+                    <option>{lx("Opción vegetariana", "Vegetarian option")}</option>
+                    <option>{lx("Opción sin gluten", "Gluten-free option")}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="baby-notes" className="block text-[10px] uppercase tracking-[0.2em] font-semibold opacity-70 mb-2">
+                    {lx("Alergias o notas (opcional)", "Allergies or notes (optional)")}
+                  </label>
+                  <input id="baby-notes" type="text" value={rsvpData.dietaryNotes} onChange={(e) => setRsvpData({ ...rsvpData, dietaryNotes: e.target.value })} placeholder={lx("Ej. Sin lactosa", "E.g. Lactose free")} className={field} style={fieldStyle} />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-4 text-white font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl shadow-lg inline-flex items-center justify-center gap-2 min-h-[52px] transition-transform active:scale-95"
+                  style={{ background: TERRACOTTA }}
+                >
+                  <Send className="w-4 h-4" aria-hidden="true" />
+                  {lx("Enviar confirmación por WhatsApp", "Send confirmation via WhatsApp")}
+                </button>
+              </form>
+
+              {rsvpSubmitted && <DemoRsvpNotice isEs={isEs} tone="light" />}
             </div>
+          </Reveal>
 
-            <div>
-              <label className="block text-xs font-semibold text-[#3D302F] mb-1">{language === "es" ? "Asistencia" : "Attendance"}</label>
-              <select
-                value={rsvpData.attendance}
-                onChange={(e) => setRsvpData({ ...rsvpData, attendance: parseAttendance(e.target.value) })}
-                className="w-full px-4 py-3 bg-[#FAF6F0] border border-[#E8C5B0] rounded-xl text-xs focus:outline-none focus:border-[#C88A72]"
-              >
-                <option value="Confirmado">{language === "es" ? "¡Sí, asistiré con mucho gusto!" : "Yes, I will attend!"}</option>
-                <option value="Declina">{language === "es" ? "Lamentablemente no podré asistir" : "Regretfully cannot attend"}</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-[#3D302F] mb-1">{language === "es" ? "Cantidad de Acompañantes" : "Number of Guests"}</label>
-              <input
-                type="number"
-                min="1"
-                max="4"
-                value={rsvpData.guestCount}
-                onChange={(e) => setRsvpData({ ...rsvpData, guestCount: Number(e.target.value) })}
-                className="w-full px-4 py-3 bg-[#FAF6F0] border border-[#E8C5B0] rounded-xl text-xs focus:outline-none focus:border-[#C88A72]"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-4 bg-[#C88A72] text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-[#B37862] transition-colors shadow-lg flex items-center justify-center gap-2 mt-6"
-            >
-              <Send className="w-4 h-4" /> {language === "es" ? "Enviar por WhatsApp" : "Send via WhatsApp"}
-            </button>
-          </form>
-          {rsvpSubmitted && <DemoRsvpNotice isEs={language === "es"} tone="light" />}
+          <Reveal delay={200}>
+            <p className="text-center text-xs opacity-50 mt-10 flex items-center gap-2 justify-center">
+              <Heart className="w-3.5 h-3.5" style={{ color: TERRACOTTA }} aria-hidden="true" />
+              {lx("Con amor, la familia Guzmán Peña", "With love, the Guzmán Peña family")}
+            </p>
+          </Reveal>
         </div>
       </section>
     </div>

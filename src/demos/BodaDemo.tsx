@@ -6,6 +6,7 @@ import { RsvpFormData } from "../types";
 import { MapPin, Calendar, Clock, Heart, Gift, CheckCircle2, Volume2, VolumeX, Copy, Check, Send, ExternalLink, ArrowLeft, Camera, X, MessageSquare, Sparkles, Navigation, Church, Wine, Utensils, Users, QrCode, ShieldCheck, Globe } from "lucide-react";
 import coupleImg from "../assets/images/wedding_couple_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
+import { useSectionReveal } from "../hooks/useSectionReveal";
 import VipPassModal from "../components/VipPassModal";
 
 interface BodaDemoProps {
@@ -22,6 +23,7 @@ interface GuestbookMessage {
 
 export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
   const { language, setLanguage, t } = useLanguage();
+  useSectionReveal();
   useDemoFonts();
 
   // Target date: November 14, 2026 16:30:00 AST

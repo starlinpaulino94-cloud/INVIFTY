@@ -131,6 +131,23 @@ html, body {
   }
 }
 
+
+/*
+ * Aparición de secciones en las muestras (ver src/hooks/useSectionReveal.ts).
+ * La clase la aplica JavaScript sólo si IntersectionObserver existe, así que
+ * sin JS no hay nada oculto.
+ */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 700ms ease-out, transform 700ms ease-out;
+  will-change: opacity, transform;
+}
+.reveal-section--visible {
+  opacity: 1;
+  transform: none;
+}
+
 /* Hide scrollbar utility for clean mobile horizontal sliders */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

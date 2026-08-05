@@ -5,6 +5,7 @@ import { RsvpFormData } from "../types";
 import { Sparkles, Music, MapPin, Calendar, Clock, Gift, CheckCircle2, Volume2, VolumeX, ArrowLeft, Send, MessageSquare, PartyPopper, ExternalLink, Copy, Check, Camera, X, Navigation, Globe, Disc, ThumbsUp, Radio } from "lucide-react";
 import quinceImg from "../assets/images/quince_valeria_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
+import { useSectionReveal } from "../hooks/useSectionReveal";
 
 interface CumpleDemoProps {
   onBackToHome: () => void;
@@ -12,6 +13,7 @@ interface CumpleDemoProps {
 
 export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
   const { language, setLanguage, t } = useLanguage();
+  useSectionReveal();
 
   // Target date: September 20, 2026 19:00:00 AST
   const targetDate = new Date("2026-09-20T19:00:00").getTime();
@@ -832,6 +834,40 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
                     <option value={3}>{language === "es" ? "3 Pases" : "3 Passes"}</option>
                     <option value={4}>{language === "es" ? "4 Pases Familiares" : "4 Family Passes"}</option>
                   </select>
+                </div>
+              </div>
+
+              {/* Menú y alergias: el mensaje de WhatsApp ya enviaba una preferencia
+                  de menú fija que la invitada nunca llegaba a elegir. */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="valeria-menu" className="block text-xs font-bold uppercase text-gray-300 mb-1">
+                    {language === "es" ? "Preferencia de menú" : "Menu preference"}
+                  </label>
+                  <select
+                    id="valeria-menu"
+                    value={rsvpData.menuPreference}
+                    onChange={(e) => setRsvpData({ ...rsvpData, menuPreference: e.target.value })}
+                    className="w-full bg-[#1E1119] border border-[#E29578]/30 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-[#E29578] min-h-[48px]"
+                  >
+                    <option>{language === "es" ? "Cena buffet internacional" : "International buffet"}</option>
+                    <option>{language === "es" ? "Opción vegetariana" : "Vegetarian option"}</option>
+                    <option>{language === "es" ? "Menú infantil" : "Children's menu"}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="valeria-notas" className="block text-xs font-bold uppercase text-gray-300 mb-1">
+                    {language === "es" ? "Alergias o notas" : "Allergies or notes"}
+                  </label>
+                  <input
+                    id="valeria-notas"
+                    type="text"
+                    value={rsvpData.dietaryNotes || ""}
+                    onChange={(e) => setRsvpData({ ...rsvpData, dietaryNotes: e.target.value })}
+                    placeholder={language === "es" ? "Ej. Sin lactosa" : "E.g. Lactose free"}
+                    className="w-full bg-[#1E1119] border border-[#E29578]/30 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-[#E29578] min-h-[48px]"
+                  />
                 </div>
               </div>
 

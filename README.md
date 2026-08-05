@@ -135,12 +135,14 @@ El catálogo de eventos está en [`docs/plan-medicion.md`](docs/plan-medicion.md
 npm test
 ```
 
-137 pruebas que cubren: coherencia del catálogo de planes, normalización de teléfonos,
+155 pruebas que cubren: coherencia del catálogo de planes, normalización de teléfonos,
 construcción del `LeadPayload`, mensajes de WhatsApp, caída a WhatsApp si falla la API,
 deduplicación de eventos analíticos, captura de UTM, completitud de las traducciones, el
 flujo completo del formulario (validación, accesibilidad, doble envío, contexto conservado),
 los tokens visuales y el contraste, la accesibilidad del navbar por teclado, y la integridad
-de todas las rutas de demos y del sitemap.
+de todas las rutas de demos y del sitemap, y el render de las muestras destacadas
+(secciones presentes, menú sin enlaces rotos, música apagada al iniciar y campos del RSVP
+que llegan al mensaje de WhatsApp).
 
 ---
 

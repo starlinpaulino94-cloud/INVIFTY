@@ -5,6 +5,8 @@ import { createDemoWatermarkWhatsAppUrl, createRsvpWhatsAppUrl } from "../utils/
 import { RsvpFormData } from "../types";
 import { ArrowLeft, Clock, Navigation, Send, CheckCircle2, Sparkles } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { useSectionReveal } from "../hooks/useSectionReveal";
+import { DemoGallery } from "../components/demo/DemoKit";
 
 /**
  * MUESTRA — BODA EDITORIAL "ELENA & GABRIEL"
@@ -78,6 +80,7 @@ interface DemoProps {
 
 export default function EditorialBodaDemo({ onBackToHome }: DemoProps) {
   const { language } = useLanguage();
+  useSectionReveal();
   useDemoFonts();
   const isEs = language === "es";
 
@@ -305,6 +308,28 @@ export default function EditorialBodaDemo({ onBackToHome }: DemoProps) {
           </section>
         </Revelar>
 
+        {/* ===== GALERÍA ===== */}
+        <Revelar>
+          <section id="galeria" className="mb-20">
+            <h2 className="text-center text-3xl italic mb-2">{isEs ? "Nuestros momentos" : "Our moments"}</h2>
+            <Filete />
+            <p className="text-center text-sm italic opacity-70 mt-4 mb-8">
+              {isEs ? "El camino que nos trajo hasta aquí." : "The road that brought us here."}
+            </p>
+            <DemoGallery
+              images={[
+                "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=900",
+                "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=900",
+                "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=900",
+              ]}
+              accent={ORO}
+              isEs={isEs}
+              columnsClassName="grid-cols-1 sm:grid-cols-3"
+              heightClassName="h-52"
+            />
+          </section>
+        </Revelar>
+
         {/* ===== RSVP ===== */}
         <Revelar>
           <section className="mb-16">
@@ -331,6 +356,54 @@ export default function EditorialBodaDemo({ onBackToHome }: DemoProps) {
                     style={{ borderColor: `${ORO}80`, color: TINTA }}
                   />
                 </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="ed-menu" className="block text-[11px] uppercase tracking-[0.2em] font-semibold mb-1.5">
+                      {isEs ? "Preferencia de menú" : "Menu preference"}
+                    </label>
+                    <select
+                      id="ed-menu"
+                      value={rsvp.menuPreference}
+                      onChange={(e) => setRsvp({ ...rsvp, menuPreference: e.target.value })}
+                      className="w-full border bg-white px-4 py-3 text-sm focus:outline-none min-h-[48px]"
+                      style={{ borderColor: `${ORO}80`, color: TINTA }}
+                    >
+                      <option>{isEs ? "Menú de boda" : "Wedding menu"}</option>
+                      <option>{isEs ? "Opción vegetariana" : "Vegetarian option"}</option>
+                      <option>{isEs ? "Opción sin gluten" : "Gluten-free option"}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="ed-notas" className="block text-[11px] uppercase tracking-[0.2em] font-semibold mb-1.5">
+                      {isEs ? "Alergias o notas" : "Allergies or notes"}
+                    </label>
+                    <input
+                      id="ed-notas"
+                      type="text"
+                      value={rsvp.dietaryNotes || ""}
+                      onChange={(e) => setRsvp({ ...rsvp, dietaryNotes: e.target.value })}
+                      placeholder={isEs ? "Ej. Alérgico a los mariscos" : "E.g. Allergic to shellfish"}
+                      className="w-full border bg-white px-4 py-3 text-sm focus:outline-none min-h-[48px]"
+                      style={{ borderColor: `${ORO}80`, color: TINTA }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="ed-cancion" className="block text-[11px] uppercase tracking-[0.2em] font-semibold mb-1.5">
+                    {isEs ? "Pide una canción" : "Request a song"}
+                  </label>
+                  <input
+                    id="ed-cancion"
+                    type="text"
+                    value={rsvp.songRequest || ""}
+                    onChange={(e) => setRsvp({ ...rsvp, songRequest: e.target.value })}
+                    placeholder={isEs ? "Ej. Juan Luis Guerra — Burbujas de Amor" : "E.g. Juan Luis Guerra — Burbujas de Amor"}
+                    className="w-full border bg-white px-4 py-3 text-sm focus:outline-none min-h-[48px]"
+                    style={{ borderColor: `${ORO}80`, color: TINTA }}
+                  />
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="ed-asistencia" className="block text-[11px] uppercase tracking-[0.2em] font-semibold mb-1.5">

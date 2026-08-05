@@ -31,16 +31,16 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Altos de Chavón, La Romana · Etiqueta Black Tie",
     image: weddingImage,
     features: [
-      { es: "Reloj regresivo & Guardar en Calendario", en: "Countdown clock & Save to Calendar" },
-      { es: "Sinfonía romántica de fondo interactiva", en: "Interactive romantic background music" },
-      { es: "Confirmación RSVP con asignación de pases", en: "RSVP confirmation with pass assignment" },
-      { es: "Línea de tiempo & Historia de Amor", en: "Timeline & Love Story" },
-      { es: "Itinerario de ceremonia, banquete y hora loca", en: "Ceremony, banquet & after-party itinerary" },
-      { es: "Mesa de regalos bancaria & Zelle (Copia en 1-clic)", en: "Bank & Zelle gift registry (1-click copy)" },
-      { es: "Geolocalización Waze & Google Maps", en: "Waze & Google Maps geolocation" },
-      { es: "Código de vestimenta con paleta de colores", en: "Dress code with color palette" },
+      { es: "Portada de gala con cuenta regresiva y calendario", en: "Gala cover with countdown and calendar" },
+      { es: "Historia de la pareja en línea de tiempo", en: "Couple’s story as a timeline" },
+      { es: "Ceremonia y recepción con mapas directos", en: "Ceremony and reception with direct maps" },
+      { es: "Itinerario completo: ceremonia, banquete y hora loca", en: "Full itinerary: ceremony, banquet and after-party" },
+      { es: "Corte de honor y padrinos", en: "Bridal party and godparents" },
+      { es: "Recomendaciones de hospedaje para invitados", en: "Lodging recommendations for guests" },
+      { es: "Mesa de regalos bancaria con copia en un clic", en: "Bank gift registry with one-click copy" },
+      { es: "Galería fotográfica con vista ampliada", en: "Photo gallery with lightbox" },
       { es: "Muro interactivo de buenos deseos", en: "Interactive well-wishes wall" },
-      { es: "Galería fotográfica con vista ampliada", en: "Photo gallery with enlarged view" }
+      { es: "RSVP con pases, menú, alergias y canción", en: "RSVP with passes, menu, allergies and song" }
     ],
     demoPath: "/muestra/boda-camila-y-lucas"
   },
@@ -51,16 +51,20 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     eventType: "15 Años & Quinceañera",
     category: "quinceanera",
     style: { es: "Romántico · Coral, ciruela y oro", en: "Romantic · Coral, plum & gold" },
-    minimumPlan: "popular",
+    minimumPlan: "premium",
     subtitle: "Grand Ballroom Hotel Jaragua, Santo Domingo",
     image: quinceImage,
     features: [
-      { es: "Paleta Rose Gold & Cristal", en: "Rose Gold & Crystal palette" },
-      { es: "Música festiva y cuenta regresiva", en: "Festive music & countdown" },
-      { es: "Código de vestimenta & Paleta sugerida", en: "Dress code & suggested palette" },
-      { es: "Módulo de pases e invitados especiales", en: "Passes & special guests module" },
-      { es: "Muro de felicitaciones y firmas", en: "Congratulations & signatures wall" },
-      { es: "Geolocalización del salón de fiesta", en: "Ballroom geolocation" }
+      { es: "Portada con retrato, monograma y cuenta regresiva", en: "Cover with portrait, monogram and countdown" }, 
+      { es: "Programa de la noche paso a paso", en: "Step-by-step night programme" },
+      { es: "Galería de fotos con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "Playlist colaborativa: pide tu canción", en: "Collaborative playlist: request your song" },
+      { es: "Ubicación del salón con mapa y Waze", en: "Venue location with map and Waze" },
+      { es: "Código de vestimenta con paleta sugerida", en: "Dress code with suggested palette" },
+      { es: "Lluvia de sobres y mesa de regalos", en: "Gift registry and envelope shower" },
+      { es: "Muro de felicitaciones y firmas", en: "Well-wishes and signature wall" },
+      { es: "RSVP con pases, menú, alergias y canción", en: "RSVP with passes, menu, allergies and song" },
+      { es: "Música de fondo e invitación bilingüe", en: "Background music and bilingual invitation" }
     ],
     demoPath: "/muestra/cumple-valeria-15"
   },
@@ -95,15 +99,19 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     eventType: "Baby Shower",
     category: "baby-shower",
     style: { es: "Terracota suave · Nude, cacao y arena", en: "Soft terracotta · Nude, cocoa & sand" },
-    minimumPlan: "popular",
+    minimumPlan: "premium",
     subtitle: "Terraza Privada Casa de Campo · La Romana",
     image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&q=80&w=800",
     features: [
-      { es: "Temática cálida botánica & crema", en: "Warm botanical & cream theme" },
-      { es: "Mesa de obsequios & Wishlist de bebé", en: "Gift table & baby wishlist" },
-      { es: "Confirmación RSVP para familiares", en: "RSVP confirmation for family" },
-      { es: "Juegos y dinámicas de la recepción", en: "Reception games & activities" },
-      { es: "Mapa e instrucciones de llegada", en: "Map & arrival instructions" }
+      { es: "Portada cálida con cuenta regresiva", en: "Warm cover with countdown" },
+      { es: "Programa de la merienda hora por hora", en: "Hour-by-hour afternoon programme" },
+      { es: "Ubicación con mapa, Google Maps y Waze", en: "Venue with map, Google Maps and Waze" },
+      { es: "Juego de predicciones: peso y fecha de nacimiento", en: "Guessing game: weight and birth date" },
+      { es: "Galería de la espera con vista ampliada", en: "Pregnancy gallery with lightbox" },
+      { es: "Mesa de regalos con copia en un clic", en: "Gift registry with one-click copy" },
+      { es: "Muro de amor para el bebé", en: "Wall of love for the baby" },
+      { es: "Dress code con paleta de colores", en: "Dress code with colour palette" },
+      { es: "RSVP con acompañantes, menú y alergias", en: "RSVP with guests, menu and allergies" }
     ],
     demoPath: "/muestra/baby-shower-mateo"
   },
@@ -118,10 +126,15 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Catedral Primada de América & Restaurante Pepperoni",
     image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=800",
     features: [
-      { es: "Estética celestial en tonos blanco y dorado", en: "Heavenly aesthetic in white & gold" },
-      { es: "Detalles de ceremonia religiosa & padrinos", en: "Religious ceremony & godparents details" },
-      { es: "Ubicación de iglesia y almuerzo", en: "Church & luncheon locations" },
-      { es: "Confirmación de familiares e íntimos", en: "RSVP for family & close friends" }
+      { es: "Portada sacra con cuenta regresiva", en: "Sacred cover with countdown" },
+      { es: "Programa del día: misa, fotos y almuerzo", en: "Day programme: mass, photos and lunch" },
+      { es: "Sección de padrinos de bautismo", en: "Baptism godparents section" },
+      { es: "Dos sedes con mapa, Google Maps y Waze", en: "Two venues with map, Google Maps and Waze" },
+      { es: "Dress code con paleta de colores", en: "Dress code with colour palette" },
+      { es: "Galería de fotos con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "Cuenta de ahorro para el futuro del bebé", en: "Savings account for the baby’s future" },
+      { es: "Muro de bendiciones para la familia", en: "Wall of blessings for the family" },
+      { es: "RSVP con acompañantes, menú y alergias", en: "RSVP with guests, menu and allergies" }
     ],
     demoPath: "/muestra/bautizo-sofia-maria"
   },
@@ -155,14 +168,19 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     eventType: "Bridal Shower",
     category: "bridal-shower",
     style: { es: "Fiesta blanca · Blanco, negro y bronce", en: "White party · White, black & bronze" },
-    minimumPlan: "popular",
+    minimumPlan: "premium",
     subtitle: "Punta Cana Resort & Club · Punta Cana",
     image: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80&w=800",
     features: [
-      { es: "Diseño contemporáneo blanco & champán", en: "Contemporary white & champagne design" },
-      { es: "Lista de obsequios para el hogar", en: "Home gift wishlist" },
-      { es: "Dress code total white", en: "All-white dress code" },
-      { es: "Confirmación RSVP rápida vía WhatsApp", en: "Quick RSVP via WhatsApp" }
+      { es: "Portada inmersiva con cuenta regresiva", en: "Immersive cover with countdown" },
+      { es: "Programa de la tarde hora por hora", en: "Hour-by-hour afternoon programme" },
+      { es: "Dress code total white con paleta de colores", en: "Total-white dress code with colour palette" },
+      { es: "Ubicación con mapa, Google Maps y Waze", en: "Venue with map, Google Maps and Waze" },
+      { es: "Galería de fotos con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "Mesa de regalos con copia en un clic", en: "Gift registry with one-click copy" },
+      { es: "Muro de mensajes para la novia", en: "Message wall for the bride" },
+      { es: "RSVP con acompañantes, menú, alergias y canción", en: "RSVP with guests, menu, allergies and song" },
+      { es: "Música de fondo y guardar la fecha", en: "Background music and save-the-date" }
     ],
     demoPath: "/muestra/bridal-shower-isabella"
   },
@@ -177,10 +195,15 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Torre Empresarial Piantini · Santo Domingo",
     image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800",
     features: [
-      { es: "Invitación ejecutiva VIP para personalidades", en: "Executive VIP invitation for dignitaries" },
-      { es: "Código QR para acreditación en puerta", en: "QR code for door accreditation" },
-      { es: "Agenda de inauguración & corte de cinta", en: "Opening agenda & ribbon cutting" },
-      { es: "Ubicación y servicio de Valet Parking", en: "Location & valet parking service" }
+      { es: "Portada premium con cuenta regresiva", en: "Premium cover with countdown" },
+      { es: "Programa VIP: alfombra, corte de cinta y showcase", en: "VIP programme: carpet, ribbon cutting and showcase" },
+      { es: "Beneficios exclusivos para invitadas", en: "Exclusive guest privileges" },
+      { es: "Galería de la colección cápsula", en: "Capsule collection gallery" },
+      { es: "Pase QR personal para acreditación en puerta", en: "Personal QR pass for door accreditation" },
+      { es: "Ubicación con mapa, Waze y valet parking", en: "Venue with map, Waze and valet parking" },
+      { es: "Dress code con paleta de colores", en: "Dress code with colour palette" },
+      { es: "Acreditación con empresa, medio y acompañantes", en: "Accreditation with company, media and companions" },
+      { es: "Invitación bilingüe español / inglés", en: "Bilingual Spanish / English invitation" }
     ],
     demoPath: "/muestra/grand-opening-boutique"
   },
@@ -198,11 +221,11 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     image: posterEditorial,
     features: [
       { es: "Apertura de sobre lacrado con sello dorado", en: "Sealed-envelope opening with gold wax seal" },
-      { es: "Estética editorial en papel marfil y oro", en: "Editorial aesthetic in ivory paper & gold" },
-      { es: "Revelado suave de secciones al desplazarse", en: "Soft scroll-reveal of sections" },
-      { es: "Ceremonia y recepción con mapas directos", en: "Ceremony & reception with direct maps" },
+      { es: "Estética editorial en papel marfil y oro", en: "Editorial aesthetic in ivory paper and gold" },
+      { es: "Ceremonia y recepción con mapas directos", en: "Ceremony and reception with direct maps" },
       { es: "Paleta de vestimenta sugerida", en: "Suggested attire palette" },
-      { es: "Confirmación RSVP integrada por WhatsApp", en: "Integrated WhatsApp RSVP" }
+      { es: "Galería fotográfica con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "RSVP con pases, menú, alergias y canción", en: "RSVP with passes, menu, allergies and song" }
     ],
     demoPath: "/muestra/boda-editorial-elena-gabriel"
   },
@@ -220,8 +243,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       { es: "Cielo nocturno con estrellas animadas", en: "Night sky with animated stars" },
       { es: "Tipografía imperial plateada", en: "Imperial silver typography" },
       { es: "Itinerario de la noche paso a paso", en: "Step-by-step night itinerary" },
-      { es: "Dress code con paleta azul noche y plata", en: "Midnight blue & silver dress code palette" },
-      { es: "Confirmación RSVP integrada por WhatsApp", en: "Integrated WhatsApp RSVP" }
+      { es: "Dress code con paleta azul noche y plata", en: "Midnight blue and silver dress code" },
+      { es: "Galería de fotos con vista ampliada", en: "Photo gallery with lightbox" },
+      { es: "RSVP con pases, menú, alergias y canción", en: "RSVP with passes, menu, allergies and song" }
     ],
     demoPath: "/muestra/quince-celestial-amara"
   },
@@ -236,11 +260,14 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Sky Lounge 27, Naco · Estilo Neón Eléctrico",
     image: posterNeon,
     features: [
-      { es: "Números gigantes con brillo neón magenta y cian", en: "Giant numerals with magenta & cyan neon glow" },
-      { es: "Line-up de la noche: open bar, DJ y karaoke", en: "Night line-up: open bar, DJ & karaoke" },
-      { es: "Dress code 'negro total + un toque neón'", en: "'All black + a neon touch' dress code" },
-      { es: "Cuenta regresiva bicolor animada", en: "Animated two-tone countdown" },
-      { es: "Confirmación en un toque por WhatsApp", en: "One-tap WhatsApp confirmation" }
+      { es: "Portada neón con cuenta regresiva animada", en: "Neon cover with animated countdown" },
+      { es: "Line-up de la noche: open bar, DJ y karaoke", en: "Night line-up: open bar, DJ and karaoke" },
+      { es: "Dress code negro total con paleta neón", en: "All-black dress code with neon palette" },
+      { es: "Ubicación con mapa, Google Maps y Waze", en: "Venue with map, Google Maps and Waze" },
+      { es: "Galería de ediciones anteriores", en: "Gallery of previous editions" },
+      { es: "Muro de mensajes para el anfitrión", en: "Message wall for the host" },
+      { es: "RSVP con acompañantes, barra y canción", en: "RSVP with guests, bar and song request" },
+      { es: "Música de fondo y guardar la fecha", en: "Background music and save-the-date" }
     ],
     demoPath: "/muestra/neon-party-marcos-40"
   },
@@ -255,12 +282,14 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     subtitle: "Centro de Convenciones · Estilo Minimal Corporativo",
     image: posterAurora,
     features: [
-      { es: "Diseño minimal claro con acento de marca", en: "Clean minimal design with brand accent" },
-      { es: "Agenda cronológica del evento", en: "Chronological event agenda" },
-      { es: "Tarjetas de ponentes destacados", en: "Featured speaker cards" },
-      { es: "Acceso con pase QR personal explicado", en: "Personal QR pass access explained" },
-      { es: "Botón 'Agendar' a Google Calendar", en: "'Add to calendar' Google Calendar button" },
-      { es: "Registro de asistentes por WhatsApp", en: "Attendee registration via WhatsApp" }
+      { es: "Portada corporativa con cuenta regresiva", en: "Corporate cover with countdown" },
+      { es: "Agenda del día hora por hora", en: "Hour-by-hour day agenda" },
+      { es: "Ponentes destacados con su tema", en: "Featured speakers with their topic" },
+      { es: "Pase QR con track asignado", en: "QR pass with assigned track" },
+      { es: "Sede con mapa, Waze, dress code y parqueo", en: "Venue with map, Waze, dress code and parking" },
+      { es: "Galería de ediciones anteriores", en: "Gallery of past editions" },
+      { es: "Registro con empresa, cargo y track de interés", en: "Registration with company, role and track" },
+      { es: "Invitación bilingüe español / inglés", en: "Bilingual Spanish / English invitation" }
     ],
     demoPath: "/muestra/summit-aurora-vitrexi"
   }

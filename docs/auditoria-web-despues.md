@@ -9,7 +9,7 @@
 
 ```bash
 npm run lint   # tsc --noEmit → 0 errores
-npm test       # 137 pruebas, 13 archivos → todas pasan
+npm test       # 155 pruebas, 15 archivos → todas pasan
 npm run build  # ✓ correcto
 ```
 
@@ -18,7 +18,7 @@ npm run build  # ✓ correcto
 | Errores de TypeScript | 0 *(engañoso, ver §2)* | **0 reales** |
 | Modo `strict` de TS | ❌ desactivado | ✅ activado |
 | Tipos de React instalados | ❌ **faltaban** | ✅ instalados |
-| Pruebas automáticas | ❌ ninguna | ✅ **137** |
+| Pruebas automáticas | ❌ ninguna | ✅ **155** |
 | CI | ❌ no existía | ✅ GitHub Actions |
 | Build de producción | ✅ | ✅ |
 | Secretos en el repositorio | ✅ ninguno | ✅ ninguno |
