@@ -48,7 +48,9 @@ const siteUrl = readString(raw.VITE_SITE_URL, "https://invifty.com").replace(/\/
 
 const whatsappNumber = normalizePhone(readString(raw.VITE_WHATSAPP_NUMBER, "18092693214"));
 
-const gaMeasurementId = readString(raw.VITE_GA_MEASUREMENT_ID, "");
+// El ID de medición es público por definición. Puede sobrescribirse por entorno,
+// pero Invifty funciona con su propiedad oficial incluso sin configuración extra.
+const gaMeasurementId = readString(raw.VITE_GA_MEASUREMENT_ID, "G-41L6G60R5C");
 
 /**
  * Analítica de Vercel. Activada por defecto porque el sitio se despliega en
