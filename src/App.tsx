@@ -14,6 +14,7 @@ import InquiryForm from "./components/InquiryForm";
 import Footer from "./components/Footer";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
 import AnalyticsConsentBanner from "./components/AnalyticsConsentBanner";
+import { ENV } from "./config/env";
 import NotFoundPage from "./components/NotFoundPage";
 import { resetOnceGuards, trackEvent } from "./services/analytics";
 import { useLanguage } from "./context/LanguageContext";
@@ -181,7 +182,10 @@ export default function App() {
 
       {/* Floating WhatsApp Action Button */}
       <FloatingWhatsApp />
-      <AnalyticsConsentBanner onNavigatePrivacy={() => handleNavigate("/privacidad")} />
+      {/* Oculto por ahora (decisión del negocio): sin banner GA4/GTM no se activan. */}
+      {ENV.consentBannerEnabled && (
+        <AnalyticsConsentBanner onNavigatePrivacy={() => handleNavigate("/privacidad")} />
+      )}
     </div>
   );
 }
