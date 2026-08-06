@@ -71,11 +71,19 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
               sitio se cargan desde Google Fonts.
             </p>
             <p>
-              Para saber cuántas personas visitan el sitio medimos datos agregados: página
-              visitada, procedencia del enlace, país, tipo de dispositivo y navegador.{" "}
-              <strong>No instalamos cookies, no te identificamos y no te seguimos entre sitios
-              web</strong>, por eso no verás aquí ningún aviso de cookies. Tampoco usamos
-              herramientas publicitarias de seguimiento.
+              Para saber cuántas personas visitan el sitio utilizamos Vercel Web Analytics,
+              que mide datos agregados sin instalar cookies, y Google Analytics 4 únicamente
+              cuando aceptas la analítica en el aviso de privacidad. Podemos medir la página
+              visitada, procedencia del enlace, país, dispositivo, navegador y acciones como
+              abrir una muestra, seleccionar un plan o pulsar WhatsApp. Nunca enviamos a estas
+              herramientas tu nombre, teléfono, mensaje ni la fecha exacta de tu evento.
+            </p>
+            <p>
+              Google Analytics puede utilizar cookies para distinguir sesiones. Puedes aceptar
+              o rechazar su uso y cambiar tu decisión desde el botón “Cookies”. Consulta{" "}
+              <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noreferrer">
+                cómo utiliza Google la información de sitios que usan sus servicios
+              </a>.
             </p>
           </section>
 
@@ -144,11 +152,18 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
               which have their own privacy policies. The site&rsquo;s fonts are loaded from Google Fonts.
             </p>
             <p>
-              To know how many people visit the site we measure aggregate data: page visited,
-              referrer, country, device type and browser.{" "}
-              <strong>We set no cookies, do not identify you and do not track you across
-              websites</strong>, which is why you will not see a cookie banner here. We do not use
-              advertising tracking tools either.
+              To understand website traffic we use Vercel Web Analytics, which measures aggregate
+              data without cookies, and Google Analytics 4 only when you accept analytics in our
+              privacy notice. We may measure the page visited, referrer, country, device, browser
+              and actions such as opening a demo, selecting a plan or clicking WhatsApp. We never
+              send these tools your name, phone number, message or exact event date.
+            </p>
+            <p>
+              Google Analytics may use cookies to distinguish sessions. You can accept or reject
+              their use and change your choice through the “Cookies” button. Learn{" "}
+              <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noreferrer">
+                how Google uses information from sites that use its services
+              </a>.
             </p>
           </section>
 

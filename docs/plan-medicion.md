@@ -114,13 +114,11 @@ transición.
 
 ## 6. Qué mide hoy la web
 
-**Decisión (2026-08-05): se mide con Vercel Web Analytics, no con GA4.**
+**Decisión (2026-08-06): Vercel Web Analytics mide sin cookies y GA4 se activa sólo con consentimiento.**
 
-Se descartó Google Analytics de momento por una razón concreta: instala cookies e identifica
-al visitante, lo que obliga a un banner de consentimiento y a custodiar datos personales.
-Vercel Web Analytics **no pone cookies, no identifica a nadie y no sigue al visitante entre
-sitios**, así que no hay banner que poner ni consentimiento que gestionar. La política de
-privacidad lo declara de forma explícita.
+Vercel Web Analytics permanece activo sin cookies. Google Analytics 4 usa la propiedad
+`G-41L6G60R5C`, pero su script no se descarga hasta que el visitante acepta la analítica.
+La elección se guarda localmente y puede cambiarse desde el botón “Cookies”.
 
 ### Lo que sí da, y lo que no
 

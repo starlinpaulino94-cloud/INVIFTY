@@ -13,6 +13,7 @@ import FaqSection from "./components/FaqSection";
 import InquiryForm from "./components/InquiryForm";
 import Footer from "./components/Footer";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
+import AnalyticsConsentBanner from "./components/AnalyticsConsentBanner";
 import NotFoundPage from "./components/NotFoundPage";
 import { resetOnceGuards, trackEvent } from "./services/analytics";
 import { useLanguage } from "./context/LanguageContext";
@@ -180,6 +181,7 @@ export default function App() {
 
       {/* Floating WhatsApp Action Button */}
       <FloatingWhatsApp />
+      <AnalyticsConsentBanner onNavigatePrivacy={() => handleNavigate("/privacidad")} />
     </div>
   );
 }
