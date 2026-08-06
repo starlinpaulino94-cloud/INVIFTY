@@ -120,6 +120,11 @@ Vercel Web Analytics permanece activo sin cookies. Google Analytics 4 usa la pro
 `G-41L6G60R5C`, pero su script no se descarga hasta que el visitante acepta la analítica.
 La elección se guarda localmente y puede cambiarse desde el botón “Cookies”.
 
+Google Tag Manager utiliza el contenedor `GTM-WFPB226S` y también se carga únicamente
+después del consentimiento. El fragmento `noscript` no se instala: se ejecutaría antes de
+conocer la elección del visitante. GA4 no debe volver a configurarse dentro de GTM, porque
+la propiedad ya vive en `ga4Provider` y hacerlo duplicaría páginas y conversiones.
+
 ### Lo que sí da, y lo que no
 
 | | Estado |
