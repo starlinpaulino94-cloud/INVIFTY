@@ -18,6 +18,7 @@ interface RawEnv {
   readonly VITE_WHATSAPP_NUMBER?: string;
   readonly VITE_GA_MEASUREMENT_ID?: string;
   readonly VITE_GTM_CONTAINER_ID?: string;
+  readonly VITE_SHOW_CONSENT_BANNER?: string;
   readonly VITE_ENABLE_VERCEL_ANALYTICS?: string;
   readonly VITE_GOOGLE_SITE_VERIFICATION?: string;
   readonly VITE_STUDIO_API_URL?: string;
@@ -116,6 +117,22 @@ const studioLeadsEnabled = enableStudioLeadsRequested && studioApiUrl.length > 0
 const gaEnabled = /^G-[A-Z0-9]+$/i.test(gaMeasurementId);
 const gtmEnabled = /^GTM-[A-Z0-9]+$/i.test(gtmContainerId);
 
+/**
+ * Banner de consentimiento de analítica. Apagado por decisión del negocio
+ * mientras no se quiera mostrar ningún aviso en la página: sin banner nadie
+ * puede aceptar, así que GA4 y GTM permanecen sin cargar y sin cookies
+ * (la analítica sin cookies de Vercel no lo necesita y sigue midiendo).
+ * Para reactivarlo: VITE_SHOW_CONSENT_BANNER=true en el entorno.
+ */
+const consentBannerEnabled = readBoolean(raw.VITE_SHOW_CONSENT_BANNER, false);
+
+if (import.meta.env.DEV && gaEnabled && !consentBannerEnabled) {
+  warnings.push(
+    "GA4 está configurado pero el banner de consentimiento está oculto " +
+      "(VITE_SHOW_CONSENT_BANNER). Sin banner nadie puede aceptar, así que GA4 no se activará."
+  );
+}
+
 if (import.meta.env.DEV && warnings.length > 0) {
   // Sólo en desarrollo: en producción no se ensucia la consola del visitante.
   console.warn(
@@ -137,6 +154,8 @@ export const ENV = {
   gtmContainerId,
   /** true sólo si el contenedor de GTM tiene formato válido. */
   gtmEnabled,
+  /** true si debe mostrarse el banner de consentimiento de analítica. */
+  consentBannerEnabled,
   /** true si debe cargarse la analítica sin cookies de Vercel. */
   vercelAnalyticsEnabled,
   /** Token de Google Search Console. Cadena vacía = no verificado por etiqueta. */
