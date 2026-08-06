@@ -17,6 +17,7 @@ interface RawEnv {
   readonly VITE_SITE_URL?: string;
   readonly VITE_WHATSAPP_NUMBER?: string;
   readonly VITE_GA_MEASUREMENT_ID?: string;
+  readonly VITE_GTM_CONTAINER_ID?: string;
   readonly VITE_ENABLE_VERCEL_ANALYTICS?: string;
   readonly VITE_GOOGLE_SITE_VERIFICATION?: string;
   readonly VITE_STUDIO_API_URL?: string;
@@ -51,6 +52,7 @@ const whatsappNumber = normalizePhone(readString(raw.VITE_WHATSAPP_NUMBER, "1809
 // El ID de medición es público por definición. Puede sobrescribirse por entorno,
 // pero Invifty funciona con su propiedad oficial incluso sin configuración extra.
 const gaMeasurementId = readString(raw.VITE_GA_MEASUREMENT_ID, "G-41L6G60R5C");
+const gtmContainerId = readString(raw.VITE_GTM_CONTAINER_ID, "GTM-WFPB226S");
 
 /**
  * Analítica de Vercel. Activada por defecto porque el sitio se despliega en
@@ -90,6 +92,13 @@ if (gaMeasurementId && !/^G-[A-Z0-9]+$/i.test(gaMeasurementId)) {
   );
 }
 
+if (gtmContainerId && !/^GTM-[A-Z0-9]+$/i.test(gtmContainerId)) {
+  warnings.push(
+    `VITE_GTM_CONTAINER_ID no tiene el formato esperado ("${gtmContainerId}"). ` +
+      'Debe ser del tipo "GTM-XXXXXXX". Tag Manager quedará desactivado.'
+  );
+}
+
 if (enableStudioLeadsRequested && !studioApiUrl) {
   warnings.push(
     "VITE_ENABLE_STUDIO_LEADS está activo pero VITE_STUDIO_API_URL está vacío. " +
@@ -105,6 +114,7 @@ if (enableStudioLeadsRequested && !studioApiUrl) {
 const studioLeadsEnabled = enableStudioLeadsRequested && studioApiUrl.length > 0;
 
 const gaEnabled = /^G-[A-Z0-9]+$/i.test(gaMeasurementId);
+const gtmEnabled = /^GTM-[A-Z0-9]+$/i.test(gtmContainerId);
 
 if (import.meta.env.DEV && warnings.length > 0) {
   // Sólo en desarrollo: en producción no se ensucia la consola del visitante.
@@ -123,6 +133,10 @@ export const ENV = {
   gaMeasurementId,
   /** true sólo si el ID de GA4 tiene formato válido. */
   gaEnabled,
+  /** Contenedor público de Google Tag Manager. */
+  gtmContainerId,
+  /** true sólo si el contenedor de GTM tiene formato válido. */
+  gtmEnabled,
   /** true si debe cargarse la analítica sin cookies de Vercel. */
   vercelAnalyticsEnabled,
   /** Token de Google Search Console. Cadena vacía = no verificado por etiqueta. */
