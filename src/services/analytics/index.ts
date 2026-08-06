@@ -1,5 +1,6 @@
 import { createGa4Provider } from "./ga4Provider";
 import { createVercelProvider } from "./vercelProvider";
+import { createGtmProvider } from "./gtmProvider";
 import { AnalyticsEventName, AnalyticsProps, AnalyticsProvider } from "./types";
 import { captureUtm, utmToProps } from "./utm";
 
@@ -25,7 +26,7 @@ const oncePerPage = new Set<string>();
  * bandera. Hoy, sin ID de GA4, el único que mide es Vercel — sin cookies.
  */
 export function initAnalytics(customProviders?: AnalyticsProvider[]): void {
-  providers = customProviders ?? [createGa4Provider(), createVercelProvider()];
+  providers = customProviders ?? [createGa4Provider(), createGtmProvider(), createVercelProvider()];
   for (const provider of providers) provider.init();
   captureUtm();
   listenForWhatsAppClicks();
