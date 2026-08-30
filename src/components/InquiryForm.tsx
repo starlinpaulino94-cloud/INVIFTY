@@ -176,16 +176,16 @@ export default function InquiryForm() {
 
           <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-[11px] uppercase tracking-[0.4em] text-gold block mb-3 font-semibold">
-              {isEs ? "Solicitar información" : "Request information"}
+              {isEs ? "Solicitud Instantánea" : "Instant Request"}
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-normal text-white mb-3">
-              {isEs ? "Cuéntanos de tu " : "Tell us about your "}
-              <span className="italic font-light text-gold">{isEs ? "evento" : "event"}</span>
+              {isEs ? "Cotiza tu invitación en " : "Get your quote in "}
+              <span className="italic font-light text-gold">{isEs ? "minutos" : "minutes"}</span>
             </h2>
             <p className="text-white/60 text-sm">
               {isEs
-                ? "Completa los datos y te respondemos por WhatsApp con la propuesta para tu celebración."
-                : "Fill in your details and we'll reply on WhatsApp with a proposal for your celebration."}
+                ? "Completa los datos de tu evento y nuestro equipo te responderá de inmediato por WhatsApp con tu cotización."
+                : "Fill in your event details and our team will reply right away on WhatsApp with your quote."}
             </p>
           </div>
 
@@ -429,7 +429,7 @@ export default function InquiryForm() {
                 ) : (
                   <>
                     <MessageCircle className="w-5 h-5" aria-hidden="true" />
-                    {isEs ? "Solicitar información" : "Request information"}
+                    {isEs ? "Enviar Solicitud a WhatsApp" : "Send Request via WhatsApp"}
                   </>
                 )}
               </button>

@@ -36,7 +36,7 @@ describe("formulario de captación — validación", () => {
     const open = vi.spyOn(window, "open").mockImplementation(() => null);
     renderForm();
 
-    await user.click(screen.getByRole("button", { name: /solicitar información/i }));
+    await user.click(screen.getByRole("button", { name: /enviar solicitud a whatsapp/i }));
 
     expect(await screen.findByRole("alert")).toBeInTheDocument();
     expect(open).not.toHaveBeenCalled();
@@ -46,7 +46,7 @@ describe("formulario de captación — validación", () => {
     const user = userEvent.setup();
     renderForm();
 
-    await user.click(screen.getByRole("button", { name: /solicitar información/i }));
+    await user.click(screen.getByRole("button", { name: /enviar solicitud a whatsapp/i }));
 
     const nameField = screen.getByLabelText(/nombre completo/i);
     await waitFor(() => expect(nameField).toHaveAttribute("aria-invalid", "true"));
@@ -60,7 +60,7 @@ describe("formulario de captación — validación", () => {
     await user.type(screen.getByLabelText(/nombre completo/i), "Sofía Rodríguez");
     await user.type(screen.getByLabelText("WhatsApp *"), "123");
     await user.click(screen.getByLabelText(/acepto que invifty me contacte/i));
-    await user.click(screen.getByRole("button", { name: /solicitar información/i }));
+    await user.click(screen.getByRole("button", { name: /enviar solicitud a whatsapp/i }));
 
     expect(await screen.findByText(/revisa el número/i)).toBeInTheDocument();
   });
@@ -73,7 +73,7 @@ describe("formulario de captación — validación", () => {
     await user.type(screen.getByLabelText(/nombre completo/i), "Sofía Rodríguez");
     await user.type(screen.getByLabelText("WhatsApp *"), "8092693214");
     // Sin marcar la casilla de consentimiento.
-    await user.click(screen.getByRole("button", { name: /solicitar información/i }));
+    await user.click(screen.getByRole("button", { name: /enviar solicitud a whatsapp/i }));
 
     expect(await screen.findByText(/necesitamos tu permiso/i)).toBeInTheDocument();
     expect(open).not.toHaveBeenCalled();
@@ -83,7 +83,7 @@ describe("formulario de captación — validación", () => {
     const user = userEvent.setup();
     renderForm();
 
-    await user.click(screen.getByRole("button", { name: /solicitar información/i }));
+    await user.click(screen.getByRole("button", { name: /enviar solicitud a whatsapp/i }));
     const nameField = await screen.findByLabelText(/nombre completo/i);
     await waitFor(() => expect(nameField).toHaveAttribute("aria-invalid", "true"));
 
@@ -99,7 +99,7 @@ describe("formulario de captación — envío por WhatsApp", () => {
     renderForm();
 
     await fillValidForm(user);
-    await user.click(screen.getByRole("button", { name: /solicitar información/i }));
+    await user.click(screen.getByRole("button", { name: /enviar solicitud a whatsapp/i }));
 
     await waitFor(() => expect(open).toHaveBeenCalledTimes(1));
     const url = decodeURIComponent(String(open.mock.calls[0][0]));
@@ -114,7 +114,7 @@ describe("formulario de captación — envío por WhatsApp", () => {
     renderForm();
 
     await fillValidForm(user);
-    await user.click(screen.getByRole("button", { name: /solicitar información/i }));
+    await user.click(screen.getByRole("button", { name: /enviar solicitud a whatsapp/i }));
 
     // Sin backend, prometer "solicitud registrada" sería engañoso.
     expect(await screen.findByText(/se abrió whatsapp con tu solicitud/i)).toBeInTheDocument();
@@ -127,7 +127,7 @@ describe("formulario de captación — envío por WhatsApp", () => {
     renderForm();
 
     await fillValidForm(user);
-    await user.click(screen.getByRole("button", { name: /solicitar información/i }));
+    await user.click(screen.getByRole("button", { name: /enviar solicitud a whatsapp/i }));
 
     const retry = await screen.findByRole("link", { name: /abrir whatsapp de nuevo/i });
     expect(retry).toHaveAttribute("href", expect.stringContaining("wa.me"));
@@ -139,7 +139,7 @@ describe("formulario de captación — envío por WhatsApp", () => {
     renderForm();
 
     await fillValidForm(user);
-    const submit = screen.getByRole("button", { name: /solicitar información/i });
+    const submit = screen.getByRole("button", { name: /enviar solicitud a whatsapp/i });
     await user.dblClick(submit);
 
     await waitFor(() => expect(open).toHaveBeenCalledTimes(1));
@@ -169,7 +169,7 @@ describe("formulario de captación — contexto conservado", () => {
     expect(screen.getByText(/boda-camila-y-lucas/)).toBeInTheDocument();
 
     await fillValidForm(user);
-    await user.click(screen.getByRole("button", { name: /solicitar información/i }));
+    await user.click(screen.getByRole("button", { name: /enviar solicitud a whatsapp/i }));
 
     await waitFor(() => expect(open).toHaveBeenCalled());
     expect(decodeURIComponent(String(open.mock.calls[0][0]))).toContain("boda-camila-y-lucas");
