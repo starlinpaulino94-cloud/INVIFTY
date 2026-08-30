@@ -80,7 +80,12 @@ section[id] {
 }
 
 html, body {
+  /* `hidden` convierte al body en contenedor de scroll y rompe todos los
+     position:sticky (las barras de las muestras se perdían al desplazarse).
+     `clip` recorta el desborde horizontal sin ese efecto secundario; la
+     línea anterior queda como respaldo para navegadores muy antiguos. */
   overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100vw;
   width: 100%;
   -webkit-tap-highlight-color: transparent;
