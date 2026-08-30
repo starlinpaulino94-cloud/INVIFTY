@@ -5,13 +5,24 @@ export const ANALYTICS_CONSENT_EVENT = "invifty:analytics-consent";
 
 export function getAnalyticsConsent(): AnalyticsConsent {
   if (typeof window === "undefined") return "pending";
-  const value = window.localStorage.getItem(STORAGE_KEY);
+  // localStorage puede lanzar con el almacenamiento bloqueado: sin acceso,
+  // no hay forma de recordar un consentimiento, así que queda pendiente.
+  let value: string | null = null;
+  try {
+    value = window.localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return "pending";
+  }
   return value === "accepted" || value === "rejected" ? value : "pending";
 }
 
 export function setAnalyticsConsent(consent: Exclude<AnalyticsConsent, "pending">): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, consent);
+  try {
+    window.localStorage.setItem(STORAGE_KEY, consent);
+  } catch {
+    /* sin almacenamiento: la elección aplica solo a esta visita */
+  }
 
   if (consent === "rejected") {
     window.gtag?.("consent", "update", {
