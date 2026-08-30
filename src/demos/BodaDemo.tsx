@@ -31,6 +31,9 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
 
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  // La barra de secciones solo aparece al dejar atrás la portada: sobre el
+  // hero no aporta nada y le quitaba elegancia a la primera impresión.
+  const [showSectionNav, setShowSectionNav] = useState(false);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
@@ -75,6 +78,14 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
     songRequest: ""
   });
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
+
+  // Mostrar la barra de secciones al pasar la portada
+  useEffect(() => {
+    const onScroll = () => setShowSectionNav(window.scrollY > window.innerHeight * 0.55);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Countdown timer effect
   useEffect(() => {
@@ -228,50 +239,44 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
         </a>
       </div>
 
-      {/* Internal Navigation Bar */}
-      <div className="bg-white/90 backdrop-blur-md border-b border-[#E8D3C5] sticky top-10 z-40 py-2 px-4 overflow-x-auto shadow-sm">
-        <div className="max-w-5xl mx-auto flex items-center justify-center gap-2 sm:gap-4 text-[11px] font-sans-clean uppercase tracking-wider font-semibold whitespace-nowrap">
-          <button onClick={() => scrollToSection("historia")} className="hover:text-[#D4AF37] transition-colors px-2 py-1">
-            {t("boda.story")}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("lugares")} className="hover:text-[#D4AF37] transition-colors px-2 py-1">
-            {t("boda.venues")}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("itinerario")} className="hover:text-[#D4AF37] transition-colors px-2 py-1">
-            {t("boda.schedule")}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("padrinos")} className="hover:text-[#D4AF37] transition-colors px-2 py-1">
-            {t("boda.court")}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("hospedaje")} className="hover:text-[#D4AF37] transition-colors px-2 py-1">
-            {t("boda.location")}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("regalos")} className="hover:text-[#D4AF37] transition-colors px-2 py-1">
-            {t("boda.gifts")}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("galeria")} className="hover:text-[#D4AF37] transition-colors px-2 py-1">
-            {t("boda.gallery")}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("muro")} className="hover:text-[#D4AF37] transition-colors px-2 py-1">
-            {t("boda.guestbook")}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("rsvp")} className="bg-[#0F1412] text-[#D4AF37] px-3.5 py-1 rounded-full text-[10px] font-bold">
+      {/* Barra de secciones: aparece al dejar la portada, oscura y sin ruido */}
+      <nav
+        aria-label={language === "es" ? "Secciones de la invitación" : "Invitation sections"}
+        className={`fixed top-10 inset-x-0 z-40 bg-[#0F1412]/95 backdrop-blur-md border-b border-[#D4AF37]/25 py-2.5 overflow-x-auto no-scrollbar transition-all duration-300 ${
+          showSectionNav ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3 pointer-events-none"
+        }`}
+      >
+        <div className="w-max mx-auto px-4 flex items-center gap-1.5 sm:gap-3 text-[11px] font-sans-clean uppercase tracking-wider font-semibold whitespace-nowrap text-[#FFF1CB]/75">
+          {[
+            { id: "historia", label: t("boda.story") },
+            { id: "lugares", label: t("boda.venues") },
+            { id: "itinerario", label: t("boda.schedule") },
+            { id: "padrinos", label: t("boda.court") },
+            { id: "hospedaje", label: t("boda.location") },
+            { id: "regalos", label: t("boda.gifts") },
+            { id: "galeria", label: t("boda.gallery") },
+            { id: "muro", label: t("boda.guestbook") },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className="hover:text-[#D4AF37] transition-colors px-2 py-1.5"
+            >
+              {item.label}
+            </button>
+          ))}
+          <button
+            onClick={() => scrollToSection("rsvp")}
+            className="bg-[#D4AF37] text-black px-3.5 py-1.5 rounded-full text-[10px] font-bold ml-1"
+          >
             {t("boda.rsvp")}
           </button>
         </div>
-      </div>
+      </nav>
 
 
       {/* Music Audio Toggle Floating Widget */}
-      <div className="fixed bottom-6 left-6 z-40">
+      <div className="fixed bottom-6 right-5 z-40">
         <button
           onClick={toggleAudio}
           className={`px-4 py-3 rounded-full shadow-2xl flex items-center gap-2.5 transition-all duration-300 border ${
@@ -294,7 +299,7 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
       </div>
 
       {/* HERO COVER */}
-      <header className="relative min-h-[85vh] flex items-center justify-center text-center p-6 bg-[#0F1412] text-white overflow-hidden">
+      <header className="relative min-h-[85vh] flex items-center justify-center text-center px-6 pt-10 pb-32 bg-[#0F1412] text-white overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={coupleImg}
@@ -306,9 +311,13 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
         </div>
 
         <div className="relative z-10 max-w-2xl mx-auto space-y-6 pt-12">
-          {/* Custom Crest Monogram */}
-          <div className="w-16 h-16 border-2 border-[#D4AF37] rounded-full mx-auto flex items-center justify-center bg-black/40 backdrop-blur-md text-[#D4AF37] font-serif text-xl tracking-widest shadow-xl">
-            C & L
+          {/* Monograma de la pareja: una sola línea, centrado en el sello */}
+          <div className="w-20 h-20 border-2 border-[#D4AF37] rounded-full mx-auto flex items-center justify-center bg-black/40 backdrop-blur-md shadow-xl">
+            <span className="flex items-center leading-none whitespace-nowrap text-[#D4AF37]" aria-label="Camila y Lucas">
+              <span className="font-serif-display text-2xl">C</span>
+              <span className="font-script text-2xl mx-1 translate-y-[2px]" aria-hidden="true">&</span>
+              <span className="font-serif-display text-2xl">L</span>
+            </span>
           </div>
 
           <span className="text-xs font-sans-clean uppercase tracking-[0.35em] text-[#D4AF37] block font-semibold">
@@ -333,7 +342,7 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
       </header>
 
       {/* COUNTDOWN TIMER & CALENDAR */}
-      <section className="max-w-3xl mx-auto -mt-16 relative z-20 px-4">
+      <section className="max-w-3xl mx-auto -mt-14 sm:-mt-16 relative z-20 px-4">
         <div className="bg-white border border-[#E8D3C5] rounded-3xl p-6 sm:p-8 shadow-xl text-center">
           <span className="text-xs uppercase font-sans-clean tracking-widest text-[#A37E2C] font-semibold block mb-4">
             CUÁNTO FALTA PARA EL GRAN DÍA
@@ -1051,7 +1060,7 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
           defaultGuestName="Tía Sofía & Tío Roberto"
           tableNumber="Mesa Imperial #02"
           eventDate="14 de Noviembre, 2026 — 4:30 PM"
-          eventLocation="Grand Palladium Resort, Cap Cana"
+          eventLocation="Altos de Chavón, La Romana"
           onClose={() => setShowVipPassModal(false)}
         />
       )}
