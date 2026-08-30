@@ -123,9 +123,30 @@ export const translations: Record<Language, Record<string, string>> = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+/**
+ * `localStorage` puede lanzar en navegadores con cookies o almacenamiento
+ * bloqueados (modo privado estricto, WebViews restringidas). El idioma no
+ * puede depender de eso: si falla, simplemente no se persiste.
+ */
+function leerIdiomaGuardado(): string | null {
+  try {
+    return localStorage.getItem("invifty_lang");
+  } catch {
+    return null;
+  }
+}
+
+function guardarIdioma(lang: Language): void {
+  try {
+    localStorage.setItem("invifty_lang", lang);
+  } catch {
+    /* sin almacenamiento disponible: el idioma vive solo en la sesión */
+  }
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem("invifty_lang");
+    const saved = leerIdiomaGuardado();
     if (saved === "en" || saved === "es") return saved;
     if (typeof navigator !== "undefined" && navigator.language && navigator.language.startsWith("en")) {
       return "en";
@@ -135,7 +156,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem("invifty_lang", lang);
+    guardarIdioma(lang);
     trackEvent("change_language", { language: lang });
   };
 
