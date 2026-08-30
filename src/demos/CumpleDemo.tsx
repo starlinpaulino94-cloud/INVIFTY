@@ -19,7 +19,16 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
   const targetDate = new Date("2026-09-20T19:00:00").getTime();
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  // La barra de secciones aparece al dejar atrás la portada.
+  const [showSectionNav, setShowSectionNav] = useState(false);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowSectionNav(window.scrollY > window.innerHeight * 0.55);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
   const [activePhoto, setActivePhoto] = useState<string | null>(null);
@@ -243,41 +252,34 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
         </a>
       </div>
 
-      {/* Sticky Internal Navigation Bar */}
-      <div className="bg-[#1E1119]/90 backdrop-blur-md border-b border-[#E29578]/30 sticky top-10 z-40 py-2.5 px-4 overflow-x-auto shadow-sm">
-        <div className="max-w-4xl mx-auto flex items-center justify-center gap-3 sm:gap-5 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap text-[#E29578]">
-          <button onClick={() => scrollToSection("programa")} className="hover:text-white transition-colors">
-            {language === "es" ? "Programa" : "Schedule"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("galeria")} className="hover:text-white transition-colors">
-            {language === "es" ? "Fotos" : "Gallery"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("playlist")} className="hover:text-white transition-colors">
-            {language === "es" ? "Playlist" : "Playlist"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("ubicacion")} className="hover:text-white transition-colors">
-            {language === "es" ? "Ubicación" : "Venue"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("regalos")} className="hover:text-white transition-colors">
-            {language === "es" ? "Lluvia de Sobres" : "Gifts"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("muro")} className="hover:text-white transition-colors">
-            {language === "es" ? "Muro" : "Wishes"}
-          </button>
-          <span>·</span>
-          <button onClick={() => scrollToSection("rsvp")} className="bg-[#E29578] text-[#120B10] px-3.5 py-1 rounded-full text-[10px] font-bold shadow-sm">
+      {/* Barra de secciones: aparece al dejar la portada, sin separadores sueltos */}
+      <nav
+        aria-label={language === "es" ? "Secciones de la invitación" : "Invitation sections"}
+        className={`fixed top-10 inset-x-0 z-40 bg-[#1E1119]/95 backdrop-blur-md border-b border-[#E29578]/30 py-2.5 overflow-x-auto no-scrollbar transition-all duration-300 ${
+          showSectionNav ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3 pointer-events-none"
+        }`}
+      >
+        <div className="w-max mx-auto px-4 flex items-center gap-1.5 sm:gap-3 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap text-[#E29578]">
+          {[
+            { id: "programa", label: language === "es" ? "Programa" : "Schedule" },
+            { id: "galeria", label: language === "es" ? "Fotos" : "Gallery" },
+            { id: "playlist", label: "Playlist" },
+            { id: "ubicacion", label: language === "es" ? "Ubicación" : "Venue" },
+            { id: "regalos", label: language === "es" ? "Lluvia de Sobres" : "Gifts" },
+            { id: "muro", label: language === "es" ? "Muro" : "Wishes" },
+          ].map((item) => (
+            <button key={item.id} onClick={() => scrollToSection(item.id)} className="hover:text-white transition-colors px-2 py-1.5">
+              {item.label}
+            </button>
+          ))}
+          <button onClick={() => scrollToSection("rsvp")} className="bg-[#E29578] text-[#120B10] px-3.5 py-1.5 rounded-full text-[10px] font-bold shadow-sm ml-1">
             RSVP
           </button>
         </div>
-      </div>
+      </nav>
 
       {/* Floating Audio Toggle Widget */}
-      <div className="fixed bottom-6 left-6 z-40">
+      <div className="fixed bottom-6 right-5 z-40">
         <button
           onClick={toggleAudio}
           className={`px-4 py-3 rounded-full shadow-2xl flex items-center gap-2.5 transition-all duration-300 border ${
@@ -300,7 +302,7 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
       </div>
 
       {/* HERO COVER */}
-      <header className="relative min-h-[85vh] flex items-center justify-center text-center p-6 overflow-hidden">
+      <header className="relative min-h-[85vh] flex items-center justify-center text-center px-6 pt-10 pb-32 overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={quinceImg}
@@ -312,9 +314,11 @@ export default function CumpleDemo({ onBackToHome }: CumpleDemoProps) {
         </div>
 
         <div className="relative z-10 max-w-2xl mx-auto space-y-6 pt-12">
-          {/* Monogram Badge */}
-          <div className="w-16 h-16 border-2 border-[#E29578] rounded-full mx-auto flex items-center justify-center bg-black/50 backdrop-blur-md text-[#E29578] font-serif text-2xl tracking-widest shadow-2xl">
-            V S
+          {/* Monograma: una sola línea, centrado en el sello */}
+          <div className="w-20 h-20 border-2 border-[#E29578] rounded-full mx-auto flex items-center justify-center bg-black/50 backdrop-blur-md shadow-2xl">
+            <span className="flex items-center leading-none whitespace-nowrap text-[#E29578] font-serif text-2xl" aria-label="Valeria Sofía">
+              V<span className="mx-1 text-lg opacity-70" aria-hidden="true">·</span>S
+            </span>
           </div>
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E29578]/20 border border-[#E29578]/40 text-[#FFCAD4] text-xs font-bold uppercase tracking-widest">

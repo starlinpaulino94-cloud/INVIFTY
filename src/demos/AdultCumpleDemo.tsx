@@ -85,6 +85,15 @@ export default function AdultCumpleDemo({ onBackToHome }: AdultCumpleDemoProps) 
   const targetDate = new Date("2026-12-05T20:00:00").getTime();
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  // La barra de secciones aparece al dejar atrás la portada.
+  const [showSectionNav, setShowSectionNav] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowSectionNav(window.scrollY > window.innerHeight * 0.55);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
   const [activePhoto, setActivePhoto] = useState<string | null>(null);
@@ -261,7 +270,7 @@ export default function AdultCumpleDemo({ onBackToHome }: AdultCumpleDemoProps) 
   return (
     <div className="min-h-screen font-sans selection:bg-[#D4AF37]/30 relative" style={{ background: NAVY, color: SAND }}>
       {/* Control de audio persistente */}
-      <div className="fixed bottom-6 left-6 z-40" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+      <div className="fixed bottom-6 right-5 z-40" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
         <DemoMusicToggle
           isPlaying={isPlayingMusic}
           onToggle={toggleMusic}
@@ -315,13 +324,15 @@ export default function AdultCumpleDemo({ onBackToHome }: AdultCumpleDemoProps) 
         </a>
       </div>
 
-      {/* Navegación interna */}
+      {/* Navegación interna: aparece al dejar atrás la portada */}
       <nav
-        className="backdrop-blur-md border-b sticky top-10 z-40 py-2.5 px-4 overflow-x-auto no-scrollbar"
-        style={{ background: `${NAVY}E6`, borderColor: `${GOLD}4D` }}
+        className={`backdrop-blur-md border-b fixed top-10 inset-x-0 z-40 py-2.5 overflow-x-auto no-scrollbar transition-all duration-300 ${
+          showSectionNav ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3 pointer-events-none"
+        }`}
+        style={{ background: `${NAVY}F2`, borderColor: `${GOLD}4D` }}
         aria-label={lx("Secciones de la invitación", "Invitation sections")}
       >
-        <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-center gap-4 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap">
+        <div className="w-max mx-auto px-4 flex items-center gap-4 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap">
           {[
             { id: "evento", es: "Celebración", en: "Celebration" },
             { id: "homenaje", es: "Medio Siglo", en: "Half a Century" },

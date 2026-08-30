@@ -18,6 +18,12 @@ interface PortfolioSectionProps {
   onNavigateDemo: (demoPath: string) => void;
 }
 
+/**
+ * Muestras visibles al llegar a la sección. El resto queda tras el botón
+ * "Ver todas": doce tarjetas de golpe abrumaban y alargaban la página.
+ */
+const MUESTRAS_INICIALES = 4;
+
 /** Nombre visible de un plan, desde el catálogo único. */
 function planName(planId: string, isEs: boolean): string {
   const plan = PRICING_PLANS.find((p) => p.id === planId);
@@ -46,6 +52,7 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
   // `null` = todas las categorías.
   const [activeCategory, setActiveCategory] = useState<DemoCategory | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [showAll, setShowAll] = useState(false);
   const [selectedQuickViewItem, setSelectedQuickViewItem] = useState<PublicDemo | null>(null);
 
   // El catálogo llega ya como PublicDemo: este componente no conoce el formato
@@ -62,6 +69,13 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
       ),
     [activeCategory, searchQuery, language, allDemos]
   );
+
+  // Con un filtro o búsqueda activos se muestran todas las coincidencias:
+  // quien filtra ya expresó qué quiere ver. Sin filtros, solo las primeras.
+  const hasActiveFilter = activeCategory !== null || searchQuery.trim() !== "";
+  const visibleItems =
+    showAll || hasActiveFilter ? filteredItems : filteredItems.slice(0, MUESTRAS_INICIALES);
+  const hiddenCount = filteredItems.length - visibleItems.length;
 
   /**
    * "Quiero una invitación como esta": guarda la demo como contexto del lead y
@@ -143,7 +157,7 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
             <div className="flex items-center gap-3 text-xs text-white/60">
               <span className="bg-surface-sunken border border-white/10 px-3.5 py-1.5 rounded-full font-mono text-[11px]">
                 {isEs ? "Mostrando " : "Showing "}
-                <strong className="text-gold font-bold">{filteredItems.length}</strong>
+                <strong className="text-gold font-bold">{visibleItems.length}</strong>
                 {isEs ? ` de ${allDemos.length} muestras` : ` of ${allDemos.length} demos`}
               </span>
 
@@ -206,7 +220,7 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
         {/* SHOWCASE GRID */}
         {filteredItems.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredItems.map((item) => (
+            {visibleItems.map((item) => (
               <div
                 key={item.id}
                 className="bg-surface-card border border-white/10 hover:border-gold flex flex-col group rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-[0_20px_50px_-10px_rgba(212,175,55,0.25)] relative"
@@ -307,7 +321,34 @@ export default function PortfolioSection({ onNavigateDemo }: PortfolioSectionPro
               </div>
             ))}
           </div>
-        ) : (
+        ) : null}
+
+        {/* Ver todas / Ver menos: el resto del catálogo queda a un clic */}
+        {filteredItems.length > 0 && !hasActiveFilter && filteredItems.length > MUESTRAS_INICIALES && (
+          <div className="text-center mt-12">
+            <button
+              type="button"
+              onClick={() => {
+                if (!showAll) {
+                  trackEvent("view_all_demos", { placement: "portfolio_grid" });
+                } else {
+                  document.getElementById("portafolio")?.scrollIntoView({ behavior: "smooth" });
+                }
+                setShowAll((prev) => !prev);
+              }}
+              className="inline-flex items-center gap-2 px-8 py-4 border border-gold/50 text-gold text-[11px] font-bold uppercase tracking-[0.2em] rounded-full hover:bg-gold hover:text-black active:scale-95 transition-all min-h-[48px] touch-manipulation"
+            >
+              <Grid className="w-4 h-4" aria-hidden="true" />
+              {showAll
+                ? (isEs ? "Ver menos" : "Show fewer")
+                : (isEs
+                    ? `Ver todas las muestras (${hiddenCount} más)`
+                    : `View all demos (${hiddenCount} more)`)}
+            </button>
+          </div>
+        )}
+
+        {filteredItems.length === 0 && (
           /* Empty State when zero results match filter */
           <div className="bg-surface-raised border border-white/10 rounded-3xl p-12 text-center max-w-lg mx-auto my-8">
             <Filter className="w-10 h-10 text-gold mx-auto mb-3 opacity-60" />
