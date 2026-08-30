@@ -283,16 +283,33 @@ interface SubNavProps {
   ariaLabel: string;
 }
 
+/**
+ * Barra de secciones de la muestra. Aparece al dejar atrás la portada — sobre
+ * el hero solo estorbaba a la primera impresión — y su lista se desplaza en
+ * horizontal desde el primer elemento (`w-max mx-auto`: centrar con flex un
+ * contenido desbordado recortaba el inicio de la lista sin forma de verlo).
+ */
 export function DemoSubNav({ items, ctaId, ctaLabel, onNavigate, palette, background, ariaLabel }: SubNavProps) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.55);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <nav
-      className="backdrop-blur-md border-b sticky top-10 z-40 py-2.5 px-4 overflow-x-auto no-scrollbar"
+      className={`fixed top-10 inset-x-0 backdrop-blur-md border-b z-40 py-2.5 overflow-x-auto no-scrollbar transition-all duration-300 ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3 pointer-events-none"
+      }`}
       style={{ background, borderColor: `${palette.accent}4D` }}
       aria-label={ariaLabel}
     >
-      <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-center gap-4 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap">
+      <div className="w-max mx-auto px-4 flex items-center gap-4 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap">
         {items.map((item) => (
-          <button key={item.id} onClick={() => onNavigate(item.id)} className="transition-colors hover:opacity-70" style={{ color: palette.accent }}>
+          <button key={item.id} onClick={() => onNavigate(item.id)} className="transition-colors hover:opacity-70 py-1" style={{ color: palette.accent }}>
             {item.label}
           </button>
         ))}

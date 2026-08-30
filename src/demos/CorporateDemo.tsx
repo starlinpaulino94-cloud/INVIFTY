@@ -73,6 +73,15 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
   const targetDate = new Date("2026-10-28T19:30:00").getTime();
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  // La barra de secciones aparece al dejar atrás la portada.
+  const [showSectionNav, setShowSectionNav] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowSectionNav(window.scrollY > window.innerHeight * 0.55);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const [showVipPassModal, setShowVipPassModal] = useState(false);
   const [activePhoto, setActivePhoto] = useState<string | null>(null);
 
@@ -242,13 +251,15 @@ export default function CorporateDemo({ onBackToHome }: CorporateDemoProps) {
         </a>
       </div>
 
-      {/* Navegación interna */}
+      {/* Navegación interna: aparece al dejar atrás la portada */}
       <nav
-        className="backdrop-blur-md border-b sticky top-10 z-40 py-2.5 px-4 overflow-x-auto no-scrollbar"
-        style={{ background: `${NAVY_SOFT}E6`, borderColor: `${GOLD}4D` }}
+        className={`backdrop-blur-md border-b fixed top-10 inset-x-0 z-40 py-2.5 overflow-x-auto no-scrollbar transition-all duration-300 ${
+          showSectionNav ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3 pointer-events-none"
+        }`}
+        style={{ background: `${NAVY_SOFT}F2`, borderColor: `${GOLD}4D` }}
         aria-label={lx("Secciones del evento", "Event sections")}
       >
-        <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-center gap-3 sm:gap-4 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap">
+        <div className="w-max mx-auto px-4 flex items-center gap-3 sm:gap-4 text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap">
           {navItems.map((item) => (
             <button key={item.id} onClick={() => scrollToSection(item.id)} className="hover:text-white transition-colors" style={{ color: GOLD }}>
               {lx(item.es, item.en)}

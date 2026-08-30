@@ -182,7 +182,7 @@ export default function BautizoDemo({ onBackToHome }: BautizoDemoProps) {
 
   return (
     <div className="min-h-screen font-sans relative" style={{ background: IVORY, color: FOREST }}>
-      <div className="fixed bottom-6 left-6 z-40" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+      <div className="fixed bottom-6 right-5 z-40" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
         <DemoMusicToggle
           isPlaying={isPlayingMusic}
           onToggle={toggleMusic}

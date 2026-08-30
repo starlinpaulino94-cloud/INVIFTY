@@ -79,7 +79,7 @@ interface DemoProps {
 }
 
 export default function EditorialBodaDemo({ onBackToHome }: DemoProps) {
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   useSectionReveal();
   useDemoFonts();
   const isEs = language === "es";
@@ -186,9 +186,29 @@ export default function EditorialBodaDemo({ onBackToHome }: DemoProps) {
             <ArrowLeft className="w-4 h-4" />
             {isEs ? "Volver a Invifty" : "Back to Invifty"}
           </button>
-          <span className="text-[10px] uppercase tracking-[0.3em] font-sans-clean font-semibold" style={{ color: ORO }}>
-            ◆ {isEs ? "Muestra" : "Sample"}
-          </span>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-0.5 rounded-full border p-1 text-[10px] font-sans-clean font-semibold" style={{ borderColor: `${ORO}66` }}>
+              <button
+                onClick={() => setLanguage("es")}
+                aria-pressed={isEs}
+                className="px-2 py-0.5 rounded-full transition-all"
+                style={isEs ? { background: ORO, color: "#FFFFFF" } : { color: TINTA, opacity: 0.6 }}
+              >
+                ES
+              </button>
+              <button
+                onClick={() => setLanguage("en")}
+                aria-pressed={!isEs}
+                className="px-2 py-0.5 rounded-full transition-all"
+                style={!isEs ? { background: ORO, color: "#FFFFFF" } : { color: TINTA, opacity: 0.6 }}
+              >
+                EN
+              </button>
+            </div>
+            <span className="text-[10px] uppercase tracking-[0.3em] font-sans-clean font-semibold" style={{ color: ORO }}>
+              ◆ {isEs ? "Muestra" : "Sample"}
+            </span>
+          </div>
         </div>
       </header>
 

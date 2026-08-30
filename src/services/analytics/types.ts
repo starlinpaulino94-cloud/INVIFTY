@@ -16,6 +16,7 @@ export type AnalyticsEventName =
   // Catálogo de demos
   | "view_demo_list"
   | "filter_demo"
+  | "view_all_demos"
   | "view_demo"
   | "click_demo_lead"
   // Planes
