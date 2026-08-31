@@ -5,8 +5,9 @@ import { EsquinaBotanica } from "./Botanica";
  * APERTURA DE SOBRE
  * =================
  * Portada de la invitación: un sobre de papel cerrado con sello de lacre.
- * Al tocarlo, el sello se funde, la solapa gira hacia atrás, la tarjeta
- * sale del sobre y la escena se desvanece para revelar la invitación.
+ * Al tocarlo, el sello se funde, la solapa gira hacia atrás y la cámara
+ * "entra" por el sobre abierto: éste crece hacia el espectador mientras la
+ * escena se desvanece y aparece la invitación.
  *
  * Construido solo con CSS (clip-path + transforms): sin librerías, sin
  * imágenes. Con `prefers-reduced-motion` la apertura es inmediata.
@@ -15,12 +16,8 @@ import { EsquinaBotanica } from "./Botanica";
 interface SobreAperturaProps {
   /** Iniciales del sello, ya compuestas (ej. C & L con la "&" caligráfica). */
   sello: React.ReactNode;
-  /** Nombres que aparecen en la tarjeta que sale del sobre. */
-  titulo: React.ReactNode;
-  /** Línea pequeña sobre los nombres (ej. "NUESTRA BODA"). */
-  antetitulo: string;
-  /** Línea bajo los nombres (ej. la fecha). */
-  fecha: string;
+  /** Nombre accesible de la portada (ej. "Invitación de boda"). */
+  etiqueta: string;
   /** Texto guía bajo el sobre. */
   indicacion: string;
   /** Se llama cuando la animación termina y hay que revelar la invitación. */
@@ -45,7 +42,7 @@ const COLORES_BODA = {
   tinta: "#2E2A24",
 };
 
-type Fase = "cerrado" | "abriendo" | "saliendo" | "desvaneciendo";
+type Fase = "cerrado" | "abriendo" | "entrando";
 
 function movimientoReducido(): boolean {
   return typeof window !== "undefined" &&
@@ -54,9 +51,7 @@ function movimientoReducido(): boolean {
 
 export default function SobreApertura({
   sello,
-  titulo,
-  antetitulo,
-  fecha,
+  etiqueta,
   indicacion,
   onAbierto,
   colores = COLORES_BODA,
@@ -80,22 +75,21 @@ export default function SobreApertura({
       return;
     }
     setFase("abriendo");
-    window.setTimeout(() => setFase("saliendo"), 700);
-    window.setTimeout(() => setFase("desvaneciendo"), 1500);
-    window.setTimeout(onAbierto, 2150);
+    window.setTimeout(() => setFase("entrando"), 650);
+    window.setTimeout(onAbierto, 1600);
   };
 
   const abierto = fase !== "cerrado";
-  const saliendo = fase === "saliendo" || fase === "desvaneciendo";
+  const entrando = fase === "entrando";
 
   return (
     <div
-      className={`fixed inset-0 z-[70] flex flex-col items-center justify-center px-6 transition-opacity duration-700 ${
-        fase === "desvaneciendo" ? "opacity-0" : "opacity-100"
+      className={`fixed inset-0 z-[70] flex flex-col items-center justify-center px-6 transition-opacity ease-in ${
+        entrando ? "opacity-0 duration-[900ms] delay-150" : "opacity-100 duration-300"
       }`}
       style={{ background: c.fondo }}
       role="dialog"
-      aria-label={antetitulo}
+      aria-label={etiqueta}
     >
       {/* Ornamentos botánicos en las esquinas del telón */}
       <EsquinaBotanica className="absolute top-6 left-4 w-24 h-24 sm:w-32 sm:h-32" style={{ color: c.papel, opacity: 0.22 }} />
@@ -107,42 +101,19 @@ export default function SobreApertura({
         type="button"
         onClick={abrir}
         aria-label={indicacion}
-        className="relative block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 rounded-lg"
-        style={{ width: "min(88vw, 420px)", height: "min(62vw, 296px)", perspective: "1400px" }}
+        className="relative block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 rounded-lg transition-transform ease-in duration-[1000ms]"
+        style={{
+          width: "min(88vw, 420px)",
+          height: "min(62vw, 296px)",
+          perspective: "1400px",
+          transform: entrando ? "scale(3.4) translateY(16%)" : "scale(1) translateY(0)",
+        }}
       >
         {/* Cuerpo trasero del sobre */}
         <span className="absolute inset-0 rounded-lg shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]" style={{ background: c.papelOscuro }} aria-hidden="true"></span>
 
         {/* Interior visible al abrirse */}
         <span className="absolute inset-0 rounded-lg" style={{ background: c.interior }} aria-hidden="true"></span>
-
-        {/* Tarjeta que sale del sobre */}
-        <span
-          className={`absolute left-4 right-4 rounded-md flex flex-col items-center justify-center text-center px-4 transition-all ease-out ${
-            saliendo ? "duration-[800ms] z-40" : "duration-500 z-[5]"
-          }`}
-          style={{
-            top: "6%",
-            bottom: "8%",
-            background: "#FCFAF5",
-            boxShadow: saliendo ? "0 24px 60px -18px rgba(0,0,0,0.55)" : "none",
-            transform: saliendo ? "translateY(-58%) scale(1.04)" : "translateY(0) scale(1)",
-          }}
-          aria-hidden="true"
-        >
-          <span className="text-[9px] font-sans-clean uppercase tracking-[0.4em] font-semibold mb-2.5" style={{ color: c.acento }}>
-            {antetitulo}
-          </span>
-          {/* La tipografía del título la aporta quien invoca (las fuentes de
-              demo se cargan desde la demo, no desde este componente). */}
-          <span className="text-3xl sm:text-4xl leading-tight" style={{ color: c.tinta }}>
-            {titulo}
-          </span>
-          <span className="block h-px w-16 my-3" style={{ background: `${c.acento}80` }}></span>
-          <span className="text-[10px] font-sans-clean uppercase tracking-[0.3em]" style={{ color: c.tinta, opacity: 0.65 }}>
-            {fecha}
-          </span>
-        </span>
 
         {/* Solapas laterales */}
         <span className="absolute inset-0 rounded-lg z-10" style={{ background: c.papel, clipPath: "polygon(0 0, 50% 52%, 0 100%)" }} aria-hidden="true"></span>
