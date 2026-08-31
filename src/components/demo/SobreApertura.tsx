@@ -133,7 +133,9 @@ export default function SobreApertura({
           <span className="text-[9px] font-sans-clean uppercase tracking-[0.4em] font-semibold mb-2.5" style={{ color: c.acento }}>
             {antetitulo}
           </span>
-          <span className="font-cormorant text-3xl sm:text-4xl leading-tight" style={{ color: c.tinta }}>
+          {/* La tipografía del título la aporta quien invoca (las fuentes de
+              demo se cargan desde la demo, no desde este componente). */}
+          <span className="text-3xl sm:text-4xl leading-tight" style={{ color: c.tinta }}>
             {titulo}
           </span>
           <span className="block h-px w-16 my-3" style={{ background: `${c.acento}80` }}></span>

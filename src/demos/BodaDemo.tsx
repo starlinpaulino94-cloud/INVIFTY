@@ -281,9 +281,9 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
             </span>
           }
           titulo={
-            <>
+            <span className="font-cormorant">
               Camila <span className="font-script" style={{ color: ORO }}>&</span> Lucas
-            </>
+            </span>
           }
           antetitulo={language === "es" ? "NUESTRA BODA DE GALA" : "OUR GALA WEDDING"}
           fecha="14 · NOV · 2026"
