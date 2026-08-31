@@ -280,13 +280,7 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
               <span className="font-serif-display text-xl tracking-wide">L</span>
             </span>
           }
-          titulo={
-            <span className="font-cormorant">
-              Camila <span className="font-script" style={{ color: ORO }}>&</span> Lucas
-            </span>
-          }
-          antetitulo={language === "es" ? "NUESTRA BODA DE GALA" : "OUR GALA WEDDING"}
-          fecha="14 · NOV · 2026"
+          etiqueta={language === "es" ? "Invitación — Boda Camila & Lucas" : "Invitation — Camila & Lucas Wedding"}
           indicacion={language === "es" ? "Toca el sello para abrir tu invitación" : "Tap the seal to open your invitation"}
           onAbierto={() => setSobreAbierto(true)}
         />
