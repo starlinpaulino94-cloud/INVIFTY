@@ -80,7 +80,7 @@ describe("mensaje de WhatsApp", () => {
     const popular = PRICING_PLANS.find((p) => p.isPopular)!;
     const message = buildLeadMessage(makeLead({ planId: popular.id }));
     expect(message).toContain(popular.name.es);
-    expect(message).toContain(popular.priceDOP.toLocaleString());
+    expect(message).toContain(`$${popular.priceUSD} USD`);
   });
 
   it("marca el plan a medida con 'Desde'", () => {

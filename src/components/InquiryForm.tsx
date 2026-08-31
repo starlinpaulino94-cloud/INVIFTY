@@ -22,7 +22,7 @@ function planLabel(planId: string, isEs: boolean): string {
   const plan = PRICING_PLANS.find((p) => p.id === planId);
   if (!plan) return planId;
   const name = isEs ? plan.name.es : plan.name.en;
-  const price = isEs ? `RD$${plan.priceDOP.toLocaleString()} DOP` : `$${plan.priceUSD} USD`;
+  const price = `$${plan.priceUSD} USD`;
   const prefix = plan.isCustom ? (isEs ? "Desde " : "From ") : "";
   const recommended = plan.isPopular ? (isEs ? " (Recomendado)" : " (Recommended)") : "";
   return isEs

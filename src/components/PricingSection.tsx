@@ -18,7 +18,7 @@ export default function PricingSection() {
   const customPlan = PRICING_PLANS.find((plan) => plan.isCustom) ?? null;
 
   const priceDisplay = (plan: PricingPlan): string => {
-    const base = isEs ? `RD$ ${plan.priceDOP.toLocaleString()} DOP` : `$${plan.priceUSD} USD`;
+    const base = `$${plan.priceUSD} USD`;
     return plan.isCustom ? (isEs ? `Desde ${base}` : `From ${base}`) : base;
   };
 
@@ -62,8 +62,8 @@ export default function PricingSection() {
           <p className="text-white/60 text-[11px] mt-3 tracking-wide">
             {/* Zelle y PayPal no están disponibles: se anunciaban sin serlo. */}
             {isEs
-              ? "Precios en pesos dominicanos (DOP). El pago se realiza por transferencia bancaria."
-              : "Prices shown in USD. Payment is made by bank transfer in Dominican pesos."}
+              ? "Precios en dólares estadounidenses (USD). El pago se realiza por transferencia bancaria."
+              : "Prices in US dollars (USD). Payment is made by bank transfer."}
           </p>
         </div>
 
@@ -97,14 +97,12 @@ export default function PricingSection() {
                       {lx(plan.description)}
                     </p>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-xs text-gold font-semibold">
-                        {isEs ? "RD$" : "$"}
-                      </span>
+                      <span className="text-xs text-gold font-semibold">$</span>
                       <span className="font-serif text-4xl font-normal text-white">
-                        {isEs ? plan.priceDOP.toLocaleString() : plan.priceUSD.toLocaleString()}
+                        {plan.priceUSD.toLocaleString()}
                       </span>
                       <span className="text-[10px] text-white/60 uppercase tracking-wider ml-1">
-                        {isEs ? "DOP / pago único" : "USD / one-time payment"}
+                        {isEs ? "USD / pago único" : "USD / one-time payment"}
                       </span>
                     </div>
                   </div>
@@ -194,12 +192,12 @@ export default function PricingSection() {
                   <span className="text-xs text-white/50 font-medium">
                     {isEs ? "Desde" : "From"}
                   </span>
-                  <span className="text-xs text-gold font-semibold">{isEs ? "RD$" : "$"}</span>
+                  <span className="text-xs text-gold font-semibold">$</span>
                   <span className="font-serif text-5xl font-normal text-white">
-                    {isEs ? customPlan.priceDOP.toLocaleString() : customPlan.priceUSD.toLocaleString()}
+                    {customPlan.priceUSD.toLocaleString()}
                   </span>
                   <span className="text-[10px] text-white/60 uppercase tracking-wider">
-                    {isEs ? "DOP / pago único" : "USD / one-time payment"}
+                    {isEs ? "USD / pago único" : "USD / one-time payment"}
                   </span>
                 </div>
 
@@ -307,9 +305,7 @@ export default function PricingSection() {
                           {lx(plan.name)}
                         </span>
                         <span className="block text-[10px] text-gold font-semibold mt-1">
-                          {isEs
-                            ? `RD$ ${plan.priceDOP.toLocaleString()}`
-                            : `$${plan.priceUSD.toLocaleString()} USD`}
+                          {`$${plan.priceUSD.toLocaleString()} USD`}
                         </span>
                       </th>
                     ))}
@@ -364,7 +360,7 @@ export default function PricingSection() {
                 <div className="flex justify-between items-start mb-2">
                   <h4 className="font-normal text-sm text-white font-serif">{lx(extra.title)}</h4>
                   <span className="text-[10px] font-bold text-gold uppercase tracking-wider">
-                    {isEs ? `+RD$ ${extra.priceDOP.toLocaleString()}` : `+$${extra.priceUSD} USD`}
+                    {`+$${extra.priceUSD} USD`}
                   </span>
                 </div>
                 <p className="text-xs text-white/60 font-light leading-relaxed italic">

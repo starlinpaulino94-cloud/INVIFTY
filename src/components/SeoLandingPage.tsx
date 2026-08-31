@@ -193,8 +193,8 @@ export default function SeoLandingPage({ onBackToHome }: SeoLandingPageProps) {
               </div>
               <p className="text-[11px] text-white/60 mt-4 italic">
                 {isEs
-                  ? "Respuesta por WhatsApp · Precios en DOP · Pago único, sin costos ocultos"
-                  : "Reply via WhatsApp · Prices in DOP · One-time payment, no hidden costs"}
+                  ? "Respuesta por WhatsApp · Precios en USD · Pago único, sin costos ocultos"
+                  : "Reply via WhatsApp · Prices in USD · One-time payment, no hidden costs"}
               </p>
             </div>
           </div>

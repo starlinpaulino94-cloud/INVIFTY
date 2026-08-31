@@ -9,7 +9,7 @@ function planName(planId: string | undefined, isEs: boolean): string | undefined
   const plan = PRICING_PLANS.find((p) => p.id === planId);
   if (!plan) return planId;
   const name = isEs ? plan.name.es : plan.name.en;
-  const price = isEs ? `RD$${plan.priceDOP.toLocaleString()} DOP` : `$${plan.priceUSD} USD`;
+  const price = `$${plan.priceUSD} USD`;
   const prefix = plan.isCustom ? (isEs ? "Desde " : "From ") : "";
   return `${name} — ${prefix}${price}`;
 }
