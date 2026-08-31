@@ -8,6 +8,7 @@ import coupleImg from "../assets/images/wedding_couple_demo.webp";
 import { useLanguage } from "../context/LanguageContext";
 import { useSectionReveal } from "../hooks/useSectionReveal";
 import { Rama, EsquinaBotanica, Brote, SeparadorBotanico } from "../components/demo/Botanica";
+import SobreApertura from "../components/demo/SobreApertura";
 import VipPassModal from "../components/VipPassModal";
 
 interface BodaDemoProps {
@@ -89,6 +90,9 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
   const targetDate = new Date("2026-11-14T16:30:00").getTime();
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  // La invitación llega dentro de un sobre lacrado: hasta que el invitado lo
+  // abre con un toque, no se muestra el contenido.
+  const [sobreAbierto, setSobreAbierto] = useState(false);
   // La barra de secciones solo aparece al dejar atrás la portada: sobre el
   // hero no aporta nada y le quitaba elegancia a la primera impresión.
   const [showSectionNav, setShowSectionNav] = useState(false);
@@ -265,6 +269,28 @@ export default function BodaDemo({ onBackToHome }: BodaDemoProps) {
 
   return (
     <div className="min-h-screen font-sans-clean selection:bg-[#B3924F]/25 relative pb-20" style={{ background: MARFIL, color: TINTA }}>
+
+      {/* Sobre lacrado: portada de la invitación */}
+      {!sobreAbierto && (
+        <SobreApertura
+          sello={
+            <span className="flex items-center leading-none whitespace-nowrap">
+              <span className="font-serif-display text-xl tracking-wide">C</span>
+              <span className="font-script text-xl mx-0.5 translate-y-[2px]">&</span>
+              <span className="font-serif-display text-xl tracking-wide">L</span>
+            </span>
+          }
+          titulo={
+            <>
+              Camila <span className="font-script" style={{ color: ORO }}>&</span> Lucas
+            </>
+          }
+          antetitulo={language === "es" ? "NUESTRA BODA DE GALA" : "OUR GALA WEDDING"}
+          fecha="14 · NOV · 2026"
+          indicacion={language === "es" ? "Toca el sello para abrir tu invitación" : "Tap the seal to open your invitation"}
+          onAbierto={() => setSobreAbierto(true)}
+        />
+      )}
 
       {/* Top Floating Watermark Bar */}
       <div className="py-2.5 px-4 sticky top-0 z-50 shadow-md border-b flex items-center justify-between gap-3 text-xs" style={{ background: VERDE, borderColor: `${ORO}4D`, color: "#F5EFE3" }}>
