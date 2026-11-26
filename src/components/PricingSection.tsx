@@ -6,6 +6,8 @@ import { Check, MessageCircle, Clock, RefreshCw, ChevronDown, Minus, Sparkles } 
 import { useLanguage } from "../context/LanguageContext";
 import { useSelection } from "../context/SelectionContext";
 import { PricingPlan } from "../types";
+import PayPalButton from "./PayPalButton";
+import { getHostedButtonId } from "../services/payments/paypal";
 
 export default function PricingSection() {
   const { language, lx } = useLanguage();
@@ -60,10 +62,9 @@ export default function PricingSection() {
               : "Unlimited guests and a single payment per event: no hidden costs, no monthly fees and no per-guest charges."}
           </p>
           <p className="text-white/60 text-[11px] mt-3 tracking-wide">
-            {/* Zelle y PayPal no están disponibles: se anunciaban sin serlo. */}
             {isEs
-              ? "Precios en dólares estadounidenses (USD). El pago se realiza por transferencia bancaria."
-              : "Prices in US dollars (USD). Payment is made by bank transfer."}
+              ? "Precios en dólares estadounidenses (USD). Paga en línea con PayPal en los planes que muestran el botón de pago, o por transferencia bancaria coordinada por WhatsApp."
+              : "Prices in US dollars (USD). Pay online with PayPal on the plans that show a payment button, or by bank transfer arranged over WhatsApp."}
           </p>
         </div>
 
@@ -144,6 +145,19 @@ export default function PricingSection() {
 
                 {/* Plan Action CTA */}
                 <div>
+                  {/* Pago en línea: sólo si el plan tiene su botón creado en PayPal */}
+                  {getHostedButtonId(plan.id) && (
+                    <>
+                      <PayPalButton
+                        hostedButtonId={getHostedButtonId(plan.id)!}
+                        planId={plan.id}
+                        placement="pricing_card"
+                      />
+                      <p className="text-center text-[10px] uppercase tracking-[0.25em] text-white/40 mb-3" aria-hidden="true">
+                        {isEs ? "— o —" : "— or —"}
+                      </p>
+                    </>
+                  )}
                   <a
                     href={createPlanWhatsAppUrl(lx(plan.name), priceDisplay(plan), isEs)}
                     target="_blank"
@@ -237,6 +251,18 @@ export default function PricingSection() {
 
               {/* CTA */}
               <div className="lg:col-span-3">
+                {getHostedButtonId(customPlan.id) && (
+                  <>
+                    <PayPalButton
+                      hostedButtonId={getHostedButtonId(customPlan.id)!}
+                      planId={customPlan.id}
+                      placement="pricing_custom"
+                    />
+                    <p className="text-center text-[10px] uppercase tracking-[0.25em] text-white/40 mb-3" aria-hidden="true">
+                      {isEs ? "— o —" : "— or —"}
+                    </p>
+                  </>
+                )}
                 <a
                   href={createPlanWhatsAppUrl(lx(customPlan.name), priceDisplay(customPlan), isEs)}
                   target="_blank"

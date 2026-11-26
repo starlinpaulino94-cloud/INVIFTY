@@ -71,6 +71,14 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
               sitio se cargan desde Google Fonts.
             </p>
             <p>
+              Para pagar en línea utilizamos <strong>PayPal</strong>. Cuando llegas a la sección de
+              planes, tu navegador carga un script de PayPal para mostrar el botón de pago, y PayPal
+              puede instalar sus propias cookies según su política de privacidad. El pago se
+              procesa íntegramente en PayPal: Invifty no recibe ni almacena los datos de tu tarjeta
+              ni tu contraseña; sólo recibimos de PayPal la confirmación del pago (nombre, correo y
+              monto) para poder iniciar tu pedido.
+            </p>
+            <p>
               Para saber cuántas personas visitan el sitio utilizamos Vercel Web Analytics,
               que mide datos agregados sin instalar cookies, y Google Analytics 4 únicamente
               cuando aceptas la analítica en el aviso de privacidad. Podemos medir la página
@@ -150,6 +158,13 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
             <p>
               Communication with our team happens through WhatsApp (Meta Platforms) and Instagram,
               which have their own privacy policies. The site&rsquo;s fonts are loaded from Google Fonts.
+            </p>
+            <p>
+              To pay online we use <strong>PayPal</strong>. When you reach the plans section, your
+              browser loads a PayPal script to show the payment button, and PayPal may set its own
+              cookies under its privacy policy. The payment is processed entirely by PayPal: Invifty
+              does not receive or store your card details or password; we only receive the payment
+              confirmation from PayPal (name, email and amount) so we can start your order.
             </p>
             <p>
               To understand website traffic we use Vercel Web Analytics, which measures aggregate

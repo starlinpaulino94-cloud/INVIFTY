@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { PAYPAL_HOSTED_BUTTONS } from "../services/payments/paypal";
 
 const ROOT = process.cwd();
 
@@ -41,12 +42,14 @@ function visibleText(source: string): string {
 
 describe("medios de pago", () => {
   // Se anunciaban tarjetas de crédito/débito, Zelle y PayPal en cuatro sitios
-  // (términos, FAQ, tabla de precios y una página SEO). El único medio
-  // disponible es la transferencia bancaria. Prometer una forma de pago que no
+  // (términos, FAQ, tabla de precios y una página SEO) cuando el único medio
+  // disponible era la transferencia bancaria. Prometer una forma de pago que no
   // existe rompe la venta exactamente en el momento de cobrar.
+  //
+  // PayPal es ahora real, pero sólo para los planes con botón (ver
+  // PAYPAL_HOSTED_BUTTONS): su mención se valida contra esa configuración.
   const FORBIDDEN = [
     { pattern: /\bZelle\b/, label: "Zelle" },
-    { pattern: /\bPayPal\b/i, label: "PayPal" },
     { pattern: /tarjetas?\s+de\s+cr[ée]dito/i, label: "tarjeta de crédito" },
     { pattern: /credit\/debit\s+cards?/i, label: "credit/debit card" },
   ];
@@ -62,6 +65,21 @@ describe("medios de pago", () => {
     }
 
     expect(offenders, offenders.join("\n")).toEqual([]);
+  });
+
+  it("sólo anuncia PayPal si hay al menos un botón de pago configurado", () => {
+    const hayBotones = Object.values(PAYPAL_HOSTED_BUTTONS).some((id) => id.trim() !== "");
+    const mencionan = COMMERCIAL_FILES.filter((file) =>
+      /\bPayPal\b/i.test(visibleText(readFileSync(join(ROOT, file), "utf8")))
+    );
+
+    // Si la web habla de pagar con PayPal, algún plan debe poder pagarse así.
+    if (mencionan.length > 0) {
+      expect(
+        hayBotones,
+        `estos archivos anuncian PayPal pero ningún plan tiene botón: ${mencionan.join(", ")}`
+      ).toBe(true);
+    }
   });
 });
 

@@ -31,8 +31,9 @@ export default function TermsPage({ onBackToHome }: PageProps) {
           <section>
             <h2>2. Contratación y pago</h2>
             <p>
-              Los pedidos se coordinan por WhatsApp. El pago se realiza por{" "}
-              <strong>transferencia bancaria en pesos dominicanos</strong>, que es el único medio
+              Los pedidos se coordinan por WhatsApp. El pago se realiza con{" "}
+              <strong>PayPal</strong> (en dólares, en los planes que muestran el botón de pago) o
+              por <strong>transferencia bancaria en pesos dominicanos</strong>, que son los medios
               que aceptamos por ahora. El trabajo de diseño inicia una vez confirmado el pago y
               recibidos los datos del evento.
             </p>
@@ -114,9 +115,10 @@ export default function TermsPage({ onBackToHome }: PageProps) {
           <section>
             <h2>2. Ordering and payment</h2>
             <p>
-              Orders are coordinated via WhatsApp. Payment is made by{" "}
-              <strong>bank transfer in Dominican pesos</strong>, which is the only method we accept
-              at the moment. Design work begins once payment is confirmed and the event details are
+              Orders are coordinated via WhatsApp. Payment is made with{" "}
+              <strong>PayPal</strong> (in US dollars, on the plans that show a payment button) or by{" "}
+              <strong>bank transfer in Dominican pesos</strong>, which are the methods we accept at
+              the moment. Design work begins once payment is confirmed and the event details are
               received.
             </p>
           </section>
