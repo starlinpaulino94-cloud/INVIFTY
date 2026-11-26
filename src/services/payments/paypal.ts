@@ -19,7 +19,7 @@ import { ENV } from "../../config/env";
 export const PAYPAL_HOSTED_BUTTONS: Readonly<Record<string, string>> = {
   esencial: "Q39565674TWKA",
   popular: "7CLS9XVM5SW7Q",
-  // premium: "",
+  premium: "S6Q3NJLBMEBTS",
   // "a-medida": "",
 };
 
