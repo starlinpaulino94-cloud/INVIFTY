@@ -37,18 +37,15 @@ export default function PayPalLinkButton({ linkId, planId, placement }: PayPalLi
         target="_blank"
         rel="noopener noreferrer"
         onSubmit={() => trackEvent("click_payment_link", { plan_id: planId, placement })}
-        className="rounded-xl bg-[#F5EFE3] px-3 py-4 flex flex-col items-center gap-2"
+        className="rounded-xl bg-[#F5EFE3] px-3 py-4"
       >
         <button
           type="submit"
           className="w-full min-h-[44px] rounded bg-[#FFD140] hover:bg-[#F2C230] text-black font-bold text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#101713]"
         >
           {isEs ? "Pagar ahora" : "Pay now"}
+          <span className="sr-only">{isEs ? " (se abre en una pestaña nueva)" : " (opens in a new tab)"}</span>
         </button>
-        <p className="text-[11px] text-[#2E2A24]/70">
-          {isEs ? "Con tecnología de PayPal" : "Powered by PayPal"}
-          <span className="sr-only">{isEs ? ". Se abre en una pestaña nueva." : ". Opens in a new tab."}</span>
-        </p>
       </form>
 
       <p className="text-[10px] text-white/50 leading-snug mt-2">
