@@ -13,8 +13,11 @@ describe("botones de pago por plan", () => {
     expect(getHostedButtonId("esencial")).toBe("Q39565674TWKA");
   });
 
+  it("el plan Popular tiene su botón de PayPal", () => {
+    expect(getHostedButtonId("popular")).toBe("7CLS9XVM5SW7Q");
+  });
+
   it("un plan sin botón configurado no ofrece pago en línea", () => {
-    expect(getHostedButtonId("popular")).toBeUndefined();
     expect(getHostedButtonId("no-existe")).toBeUndefined();
   });
 
