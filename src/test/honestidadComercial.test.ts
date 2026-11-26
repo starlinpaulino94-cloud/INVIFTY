@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { PAYPAL_HOSTED_BUTTONS, PAYPAL_PAYMENT_LINKS } from "../services/payments/paypal";
+import { PAYPAL_PAYMENT_LINKS } from "../services/payments/paypal";
 
 const ROOT = process.cwd();
 
@@ -46,8 +46,8 @@ describe("medios de pago", () => {
   // disponible era la transferencia bancaria. Prometer una forma de pago que no
   // existe rompe la venta exactamente en el momento de cobrar.
   //
-  // PayPal es ahora real, pero sólo para los planes con botón (ver
-  // PAYPAL_HOSTED_BUTTONS): su mención se valida contra esa configuración.
+  // PayPal es ahora real, pero sólo existen los enlaces de pago configurados
+  // en PAYPAL_PAYMENT_LINKS: su mención se valida contra esa configuración.
   const FORBIDDEN = [
     { pattern: /\bZelle\b/, label: "Zelle" },
     { pattern: /tarjetas?\s+de\s+cr[ée]dito/i, label: "tarjeta de crédito" },
@@ -67,10 +67,8 @@ describe("medios de pago", () => {
     expect(offenders, offenders.join("\n")).toEqual([]);
   });
 
-  it("sólo anuncia PayPal si hay al menos un botón de pago configurado", () => {
-    const hayBotones = [...Object.values(PAYPAL_HOSTED_BUTTONS), ...Object.values(PAYPAL_PAYMENT_LINKS)].some(
-      (id) => id.trim() !== ""
-    );
+  it("sólo anuncia PayPal si hay al menos un enlace de pago configurado", () => {
+    const hayBotones = Object.values(PAYPAL_PAYMENT_LINKS).some((id) => id.trim() !== "");
     const mencionan = COMMERCIAL_FILES.filter((file) =>
       /\bPayPal\b/i.test(visibleText(readFileSync(join(ROOT, file), "utf8")))
     );
@@ -79,7 +77,7 @@ describe("medios de pago", () => {
     if (mencionan.length > 0) {
       expect(
         hayBotones,
-        `estos archivos anuncian PayPal pero ningún plan tiene botón: ${mencionan.join(", ")}`
+        `estos archivos anuncian PayPal pero ningún plan tiene enlace de pago: ${mencionan.join(", ")}`
       ).toBe(true);
     }
   });

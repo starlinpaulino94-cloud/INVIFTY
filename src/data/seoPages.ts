@@ -96,8 +96,8 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         q: { es: "¿Cuánto cuesta una invitación digital en República Dominicana?", en: "How much does a digital invitation cost in the Dominican Republic?" },
         a: {
-          es: "Los planes van desde $25 USD (Esencial) hasta $129 USD (A medida), en pago único, sin costos ocultos ni cobro por invitado. Puedes pagar con PayPal en los planes que muestran el botón de pago, o por transferencia bancaria.",
-          en: "Plans range from $25 USD (Essential) to $129 USD (Custom), one-time payment, no hidden costs and no per-guest fees. You can pay with PayPal on the plans that show a payment button, or by bank transfer.",
+          es: "Los planes van desde $25 USD (Esencial) hasta $129 USD (A medida), en pago único, sin costos ocultos ni cobro por invitado. Puedes pagar con PayPal o por transferencia bancaria.",
+          en: "Plans range from $25 USD (Essential) to $129 USD (Custom), one-time payment, no hidden costs and no per-guest fees. You can pay with PayPal or by bank transfer.",
         },
       },
       {

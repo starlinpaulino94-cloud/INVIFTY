@@ -62,8 +62,8 @@ export default function PricingSection() {
           </p>
           <p className="text-white/60 text-[11px] mt-3 tracking-wide">
             {isEs
-              ? "Precios en dólares estadounidenses (USD). Paga en línea con PayPal en los planes que muestran el botón de pago, o por transferencia bancaria coordinada por WhatsApp."
-              : "Prices in US dollars (USD). Pay online with PayPal on the plans that show a payment button, or by bank transfer arranged over WhatsApp."}
+              ? "Precios en dólares estadounidenses (USD). Paga en línea con PayPal, o por transferencia bancaria coordinada por WhatsApp."
+              : "Prices in US dollars (USD). Pay online with PayPal, or by bank transfer arranged over WhatsApp."}
           </p>
         </div>
 
@@ -144,7 +144,7 @@ export default function PricingSection() {
 
                 {/* Plan Action CTA */}
                 <div>
-                  {/* Pago en línea: sólo si el plan tiene su pago creado en PayPal */}
+                  {/* Pago en línea: sólo si el plan tiene su enlace de pago en PayPal */}
                   <PlanPayment planId={plan.id} placement="pricing_card" />
                   <a
                     href={createPlanWhatsAppUrl(lx(plan.name), priceDisplay(plan), isEs)}
