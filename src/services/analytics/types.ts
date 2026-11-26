@@ -26,6 +26,7 @@ export type AnalyticsEventName =
   // Pago en línea (botones de PayPal)
   | "view_payment_option"
   | "payment_option_error"
+  | "click_payment_link"
   // Formulario de captación
   | "start_lead_form"
   | "lead_form_error"

@@ -6,8 +6,7 @@ import { Check, MessageCircle, Clock, RefreshCw, ChevronDown, Minus, Sparkles } 
 import { useLanguage } from "../context/LanguageContext";
 import { useSelection } from "../context/SelectionContext";
 import { PricingPlan } from "../types";
-import PayPalButton from "./PayPalButton";
-import { getHostedButtonId } from "../services/payments/paypal";
+import PlanPayment from "./PlanPayment";
 
 export default function PricingSection() {
   const { language, lx } = useLanguage();
@@ -145,19 +144,8 @@ export default function PricingSection() {
 
                 {/* Plan Action CTA */}
                 <div>
-                  {/* Pago en línea: sólo si el plan tiene su botón creado en PayPal */}
-                  {getHostedButtonId(plan.id) && (
-                    <>
-                      <PayPalButton
-                        hostedButtonId={getHostedButtonId(plan.id)!}
-                        planId={plan.id}
-                        placement="pricing_card"
-                      />
-                      <p className="text-center text-[10px] uppercase tracking-[0.25em] text-white/40 mb-3" aria-hidden="true">
-                        {isEs ? "— o —" : "— or —"}
-                      </p>
-                    </>
-                  )}
+                  {/* Pago en línea: sólo si el plan tiene su pago creado en PayPal */}
+                  <PlanPayment planId={plan.id} placement="pricing_card" />
                   <a
                     href={createPlanWhatsAppUrl(lx(plan.name), priceDisplay(plan), isEs)}
                     target="_blank"
@@ -251,18 +239,7 @@ export default function PricingSection() {
 
               {/* CTA */}
               <div className="lg:col-span-3">
-                {getHostedButtonId(customPlan.id) && (
-                  <>
-                    <PayPalButton
-                      hostedButtonId={getHostedButtonId(customPlan.id)!}
-                      planId={customPlan.id}
-                      placement="pricing_custom"
-                    />
-                    <p className="text-center text-[10px] uppercase tracking-[0.25em] text-white/40 mb-3" aria-hidden="true">
-                      {isEs ? "— o —" : "— or —"}
-                    </p>
-                  </>
-                )}
+                <PlanPayment planId={customPlan.id} placement="pricing_custom" />
                 <a
                   href={createPlanWhatsAppUrl(lx(customPlan.name), priceDisplay(customPlan), isEs)}
                   target="_blank"

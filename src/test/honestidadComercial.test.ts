@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { PAYPAL_HOSTED_BUTTONS } from "../services/payments/paypal";
+import { PAYPAL_HOSTED_BUTTONS, PAYPAL_PAYMENT_LINKS } from "../services/payments/paypal";
 
 const ROOT = process.cwd();
 
@@ -68,7 +68,9 @@ describe("medios de pago", () => {
   });
 
   it("sólo anuncia PayPal si hay al menos un botón de pago configurado", () => {
-    const hayBotones = Object.values(PAYPAL_HOSTED_BUTTONS).some((id) => id.trim() !== "");
+    const hayBotones = [...Object.values(PAYPAL_HOSTED_BUTTONS), ...Object.values(PAYPAL_PAYMENT_LINKS)].some(
+      (id) => id.trim() !== ""
+    );
     const mencionan = COMMERCIAL_FILES.filter((file) =>
       /\bPayPal\b/i.test(visibleText(readFileSync(join(ROOT, file), "utf8")))
     );

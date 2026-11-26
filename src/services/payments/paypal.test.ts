@@ -2,8 +2,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { PRICING_PLANS } from "../../data/pricingData";
 import {
   PAYPAL_HOSTED_BUTTONS,
+  PAYPAL_PAYMENT_LINKS,
+  buildPaymentLinkUrl,
   buildSdkUrl,
   getHostedButtonId,
+  getPaymentLinkId,
+  hasOnlinePayment,
   loadPayPalSdk,
   resetPayPalSdkForTests,
 } from "./paypal";
@@ -13,8 +17,15 @@ describe("botones de pago por plan", () => {
     expect(getHostedButtonId("esencial")).toBe("Q39565674TWKA");
   });
 
+  it("el plan Popular tiene su botón de PayPal", () => {
+    expect(getHostedButtonId("popular")).toBe("7CLS9XVM5SW7Q");
+  });
+
+  it("el plan Premium tiene su botón de PayPal", () => {
+    expect(getHostedButtonId("premium")).toBe("S6Q3NJLBMEBTS");
+  });
+
   it("un plan sin botón configurado no ofrece pago en línea", () => {
-    expect(getHostedButtonId("popular")).toBeUndefined();
     expect(getHostedButtonId("no-existe")).toBeUndefined();
   });
 
@@ -23,6 +34,34 @@ describe("botones de pago por plan", () => {
     for (const planId of Object.keys(PAYPAL_HOSTED_BUTTONS)) {
       expect(ids, `el plan "${planId}" no existe en pricingData`).toContain(planId);
     }
+  });
+});
+
+describe("enlaces de pago por plan", () => {
+  it("el plan A medida paga con su enlace de pago", () => {
+    expect(getPaymentLinkId("a-medida")).toBe("DJJ8H2NDVZJNN");
+    expect(buildPaymentLinkUrl("DJJ8H2NDVZJNN")).toBe(
+      "https://www.paypal.com/ncp/payment/DJJ8H2NDVZJNN"
+    );
+  });
+
+  it("cada enlace configurado pertenece a un plan que existe en el catálogo", () => {
+    const ids = PRICING_PLANS.map((plan) => plan.id);
+    for (const planId of Object.keys(PAYPAL_PAYMENT_LINKS)) {
+      expect(ids, `el plan "${planId}" no existe en pricingData`).toContain(planId);
+    }
+  });
+
+  it("ningún plan tiene a la vez botón alojado y enlace de pago", () => {
+    const comunes = Object.keys(PAYPAL_HOSTED_BUTTONS).filter((id) => id in PAYPAL_PAYMENT_LINKS);
+    expect(comunes).toEqual([]);
+  });
+
+  it("todos los planes del catálogo se pueden pagar en línea; uno desconocido no", () => {
+    for (const plan of PRICING_PLANS) {
+      expect(hasOnlinePayment(plan.id), `el plan "${plan.id}" no tiene pago`).toBe(true);
+    }
+    expect(hasOnlinePayment("no-existe")).toBe(false);
   });
 });
 
