@@ -19,7 +19,6 @@ interface RawEnv {
   readonly VITE_GA_MEASUREMENT_ID?: string;
   readonly VITE_GTM_CONTAINER_ID?: string;
   readonly VITE_SHOW_CONSENT_BANNER?: string;
-  readonly VITE_PAYPAL_CLIENT_ID?: string;
   readonly VITE_ENABLE_VERCEL_ANALYTICS?: string;
   readonly VITE_GOOGLE_SITE_VERIFICATION?: string;
   readonly VITE_STUDIO_API_URL?: string;
@@ -55,14 +54,6 @@ const whatsappNumber = normalizePhone(readString(raw.VITE_WHATSAPP_NUMBER, "1809
 // pero Invifty funciona con su propiedad oficial incluso sin configuración extra.
 const gaMeasurementId = readString(raw.VITE_GA_MEASUREMENT_ID, "G-41L6G60R5C");
 const gtmContainerId = readString(raw.VITE_GTM_CONTAINER_ID, "GTM-WFPB226S");
-
-// El client-id de PayPal es público por diseño (PayPal lo incrusta en el script
-// de cualquier página de pago): identifica la cuenta que cobra, no la autoriza a
-// mover dinero. Las claves secretas de PayPal NUNCA van aquí.
-const paypalClientId = readString(
-  raw.VITE_PAYPAL_CLIENT_ID,
-  "BAAJgwwe6UMkOGoQ52nmq3blSKa3rvwzTZOKxcMRskkH7k10V8SRkY_7m2uVA1aewYrlwPo2n_C1AqhoyY"
-);
 
 /**
  * Analítica de Vercel. Activada por defecto porque el sitio se despliega en
@@ -165,8 +156,6 @@ export const ENV = {
   gtmEnabled,
   /** true si debe mostrarse el banner de consentimiento de analítica. */
   consentBannerEnabled,
-  /** Client-id público de PayPal para los botones de pago de los planes. */
-  paypalClientId,
   /** true si debe cargarse la analítica sin cookies de Vercel. */
   vercelAnalyticsEnabled,
   /** Token de Google Search Console. Cadena vacía = no verificado por etiqueta. */

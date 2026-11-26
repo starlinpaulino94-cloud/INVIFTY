@@ -71,10 +71,10 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
               sitio se cargan desde Google Fonts.
             </p>
             <p>
-              Para pagar en línea utilizamos <strong>PayPal</strong>. Cuando llegas a la sección de
-              planes, tu navegador carga un script de PayPal para mostrar el botón de pago, y PayPal
-              puede instalar sus propias cookies según su política de privacidad. El pago se
-              procesa íntegramente en PayPal: Invifty no recibe ni almacena los datos de tu tarjeta
+              Para pagar en línea utilizamos <strong>PayPal</strong>. Al pulsar &ldquo;Pagar ahora&rdquo;
+              se abre la página de pago de PayPal en otra pestaña, y desde ese momento rige su
+              política de privacidad (incluidas sus cookies); mientras no pulses el botón, esta web
+              no se comunica con PayPal. El pago se procesa íntegramente en PayPal: Invifty no recibe ni almacena los datos de tu tarjeta
               ni tu contraseña; sólo recibimos de PayPal la confirmación del pago (nombre, correo y
               monto) para poder iniciar tu pedido.
             </p>
@@ -160,9 +160,10 @@ export default function PrivacyPage({ onBackToHome }: PageProps) {
               which have their own privacy policies. The site&rsquo;s fonts are loaded from Google Fonts.
             </p>
             <p>
-              To pay online we use <strong>PayPal</strong>. When you reach the plans section, your
-              browser loads a PayPal script to show the payment button, and PayPal may set its own
-              cookies under its privacy policy. The payment is processed entirely by PayPal: Invifty
+              To pay online we use <strong>PayPal</strong>. When you press &ldquo;Pay now&rdquo;, PayPal&rsquo;s
+              payment page opens in a new tab, and from then on its privacy policy applies
+              (including its cookies); until you press the button, this site does not communicate
+              with PayPal. The payment is processed entirely by PayPal: Invifty
               does not receive or store your card details or password; we only receive the payment
               confirmation from PayPal (name, email and amount) so we can start your order.
             </p>

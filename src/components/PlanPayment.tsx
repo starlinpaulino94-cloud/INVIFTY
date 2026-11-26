@@ -1,7 +1,6 @@
-import PayPalButton from "./PayPalButton";
 import PayPalLinkButton from "./PayPalLinkButton";
 import { useLanguage } from "../context/LanguageContext";
-import { getHostedButtonId, getPaymentLinkId } from "../services/payments/paypal";
+import { getPaymentLinkId } from "../services/payments/paypal";
 
 interface PlanPaymentProps {
   planId: string;
@@ -15,18 +14,13 @@ interface PlanPaymentProps {
  */
 export default function PlanPayment({ planId, placement }: PlanPaymentProps) {
   const { language } = useLanguage();
-  const hostedButtonId = getHostedButtonId(planId);
   const linkId = getPaymentLinkId(planId);
 
-  if (!hostedButtonId && !linkId) return null;
+  if (!linkId) return null;
 
   return (
     <>
-      {hostedButtonId ? (
-        <PayPalButton hostedButtonId={hostedButtonId} planId={planId} placement={placement} />
-      ) : (
-        <PayPalLinkButton linkId={linkId!} planId={planId} placement={placement} />
-      )}
+      <PayPalLinkButton linkId={linkId} planId={planId} placement={placement} />
       <p className="text-center text-[10px] uppercase tracking-[0.25em] text-white/40 mb-3" aria-hidden="true">
         {language === "es" ? "— o —" : "— or —"}
       </p>
