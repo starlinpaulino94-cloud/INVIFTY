@@ -23,6 +23,33 @@ export const PAYPAL_HOSTED_BUTTONS: Readonly<Record<string, string>> = {
   // "a-medida": "",
 };
 
+/**
+ * ENLACES DE PAGO (alternativa a los botones alojados)
+ * PayPal también permite crear un "enlace de pago": no necesita script, el
+ * botón es un formulario que abre la página de pago de PayPal en otra pestaña.
+ * Se configura igual: `id` del plan -> código de la URL
+ * (paypal.com/ncp/payment/<código>). Un plan no debe estar en los dos mapas.
+ */
+export const PAYPAL_PAYMENT_LINKS: Readonly<Record<string, string>> = {
+  "a-medida": "DJJ8H2NDVZJNN",
+};
+
+/** Enlace de pago configurado para un plan, o `undefined` si no tiene. */
+export function getPaymentLinkId(planId: string): string | undefined {
+  const id = PAYPAL_PAYMENT_LINKS[planId];
+  return id && id.trim() !== "" ? id : undefined;
+}
+
+/** Dirección de la página de pago de PayPal para un enlace de pago. */
+export function buildPaymentLinkUrl(linkId: string): string {
+  return `https://www.paypal.com/ncp/payment/${encodeURIComponent(linkId)}`;
+}
+
+/** ¿El plan se puede pagar en línea (botón alojado o enlace de pago)? */
+export function hasOnlinePayment(planId: string): boolean {
+  return Boolean(getHostedButtonId(planId) ?? getPaymentLinkId(planId));
+}
+
 /** Botón de pago configurado para un plan, o `undefined` si todavía no tiene. */
 export function getHostedButtonId(planId: string): string | undefined {
   const id = PAYPAL_HOSTED_BUTTONS[planId];
