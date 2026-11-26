@@ -23,6 +23,9 @@ export type AnalyticsEventName =
   | "view_pricing"
   | "expand_plan_comparison"
   | "select_plan"
+  // Pago en línea (botones de PayPal)
+  | "view_payment_option"
+  | "payment_option_error"
   // Formulario de captación
   | "start_lead_form"
   | "lead_form_error"

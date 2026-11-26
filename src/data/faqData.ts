@@ -46,12 +46,13 @@ export const FAQ_ITEMS: FAQItem[] = [
       es: "5. ¿Cuáles son las formas de pago disponibles?",
       en: "5. What payment methods are available?"
     },
-    // Sólo transferencia. Antes se anunciaban además tarjetas, Zelle y PayPal,
-    // que no están disponibles: prometer un medio de pago que no existe rompe
-    // la venta justo en el momento de cobrar.
+    // Sólo se anuncian los medios realmente disponibles: PayPal únicamente en
+    // los planes que tienen su botón (ver src/services/payments/paypal.ts) y la
+    // transferencia bancaria. Tarjetas y Zelle siguen sin ofrecerse: prometer un
+    // medio de pago que no existe rompe la venta justo en el momento de cobrar.
     answer: {
-      es: "Por el momento el pago es por transferencia bancaria en pesos dominicanos. Coordinamos los datos de la cuenta por WhatsApp al confirmar tu pedido.",
-      en: "For now, payment is by bank transfer in Dominican pesos. We share the account details over WhatsApp once your order is confirmed."
+      es: "Puedes pagar en línea con PayPal en los planes que muestran el botón de pago, o por transferencia bancaria en pesos dominicanos. En ambos casos coordinamos los siguientes pasos por WhatsApp para empezar tu invitación.",
+      en: "You can pay online with PayPal on the plans that show a payment button, or by bank transfer in Dominican pesos. Either way, we coordinate the next steps over WhatsApp to start your invitation."
     }
   },
   {
